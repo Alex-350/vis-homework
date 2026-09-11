@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页制作入门教程</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* 顶部英雄区 */
+        .hero {
+            width: 100%;
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 20px 60px;
+        }
+        .hero .small-title {
+            font-size: 14px;
+            letter-spacing: 3px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+        .hero .sub-title {
+            font-size: 22px;
+            margin-bottom: 16px;
+            opacity: 0.95;
+        }
+        .hero .info {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* 导航栏 */
+        .nav {
+            width: 100%;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            padding: 18px 0;
+        }
+        .nav a {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* 主体内容 */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        .container h2 {
+            font-size: 32px;
+            margin-bottom: 16px;
+            color: #0f172a;
+        }
+        .container .desc {
+            color: #64748b;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+
+        /* 卡片网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        /* 章节卡片 */
+        .chapter-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 28px 24px;
+            position: relative;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        .chapter-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            border-color: #bfdbfe;
+        }
+        .chapter-num {
+            color: #2563eb;
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        .chapter-card h3 {
+            font-size: 24px;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+        .card-desc {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        .card-text {
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        /* 标签 */
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .tag {
+            background: #eff6ff;
+            color: #1d4ed8;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        /* 状态标签 */
+        .status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* 进入链接 */
+        .enter-link {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            padding-top: 16px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .enter-link:hover {
+            color: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部英雄区 -->
+    <div class="hero">
+        <div class="small-title">WEB TUTORIAL · BEGINNER</div>
+        <h1>《网页制作入门教程》</h1>
+        <div class="sub-title">从零开始学会做自己的网页</div>
+        <div class="info">HTML + CSS + JavaScript 全流程实战 · 零基础友好</div>
+    </div>
+
+    <!-- 导航栏 -->
+    <div class="nav">
+        <a href="index.html">📚 章节</a>
+        <a href="#">💡 学习指南</a>
+        <a href="#">ℹ️ 关于</a>
+    </div>
+
+    <!-- 主体内容 -->
+    <div class="container">
+        <h2>课程章节</h2>
+        <p class="desc">点击任一卡片进入该章节，每章节含 3 个板块：📖 讲解 / 💻 关键代码 / ▶️ 演示。</p>
+
+        <div class="card-grid">
+            <!-- 第1章 -->
+            <div class="chapter-card" onclick="location.href='chapter1.html'">
+                <div class="status">✅ 已上线</div>
+                <div class="chapter-num">第 1 章</div>
+                <h3>网页基础与HTML结构</h3>
+                <p class="card-desc">入门必修：认识网页的本质</p>
+                <p class="card-text">了解网页的构成原理，学习HTML基本语法，掌握常用标签，写出第一个属于自己的完整网页文件。</p>
+                <div class="tag-group">
+                    <span class="tag">HTML骨架</span>
+                    <span class="tag">常用标签</span>
+                    <span class="tag">文本与图片</span>
+                    <span class="tag">列表与表格</span>
+                </div>
+                <a href="chapter1.html" class="enter-link">进入章节 →</a>
+            </div>
+
+            <!-- 第2章 -->
+            <div class="chapter-card" onclick="location.href='chapter2.html'">
+                <div class="status">✅ 已上线</div>
+                <div class="chapter-num">第 2 章</div>
+                <h3>CSS样式与页面美化</h3>
+                <p class="card-desc">让网页从朴素变好看</p>
+                <p class="card-text">学习CSS选择器、颜色字体、盒子模型，掌握页面布局方法，做出整齐美观的卡片和导航栏。</p>
+                <div class="tag-group">
+                    <span class="tag">选择器</span>
+                    <span class="tag">颜色字体</span>
+                    <span class="tag">盒子模型</span>
+                    <span class="tag">Flex布局</span>
+                </div>
+                <a href="chapter2.html" class="enter-link">进入章节 →</a>
+            </div>
+
+            <!-- 第3章 -->
+            <div class="chapter-card" onclick="location.href='chapter3.html'">
+                <div class="status">✅ 已上线</div>
+                <div class="chapter-num">第 3 章</div>
+                <h3>JavaScript交互效果</h3>
+                <p class="card-desc">让网页动起来</p>
+                <p class="card-text">学习JS基础语法，掌握事件监听和DOM操作，实现Tab切换、按钮点击、弹窗等常用交互效果。</p>
+                <div class="tag-group">
+                    <span class="tag">变量与函数</span>
+                    <span class="tag">事件监听</span>
+                    <span class="tag">DOM操作</span>
+                    <span class="tag">Tab切换</span>
+                </div>
+                <a href="chapter3.html" class="enter-link">进入章节 →</a>
+            </div>
+
+            <!-- 第4章 -->
+            <div class="chapter-card" onclick="location.href='chapter4.html'">
+                <div class="status">✅ 已上线</div>
+                <div class="chapter-num">第 4 章</div>
+                <h3>多页面网站架构</h3>
+                <p class="card-desc">搭建完整的网站结构</p>
+                <p class="card-text">学习多页面网站的文件组织，掌握相对路径和超链接，实现主页与子页面之间的顺畅跳转导航。</p>
+                <div class="tag-group">
+                    <span class="tag">文件结构</span>
+                    <span class="tag">相对路径</span>
+                    <span class="tag">超链接</span>
+                    <span class="tag">导航栏</span>
+                </div>
+                <a href="chapter4.html" class="enter-link">进入章节 →</a>
+            </div>
+
+            <!-- 第5章 -->
+            <div class="chapter-card" onclick="location.href='chapter5.html'">
+                <div class="status">✅ 已上线</div>
+                <div class="chapter-num">第 5 章</div>
+                <h3>网页发布与上线</h3>
+                <p class="card-desc">把网页发到公网上</p>
+                <p class="card-text">学习GitHub Pages免费托管服务，掌握完整发布流程，排查常见问题，让所有人都能访问你的网页。</p>
+                <div class="tag-group">
+                    <span class="tag">GitHub注册</span>
+                    <span class="tag">仓库创建</span>
+                    <span class="tag">Pages部署</span>
+                    <span class="tag">问题排查</span>
+                </div>
+                <a href="chapter5.html" class="enter-link">进入章节 →</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

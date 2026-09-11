@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第2章 CSS样式与页面美化 - 网页制作入门教程</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* 顶部导航 */
+        .top-bar {
+            height: 8px;
+            background: #1e40af;
+            width: 100%;
+        }
+        .back-home {
+            max-width: 1200px;
+            margin: 16px auto 0;
+            padding: 0 20px;
+        }
+        .back-home a {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* 主布局：侧边栏 + 内容区 */
+        .layout {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        /* 左侧侧边栏 */
+        .sidebar {
+            width: 240px;
+            flex-shrink: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            position: sticky;
+            top: 20px;
+        }
+        .sidebar h4 {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        .menu-list {
+            list-style: none;
+        }
+        .menu-list li {
+            margin-bottom: 4px;
+        }
+        .menu-list a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+        }
+        .menu-list a.active {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-left-color: #2563eb;
+            font-weight: 500;
+        }
+        .menu-list a:hover {
+            background: #f1f5f9;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 16px 0;
+        }
+
+        /* 右侧内容区 */
+        .main-content {
+            flex-grow: 1;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 32px 40px;
+            min-height: 600px;
+        }
+
+        /* 章节标题 */
+        .chapter-title {
+            font-size: 26px;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+        .chapter-subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        /* Tab 导航 */
+        .tab-nav {
+            display: flex;
+            gap: 32px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 28px;
+        }
+        .tab-btn {
+            padding: 10px 4px;
+            background: none;
+            border: none;
+            font-size: 15px;
+            color: #64748b;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tab-btn.active {
+            color: #2563eb;
+            font-weight: 500;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #2563eb;
+        }
+
+        /* Tab 内容 */
+        .tab-content {
+            display: none;
+            line-height: 1.8;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 内容样式 */
+        .section {
+            margin-bottom: 40px;
+        }
+        .section h3 {
+            font-size: 20px;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+        .section p {
+            color: #334155;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+        .highlight-box {
+            background: #fef3c7;
+            border-left: 3px solid #f59e0b;
+            padding: 12px 16px;
+            margin: 16px 0;
+            font-size: 14px;
+            color: #92400e;
+        }
+
+        /* 代码块 */
+        .code-block {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 12px 0 20px;
+            line-height: 1.6;
+        }
+        .code-comment {
+            color: #94a3b8;
+        }
+        .code-note {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 12px 0 20px;
+            font-size: 14px;
+            color: #0c4a6e;
+        }
+
+        /* 演示表格 */
+        .demo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+        .demo-table th, .demo-table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        .demo-table th {
+            background: #f8fafc;
+            font-weight: 500;
+        }
+        .demo-tip {
+            background: #f0f9ff;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #075985;
+        }
+
+        /* 演示效果框 */
+        .demo-preview {
+            border: 1px dashed #94a3b8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
+            background: #f8fafc;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar"></div>
+
+    <div class="back-home">
+        <a href="index.html">← 返回首页</a>
+    </div>
+
+    <div class="layout">
+        <!-- 左侧侧边栏 -->
+        <aside class="sidebar">
+            <h4>章节目录</h4>
+            <ul class="menu-list">
+                <li><a href="#sec1" class="active">2.1 CSS是什么与三种引入方式</a></li>
+                <li><a href="#sec2">2.2 选择器</a></li>
+                <li><a href="#sec3">2.3 颜色与字体</a></li>
+                <li><a href="#sec4">2.4 盒子模型</a></li>
+                <li><a href="#sec5">2.5 Flex布局与卡片样式</a></li>
+            </ul>
+            <div class="sidebar-divider"></div>
+            <ul class="menu-list">
+                <li><a href="#">↗ 练习文件下载</a></li>
+                <li><a href="#">↗ 完整参考手册</a></li>
+            </ul>
+        </aside>
+
+        <!-- 右侧主内容 -->
+        <main class="main-content">
+            <h2 class="chapter-title">2.1 CSS是什么与三种引入方式</h2>
+            <p class="chapter-subtitle">让网页从朴素变好看</p>
+
+            <!-- Tab 按钮 -->
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="lecture">📖 讲解</button>
+                <button class="tab-btn" data-tab="code">💻 关键代码</button>
+                <button class="tab-btn" data-tab="demo">▶️ 演示</button>
+            </div>
+
+            <!-- Tab 1：讲解内容 -->
+            <div class="tab-content active" id="tab-lecture">
+                <div class="section" id="sec1">
+                    <h3>2.1 CSS是什么与三种引入方式</h3>
+                    <p>CSS 的全称是「层叠样式表」（Cascading Style Sheets）。HTML 负责页面里<strong>有什么</strong>，CSS 负责这些内容<strong>长什么样</strong>——颜色、大小、位置、间距、边框、背景，全都归 CSS 管。</p>
+                    <p>用装修打个比方：HTML 是一套「毛坯房」，有墙、有门、有窗户，但光秃秃的；CSS 就是「装修」——刷成什么颜色的墙、铺什么地板、家具怎么摆，房子立刻就好看了。</p>
+                    <p>把 CSS 写进网页有三种方式：</p>
+                    <p><strong>① 内联样式</strong>：直接写在某个标签的 <code>style</code> 属性里，只对这一个标签生效。改起来最麻烦，不推荐大量使用。</p>
+                    <p><strong>② 内部样式表</strong>：把所有样式集中写在 <code>&lt;head&gt;</code> 里的 <code>&lt;style&gt;</code> 标签中，作用范围是当前这一个页面。适合做单个小页面、练习时用。</p>
+                    <p><strong>③ 外部样式表</strong>：把样式单独写在一个 <code>.css</code> 文件里，再用 <code>&lt;link&gt;</code> 标签引入到 HTML 中。一个 CSS 文件可以被很多页面同时引用。</p>
+
+                    <div class="highlight-box">
+                        做网站推荐使用「外部样式表」：全站样式集中在一个文件里，改一处，所有页面同时生效，维护起来最省事。
+                    </div>
+                </div>
+
+                <div class="section" id="sec2">
+                    <h3>2.2 选择器</h3>
+                    <p>CSS 的每条规则都长这样：<code>选择器 { 属性: 值; }</code>。选择器的作用，就是「告诉浏览器：我要美化谁」。它负责从一大堆标签里，精准找到你想改样式的那一个或那一类标签。</p>
+                    <p>最常用的三种选择器：</p>
+                    <p><strong>标签选择器</strong>：直接写标签名，例如 <code>p { }</code>，会选中页面上所有的 <code>&lt;p&gt;</code> 段落，统一样式。</p>
+                    <p><strong>类选择器</strong>：在类名前加一个点，例如 <code>.box { }</code>，HTML 里用 <code>class="box"</code> 来标记。一个类可以给很多标签用，一个标签也能同时用好几个类。</p>
+                    <p><strong>id 选择器</strong>：在 id 名前加井号，例如 <code>#title { }</code>。id 在一个页面里必须唯一，只能给一个标签用。</p>
+
+                    <div class="highlight-box">
+                        类选择器最灵活、用得最多。想让全站按钮、卡片长得一模一样，就是靠统一的 class 来实现的。
+                    </div>
+                </div>
+
+                <div class="section" id="sec3">
+                    <h3>2.3 颜色与字体</h3>
+                    <p>颜色有三种常见写法：</p>
+                    <p><strong>命名色</strong>：直接写颜色英文，如 <code>red</code>、<code>blue</code>、<code>green</code>，简单但可选颜色少。</p>
+                    <p><strong>十六进制</strong>：以 <code>#</code> 开头加六位，如 <code>#2563eb</code>（本教程的主蓝色）。这是网页里最常用的写法。</p>
+                    <p><strong>RGB</strong>：<code>rgb(红, 绿, 蓝)</code>，如 <code>rgb(37, 99, 235)</code>，和上面的十六进制是同一个蓝色。</p>
+                    <p>控制文字外观的几个常用属性：</p>
+                    <p><code>color</code> 文字颜色；<code>font-family</code> 字体族；<code>font-size</code> 字号（单位 px）；<code>font-weight</code> 粗细（normal 正常 / bold 加粗）；<code>text-align</code> 对齐方式（left / center / right）。</p>
+                    <p>把它们组合起来，就能轻松地做出一行颜色漂亮、大小合适、居中对齐的文字。</p>
+                </div>
+
+                <div class="section" id="sec4">
+                    <h3>2.4 盒子模型</h3>
+                    <p>这是 CSS 里最重要的概念之一：浏览器会把每一个 HTML 元素，都看成一个「盒子」。这个盒子从内到外一共四层：</p>
+                    <p><strong>content 内容</strong>：盒子最中间，真正放文字、图片的地方。</p>
+                    <p><strong>padding 内边距</strong>：内容与边框之间的空白，把内容「往里推」。</p>
+                    <p><strong>border 边框</strong>：围着内容那一圈的线，可以设置粗细、颜色、圆角。</p>
+                    <p><strong>margin 外边距</strong>：盒子与盒子之间的距离，把这个盒子「往外推」。</p>
+
+                    <div class="highlight-box">
+                        一句话记住：padding 是在盒子内部撑出空白，margin 是把盒子和旁边元素推开。卡片之间留出的呼吸感，主要靠它们。
+                    </div>
+                </div>
+
+                <div class="section" id="sec5">
+                    <h3>2.5 Flex布局与卡片样式</h3>
+                    <p>以前要把一排元素整齐地横着排，写法很麻烦。现在只要给容器加上 <code>display: flex</code>，它里面的子元素就会自动横向排成一行，非常省事。</p>
+                    <p>Flex 里两个最常用的对齐属性：</p>
+                    <p><code>justify-content</code>：控制子元素在「主轴」（默认横向）上的对齐，常用值有 <code>center</code> 居中、<code>space-between</code> 两端对齐。</p>
+                    <p><code>align-items</code>：控制子元素在「交叉轴」（默认纵向）上的对齐，常用值 <code>center</code> 垂直居中。</p>
+                    <p>配合前面学的 padding、border、border-radius，就能把一个个内容块做成漂漂亮亮的卡片，再用 Flex 让它们并排整齐排列。</p>
+
+                    <div class="highlight-box">
+                        学会 Flex，你就能做出本教程首页那种「一排卡片整齐排列」的效果——这也是现代网页最常见的布局方式。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2：关键代码 -->
+            <div class="tab-content" id="tab-code">
+                <div class="section">
+                    <h3>关键代码 ① CSS 的三种引入方式</h3>
+                    <p>同一段样式，可以用三种不同的方式写进页面，适用场景各不相同。</p>
+
+                    <div class="code-block">
+<span class="code-comment">/* ① 内联样式：写在标签的 style 里，只作用于这一个标签 */</span>
+&lt;p style="color: red; font-size: 20px;"&gt;我是红色大字&lt;/p&gt;
+<span class="code-comment">/* 适用：临时改一个标签，不推荐大量使用 */</span>
+
+<span class="code-comment">/* ② 内部样式表：写在 &lt;head&gt; 的 &lt;style&gt; 里，作用本页 */</span>
+&lt;style&gt;
+    p { color: blue; }   <span class="code-comment">/* 本页所有段落变蓝 */</span>
+&lt;/style&gt;
+<span class="code-comment">/* 适用：单个小页面、做练习时 */</span>
+
+<span class="code-comment">/* ③ 外部样式表：单独的 style.css 文件，用 link 引入 */</span>
+&lt;link rel="stylesheet" href="style.css"&gt;
+<span class="code-comment">/* 适用：正式网站，多个页面共用一份样式，推荐 */</span>
+                    </div>
+
+                    <h3>关键代码 ② 三种选择器</h3>
+                    <p>标签、类、id 三种选择器，优先级依次升高。</p>
+
+                    <div class="code-block">
+<span class="code-comment">/* 标签选择器：选中所有 &lt;p&gt; 标签，全站段落统一 */</span>
+p {
+    color: #334155;
+    line-height: 1.8;
+}
+
+<span class="code-comment">/* 类选择器：用 class="card" 标记的元素，最灵活最常用 */</span>
+.card {
+    background: white;
+    padding: 16px;
+}
+
+<span class="code-comment">/* id 选择器：用 id="title" 的元素，一个页面只能用一次 */</span>
+#title {
+    font-size: 26px;
+    color: #0f172a;
+}
+
+<span class="code-comment">/* 优先级：id 选择器 # &gt; 类选择器 . &gt; 标签选择器 */</span>
+                    </div>
+
+                    <div class="code-note">
+                        <strong>记忆要点：</strong><br>
+                        1. 标签选择器写标签名，类选择器前面加点 .，id 选择器前面加井号 #<br>
+                        2. 一个类可以反复用在很多元素上，id 在页面里必须唯一<br>
+                        3. 优先级：id &gt; class &gt; 标签，想让样式生效就用更具体的选择器
+                    </div>
+
+                    <h3>关键代码 ③ 一个完整的卡片样式</h3>
+                    <p>把前面学过的属性组合起来，做出一张好看的卡片。</p>
+
+                    <div class="code-block">
+<span class="code-comment">&lt;!-- 这是对应的 HTML 结构 --&gt;</span>
+&lt;div class="card"&gt;
+    &lt;h3&gt;卡片标题&lt;/h3&gt;
+    &lt;p&gt;这是卡片里的一段说明文字。&lt;/p&gt;
+&lt;/div&gt;
+
+<span class="code-comment">/* 这是对应的 CSS 样式 */</span>
+.card {
+    background: #ffffff;            <span class="code-comment">/* 卡片背景白色 */</span>
+    border: 1px solid #e2e8f0;      <span class="code-comment">/* 一圈浅灰边框 */</span>
+    border-radius: 10px;            <span class="code-comment">/* 四角圆润 */</span>
+    padding: 20px;                  <span class="code-comment">/* 内容与边框的内边距 */</span>
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); <span class="code-comment">/* 淡淡的阴影 */</span>
+}
+.card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15); <span class="code-comment">/* 鼠标移上去阴影变深 */</span>
+}
+.card h3 {
+    color: #2563eb;                 <span class="code-comment">/* 标题用主题蓝 */</span>
+    margin-bottom: 8px;
+}
+                    </div>
+
+                    <div class="code-note">
+                        <strong>记忆要点：</strong><br>
+                        1. 一张好看的卡片 = 白底 + 边框 + 圆角 + 内边距 + 阴影<br>
+                        2. hover 是鼠标悬停时的效果，能让卡片「活」起来<br>
+                        3. CSS 属性一句一个分号，最后一句可省略
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3：演示 -->
+            <div class="tab-content" id="tab-demo">
+                <div class="section">
+                    <div class="demo-tip">
+                        下面用同一组内容，左边是「没有写任何 CSS」的朴素样子，右边是「加上 CSS 美化」后的样子，一眼就能看出 CSS 的作用。
+                    </div>
+
+                    <h4>美化前 vs 美化后</h4>
+                    <div class="demo-preview" style="display:flex; gap:16px; flex-wrap:wrap;">
+                        <div style="flex:1; min-width:220px; border:1px solid #e2e8f0; border-radius:8px; padding:16px;">
+                            <p style="font-size:13px; color:#64748b; margin-bottom:10px;">美化前（纯 HTML，无样式）</p>
+                            <h3>卡片标题</h3>
+                            <p>这是卡片里的一段说明文字。没有颜色、没有间距、没有边框，就是浏览器默认的朴素样子。</p>
+                        </div>
+                        <div style="flex:1; min-width:220px; background:#2563eb; border-radius:10px; padding:20px; box-shadow:0 4px 16px rgba(37,99,235,0.3);">
+                            <p style="font-size:13px; color:#bfdbfe; margin-bottom:10px;">美化后（加了 CSS）</p>
+                            <h3 style="color:#ffffff; margin-bottom:8px;">卡片标题</h3>
+                            <p style="color:#eff6ff;">这是卡片里的一段说明文字。蓝底白字、圆角、间距和阴影都安排好了，是不是一下就精致多了？</p>
+                        </div>
+                    </div>
+
+                    <h4>常用 CSS 属性速查表</h4>
+                    <table class="demo-table">
+                        <thead>
+                            <tr>
+                                <th>属性</th>
+                                <th>作用</th>
+                                <th>示例值</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>color</td><td>文字颜色</td><td>red / #2563eb</td></tr>
+                            <tr><td>font-size</td><td>字号大小</td><td>14px / 16px</td></tr>
+                            <tr><td>font-weight</td><td>文字粗细</td><td>normal / bold</td></tr>
+                            <tr><td>background</td><td>背景颜色</td><td>#ffffff / #f0f9ff</td></tr>
+                            <tr><td>padding</td><td>内边距（内部留白）</td><td>16px / 20px</td></tr>
+                            <tr><td>margin</td><td>外边距（与外部距离）</td><td>16px auto</td></tr>
+                            <tr><td>border</td><td>边框</td><td>1px solid #e2e8f0</td></tr>
+                            <tr><td>border-radius</td><td>圆角</td><td>8px / 10px</td></tr>
+                            <tr><td>display:flex</td><td>弹性横向布局</td><td>flex</td></tr>
+                            <tr><td>text-align</td><td>文字对齐</td><td>left / center / right</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Tab 切换功能
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.getAttribute('data-tab');
+                
+                // 切换按钮选中状态
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // 切换内容显示
+                tabContents.forEach(content => content.classList.remove('active'));
+                document.getElementById('tab-' + tabName).classList.add('active');
+            });
+        });
+
+        // 侧边栏点击高亮
+        const menuLinks = document.querySelectorAll('.menu-list a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

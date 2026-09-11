@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第3章 JavaScript交互效果 - 网页制作入门教程</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* 顶部导航 */
+        .top-bar {
+            height: 8px;
+            background: #1e40af;
+            width: 100%;
+        }
+        .back-home {
+            max-width: 1200px;
+            margin: 16px auto 0;
+            padding: 0 20px;
+        }
+        .back-home a {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* 主布局：侧边栏 + 内容区 */
+        .layout {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        /* 左侧侧边栏 */
+        .sidebar {
+            width: 240px;
+            flex-shrink: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            position: sticky;
+            top: 20px;
+        }
+        .sidebar h4 {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        .menu-list {
+            list-style: none;
+        }
+        .menu-list li {
+            margin-bottom: 4px;
+        }
+        .menu-list a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+        }
+        .menu-list a.active {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-left-color: #2563eb;
+            font-weight: 500;
+        }
+        .menu-list a:hover {
+            background: #f1f5f9;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 16px 0;
+        }
+
+        /* 右侧内容区 */
+        .main-content {
+            flex-grow: 1;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 32px 40px;
+            min-height: 600px;
+        }
+
+        /* 章节标题 */
+        .chapter-title {
+            font-size: 26px;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+        .chapter-subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        /* Tab 导航 */
+        .tab-nav {
+            display: flex;
+            gap: 32px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 28px;
+        }
+        .tab-btn {
+            padding: 10px 4px;
+            background: none;
+            border: none;
+            font-size: 15px;
+            color: #64748b;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tab-btn.active {
+            color: #2563eb;
+            font-weight: 500;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #2563eb;
+        }
+
+        /* Tab 内容 */
+        .tab-content {
+            display: none;
+            line-height: 1.8;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 内容样式 */
+        .section {
+            margin-bottom: 40px;
+        }
+        .section h3 {
+            font-size: 20px;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+        .section p {
+            color: #334155;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+        .highlight-box {
+            background: #fef3c7;
+            border-left: 3px solid #f59e0b;
+            padding: 12px 16px;
+            margin: 16px 0;
+            font-size: 14px;
+            color: #92400e;
+        }
+
+        /* 代码块 */
+        .code-block {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 12px 0 20px;
+            line-height: 1.6;
+            white-space: pre;
+        }
+        .code-comment {
+            color: #94a3b8;
+        }
+        .code-note {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 12px 0 20px;
+            font-size: 14px;
+            color: #0c4a6e;
+        }
+
+        /* 演示表格 */
+        .demo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+        .demo-table th, .demo-table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        .demo-table th {
+            background: #f8fafc;
+            font-weight: 500;
+        }
+        .demo-tip {
+            background: #f0f9ff;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #075985;
+        }
+
+        /* 演示效果框 */
+        .demo-preview {
+            border: 1px dashed #94a3b8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
+            background: #f8fafc;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar"></div>
+
+    <div class="back-home">
+        <a href="index.html">← 返回首页</a>
+    </div>
+
+    <div class="layout">
+        <!-- 左侧侧边栏 -->
+        <aside class="sidebar">
+            <h4>章节目录</h4>
+            <ul class="menu-list">
+                <li><a href="#sec1" class="active">3.1 认识JavaScript</a></li>
+                <li><a href="#sec2">3.2 变量与数据类型</a></li>
+                <li><a href="#sec3">3.3 函数</a></li>
+                <li><a href="#sec4">3.4 事件监听</a></li>
+                <li><a href="#sec5">3.5 DOM操作与Tab切换</a></li>
+            </ul>
+            <div class="sidebar-divider"></div>
+            <ul class="menu-list">
+                <li><a href="#">↗ 练习文件下载</a></li>
+                <li><a href="#">↗ 完整参考手册</a></li>
+            </ul>
+        </aside>
+
+        <!-- 右侧主内容 -->
+        <main class="main-content">
+            <h2 class="chapter-title">3.1 认识JavaScript</h2>
+            <p class="chapter-subtitle">让网页动起来、能交互</p>
+
+            <!-- Tab 按钮 -->
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="lecture">📖 讲解</button>
+                <button class="tab-btn" data-tab="code">💻 关键代码</button>
+                <button class="tab-btn" data-tab="demo">▶️ 演示</button>
+            </div>
+
+            <!-- Tab 1：讲解内容 -->
+            <div class="tab-content active" id="tab-lecture">
+                <div class="section" id="sec1">
+                    <h3>3.1 认识JavaScript</h3>
+                    <p>如果说 HTML 搭起了网页的骨架、CSS 做好了装修，那么 <strong>JavaScript（简称 JS）</strong> 就是网页的「灵魂」，相当于家电里的智能设备。有了它，网页才会动、才能响应你的操作——比如点击按钮弹出提示、输入内容实时校验、图片轮播切换。</p>
+                    <p>JS 代码写在 <code>&lt;script&gt;</code> 标签里，为了保证页面元素加载完再执行，<strong>通常把它放在 <code>&lt;/body&gt;</code> 结束标签之前</strong>。</p>
+                    <div class="highlight-box">
+                        HTML 搭骨架、CSS 做装修、JavaScript 装智能，三者配合起来，才是一个完整、能用、能动的网页。
+                    </div>
+                </div>
+
+                <div class="section" id="sec2">
+                    <h3>3.2 变量与数据类型</h3>
+                    <p>变量就像一个贴了标签的盒子，用来存放数据。用 <code>let</code> 声明的变量以后可以改值，用 <code>const</code> 声明的是常量，一旦赋值就不能再改。例如 <code>let count = 0;</code> 表示新建一个叫 count 的变量，初始值是 0。</p>
+                    <p>常用的数据类型有：<strong>数字 number</strong>（如 0、3.14）、<strong>字符串 string</strong>（要用引号包起来，如 "你好"）、<strong>布尔 boolean</strong>（只有 true 真 / false 假两种）、<strong>数组 array</strong>（用方括号存放一串数据，如 [1, 2, 3]）。</p>
+                    <div class="highlight-box">
+                        注意：单个等号 <strong>=</strong> 在 JS 里不是「等于」，而是「赋值」——把右边的值放进左边的变量里。判断是否相等要用两个等号 == 或三个等号 ===。
+                    </div>
+                </div>
+
+                <div class="section" id="sec3">
+                    <h3>3.3 函数</h3>
+                    <p>函数就是把一段可以重复使用的代码「打包」起来，取个名字。用 <code>function</code> 关键字定义，写完后用「函数名()」的形式就能调用执行。例如：</p>
+                    <div class="code-block">
+<span class="code-comment">// 定义一个加法函数，接收两个参数 a 和 b</span>
+function add(a, b) {
+    return a + b;   <span class="code-comment">// 把结果返回出去</span>
+}
+
+<span class="code-comment">// 调用函数，得到 5</span>
+let result = add(2, 3);
+                    </div>
+                    <div class="highlight-box">
+                        函数就是「做好的工具」：先把工具造好（定义），以后想用的时候按一下（调用）它就执行一次。
+                    </div>
+                </div>
+
+                <div class="section" id="sec4">
+                    <h3>3.4 事件监听</h3>
+                    <p>网页平时在「等」用户操作，这叫事件监听。用 <code>element.addEventListener('click', 函数)</code> 给某个元素绑定一个事件：一旦发生对应操作，就自动执行指定的函数。</p>
+                    <p>常用事件有：<code>click</code>（鼠标点击）、<code>mouseover</code>（鼠标移上去）、<code>input</code>（输入框内容变化）。整个过程就是：<strong>用户点按钮 → 触发事件 → 自动执行对应的函数</strong>。</p>
+                </div>
+
+                <div class="section" id="sec5">
+                    <h3>3.5 DOM操作与Tab切换</h3>
+                    <p><strong>DOM</strong> 就是浏览器把网页里的所有标签，变成一棵可以用 JS 操作的「对象树」。我们可以用 <code>document.querySelector('选择器')</code> 选中页面上的元素，然后对它进行操作：</p>
+                    <p>用 <code>classList.add / remove / toggle</code> 来增删切换 class，用 <code>textContent</code> 来修改元素里的文字。</p>
+                    <div class="highlight-box">
+                        本教程每章的「讲解 / 关键代码 / 演示」Tab 切换，用的正是这套原理：给按钮绑定 click 监听 → 点击时切换 active 类 → 有 active 的内容显示、没有的隐藏。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2：关键代码 -->
+            <div class="tab-content" id="tab-code">
+                <div class="section">
+                    <h3>关键代码 ① 点击计数按钮</h3>
+                    <p>一个完整可运行的例子：点一次按钮，数字就加 1。先写好 HTML 元素，再用 JS 给按钮加上点击逻辑。</p>
+
+                    <div class="code-block">
+<span class="code-comment">&lt;!-- 第一步：在页面上放一个按钮和一个显示数字的段落 --&gt;</span>
+&lt;button id="countBtn"&gt;点我&lt;/button&gt;
+&lt;p id="show"&gt;0&lt;/p&gt;
+
+<span class="code-comment">// 第二步：编写 JS，放在 &lt;/body&gt; 之前</span>
+<span class="code-comment">// 新建一个变量，用来记录点击次数，初始为 0</span>
+let count = 0;
+
+<span class="code-comment">// 用 id 选中页面上的按钮和显示用的段落</span>
+const btn = document.getElementById('countBtn');
+const show = document.getElementById('show');
+
+<span class="code-comment">// 给按钮绑定点击事件，每次点击都执行后面的函数</span>
+btn.addEventListener('click', function () {
+    count = count + 1;        <span class="code-comment">// 次数加 1</span>
+    show.textContent = count; <span class="code-comment">// 把最新的数字写回段落里显示</span>
+});
+                    </div>
+
+                    <div class="code-note">
+                        <strong>记忆要点：</strong><br>
+                        1. HTML 负责「摆好元素」，JS 负责「给元素加行为」，两者通过 id 联系起来<br>
+                        2. addEventListener('click', 函数) 就是「监听点击，然后执行」<br>
+                        3. textContent 用来修改元素里显示的文字
+                    </div>
+
+                    <h3>关键代码 ② 本教程的 Tab 切换</h3>
+                    <p>下面这段就是本章 3.5 讲的 DOM 实操，也是本页底部真正运行的代码，逐行看一遍就懂了。</p>
+
+                    <div class="code-block">
+<span class="code-comment">// 选中页面上所有 Tab 按钮和所有 Tab 内容区</span>
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+
+<span class="code-comment">// 逐个给每个按钮绑定点击事件</span>
+tabBtns.forEach(btn =&gt; {
+    btn.addEventListener('click', () =&gt; {
+        <span class="code-comment">// 读取按钮身上 data-tab 的值，如 lecture / code / demo</span>
+        const tabName = btn.getAttribute('data-tab');
+
+        <span class="code-comment">// 先移除所有按钮的 active，再给当前按钮加上 active</span>
+        tabBtns.forEach(b =&gt; b.classList.remove('active'));
+        btn.classList.add('active');
+
+        <span class="code-comment">// 先隐藏所有内容区，再显示 id 为 tab-xxx 的那一个</span>
+        tabContents.forEach(content =&gt; content.classList.remove('active'));
+        document.getElementById('tab-' + tabName).classList.add('active');
+    });
+});
+                    </div>
+
+                    <div class="code-note">
+                        <strong>记忆要点：</strong><br>
+                        1. querySelectorAll 选中「一批」元素，forEach 遍历它们<br>
+                        2. classList.remove / add 就是增删 class，从而控制样式和显示<br>
+                        3. 切换 Tab 的本质：同一时间只有一个元素带 active
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3：演示 -->
+            <div class="tab-content" id="tab-demo">
+                <div class="section">
+                    <div class="demo-tip">
+                        下面的按钮可以真实点击试试，每点一次数字和日志都会更新。
+                    </div>
+
+                    <h4>真实计数演示</h4>
+                    <div class="demo-preview">
+                        <button id="demoBtn" style="background:#2563eb;color:#fff;border:none;border-radius:6px;padding:10px 20px;font-size:15px;cursor:pointer;">点我 +1</button>
+                        <p id="demoCount" style="margin-top:16px;font-size:15px;color:#334155;">你点了 0 次</p>
+                    </div>
+
+                    <h4>操作日志</h4>
+                    <div id="demoLog" class="demo-preview">
+                        记录区：点击上面的按钮，这里会依次留下记录。
+                    </div>
+
+                    <h4>常用事件 vs 触发时机</h4>
+                    <table class="demo-table">
+                        <thead>
+                            <tr>
+                                <th>事件名</th>
+                                <th>什么时候触发</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>click</td><td>鼠标点击（按下并松开）某个元素时</td></tr>
+                            <tr><td>mouseover</td><td>鼠标指针移动到某个元素上方时</td></tr>
+                            <tr><td>input</td><td>输入框里的内容发生变化时（边打字边触发）</td></tr>
+                            <tr><td>keydown</td><td>在键盘上按下任意一个按键时</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="demo-tip">
+                        <strong>Tab 切换原理：</strong>选中元素 → 监听点击 → 点击时切换 active 类 → 有 active 的内容显示、没有的隐藏。本页顶部三个按钮就是这么实现的，你可以切换过去亲自感受一下。
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Tab 切换功能
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.getAttribute('data-tab');
+                
+                // 切换按钮选中状态
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // 切换内容显示
+                tabContents.forEach(content => content.classList.remove('active'));
+                document.getElementById('tab-' + tabName).classList.add('active');
+            });
+        });
+
+        // 侧边栏点击高亮
+        const menuLinks = document.querySelectorAll('.menu-list a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // 演示：真实可点击的计数按钮 + 操作日志
+        let demoCountNum = 0;
+        const demoBtn = document.getElementById('demoBtn');
+        const demoCount = document.getElementById('demoCount');
+        const demoLog = document.getElementById('demoLog');
+
+        demoBtn.addEventListener('click', () => {
+            demoCountNum++;
+            demoCount.textContent = '你点了 ' + demoCountNum + ' 次';
+
+            // 把本次点击追加到日志区，带上当前时间
+            const time = new Date().toLocaleTimeString();
+            const line = document.createElement('div');
+            line.textContent = '第 ' + demoCountNum + ' 次点击，时间 ' + time;
+            demoLog.appendChild(line);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第4章 多页面网站架构 - 网页制作入门教程</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        body {
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* 顶部导航 */
+        .top-bar {
+            height: 8px;
+            background: #1e40af;
+            width: 100%;
+        }
+        .back-home {
+            max-width: 1200px;
+            margin: 16px auto 0;
+            padding: 0 20px;
+        }
+        .back-home a {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /* 主布局：侧边栏 + 内容区 */
+        .layout {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        /* 左侧侧边栏 */
+        .sidebar {
+            width: 240px;
+            flex-shrink: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            position: sticky;
+            top: 20px;
+        }
+        .sidebar h4 {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        .menu-list {
+            list-style: none;
+        }
+        .menu-list li {
+            margin-bottom: 4px;
+        }
+        .menu-list a {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            color: #334155;
+            text-decoration: none;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+        }
+        .menu-list a.active {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-left-color: #2563eb;
+            font-weight: 500;
+        }
+        .menu-list a:hover {
+            background: #f1f5f9;
+        }
+        .sidebar-divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 16px 0;
+        }
+
+        /* 右侧内容区 */
+        .main-content {
+            flex-grow: 1;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 32px 40px;
+            min-height: 600px;
+        }
+
+        /* 章节标题 */
+        .chapter-title {
+            font-size: 26px;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+        .chapter-subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        /* Tab 导航 */
+        .tab-nav {
+            display: flex;
+            gap: 32px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 28px;
+        }
+        .tab-btn {
+            padding: 10px 4px;
+            background: none;
+            border: none;
+            font-size: 15px;
+            color: #64748b;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tab-btn.active {
+            color: #2563eb;
+            font-weight: 500;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #2563eb;
+        }
+
+        /* Tab 内容 */
+        .tab-content {
+            display: none;
+            line-height: 1.8;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 内容样式 */
+        .section {
+            margin-bottom: 40px;
+        }
+        .section h3 {
+            font-size: 20px;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+        .section p {
+            color: #334155;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+        .highlight-box {
+            background: #fef3c7;
+            border-left: 3px solid #f59e0b;
+            padding: 12px 16px;
+            margin: 16px 0;
+            font-size: 14px;
+            color: #92400e;
+        }
+
+        /* 代码块 */
+        .code-block {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 12px 0 20px;
+            line-height: 1.6;
+            white-space: pre;
+        }
+        .code-comment {
+            color: #94a3b8;
+        }
+        .code-note {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin: 12px 0 20px;
+            font-size: 14px;
+            color: #0c4a6e;
+        }
+
+        /* 演示表格 */
+        .demo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+        .demo-table th, .demo-table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        .demo-table th {
+            background: #f8fafc;
+            font-weight: 500;
+        }
+        .demo-tip {
+            background: #f0f9ff;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #075985;
+        }
+
+        /* 演示效果框 */
+        .demo-preview {
+            border: 1px dashed #94a3b8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
+            background: #f8fafc;
+        }
+        .tree {
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 14px;
+            line-height: 1.9;
+            color: #334155;
+            white-space: pre;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar"></div>
+
+    <div class="back-home">
+        <a href="index.html">← 返回首页</a>
+    </div>
+
+    <div class="layout">
+        <!-- 左侧侧边栏 -->
+        <aside class="sidebar">
+            <h4>章节目录</h4>
+            <ul class="menu-list">
+                <li><a href="#sec1" class="active">4.1 多页面网站是什么</a></li>
+                <li><a href="#sec2">4.2 文件目录结构</a></li>
+                <li><a href="#sec3">4.3 超链接与a标签</a></li>
+                <li><a href="#sec4">4.4 相对路径规则</a></li>
+                <li><a href="#sec5">4.5 导航栏与返回</a></li>
+            </ul>
+            <div class="sidebar-divider"></div>
+            <ul class="menu-list">
+                <li><a href="#">↗ 练习文件下载</a></li>
+                <li><a href="#">↗ 完整参考手册</a></li>
+            </ul>
+        </aside>
+
+        <!-- 右侧主内容 -->
+        <main class="main-content">
+            <h2 class="chapter-title">4.1 多页面网站是什么</h2>
+            <p class="chapter-subtitle">把多个页面拼成一个完整网站</p>
+
+            <!-- Tab 按钮 -->
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="lecture">📖 讲解</button>
+                <button class="tab-btn" data-tab="code">💻 关键代码</button>
+                <button class="tab-btn" data-tab="demo">▶️ 演示</button>
+            </div>
+
+            <!-- Tab 1：讲解内容 -->
+            <div class="tab-content active" id="tab-lecture">
+                <div class="section" id="sec1">
+                    <h3>4.1 多页面网站是什么</h3>
+                    <p>一个网站通常不是一个单独的 HTML 文件，而是<strong>多个 HTML 页面用超链接串起来</strong>形成的整体。每个页面负责一块内容，点一下链接就能跳到另一个页面。</p>
+                    <p>本教程本身就是一个多页面网站：<code>index.html</code> 是首页，<code>chapter1.html</code> 到 <code>chapter5.html</code> 是五个章节页，它们之间互相跳转，组成一整套教程。</p>
+                    <div class="highlight-box">
+                        单页网站 = 一篇文章；多页面网站 = 一整本书。&lt;a&gt; 标签就相当于书目录里的页码，点一下就能跳到对应章节。
+                    </div>
+                </div>
+
+                <div class="section" id="sec2">
+                    <h3>4.2 文件目录结构</h3>
+                    <p>做网站时，所有 HTML 文件最好放在<strong>同一个文件夹</strong>里。文件多了以后，可以按类型建立子文件夹来分类管理：</p>
+                    <p><strong>css/</strong> 放样式文件、<strong>js/</strong> 放脚本文件、<strong>images/</strong> 放图片资源。这样网站再大也不会乱。</p>
+                    <p>本教程采用最简单的<strong>扁平结构</strong>：<code>index.html</code> 和 <code>chapter1.html</code> ~ <code>chapter5.html</code> 全部放在同一个文件夹里，彼此平级，谁也不嵌套谁。</p>
+                </div>
+
+                <div class="section" id="sec3">
+                    <h3>4.3 超链接与 a 标签</h3>
+                    <p>把页面连起来靠的是 <code>&lt;a&gt;</code> 标签，基本写法是：<code>&lt;a href="目标"&gt;显示文字&lt;/a&gt;</code>。</p>
+                    <p><code>href</code> 属性里写要跳转的地址，用户点击后浏览器就会打开这个新地址。例如 <code>&lt;a href="chapter2.html"&gt;第2章&lt;/a&gt;</code>，点「第2章」就跳到 chapter2.html。</p>
+                    <p>如果加上 <code>target="_blank"</code>，链接会在<strong>新标签页</strong>里打开，而不是覆盖当前页面。这个用法主要用在跳转到本站以外的外部网址时。</p>
+                </div>
+
+                <div class="section" id="sec4">
+                    <h3>4.4 相对路径规则</h3>
+                    <p>这是本章最关键的知识点。<code>href</code> 里写的地址叫「路径」，最常用的是相对路径——<strong>相对于当前这个文件</strong>去描述目标文件在哪。三种情况：</p>
+                    <p>① <strong>同目录文件</strong>：直接写文件名即可，如 <code>href="chapter2.html"</code>。</p>
+                    <p>② <strong>当前目录下的子文件夹</strong>：文件夹名/文件名，如 <code>href="css/style.css"</code>，也可以写成 <code>href="./css/style.css"</code>。</p>
+                    <p>③ <strong>上一级目录</strong>：用 <code>../</code> 表示「退回上一层」，如 <code>href="../index.html"</code> 表示回到上一级文件夹里的首页。</p>
+                    <div class="highlight-box">
+                        写路径前先问自己两个问题：我「当前在哪个文件」？目标文件「相对我现在在哪」？想清楚这两点，路径就不会写错。
+                    </div>
+                </div>
+
+                <div class="section" id="sec5">
+                    <h3>4.5 导航栏与返回</h3>
+                    <p>把多个页面串起来后，还需要让用户能方便地在页面之间来回跳。<strong>顶部导航栏</strong>就是一组固定的链接，放在每个页面顶部，让用户随时切换章节。</p>
+                    <p>同时，每个子页面都应该放一个「← 返回首页」链接回到 <code>index.html</code>，这样用户从首页进得来、也回得去，形成一个完整的闭环。本教程每个章节页顶部就有这个返回链接。</p>
+                </div>
+            </div>
+
+            <!-- Tab 2：关键代码 -->
+            <div class="tab-content" id="tab-code">
+                <div class="section">
+                    <h3>关键代码 ① 顶部导航栏</h3>
+                    <p>一段 <code>&lt;nav&gt;</code> 里放多个 <code>&lt;a&gt;</code>，分别链接到首页和各个章节页，粘贴到每个页面顶部即可复用。</p>
+
+                    <div class="code-block"><span class="code-comment">&lt;!-- nav 表示这是页面导航区域 --&gt;</span>
+&lt;nav&gt;
+    &lt;!-- 链接到首页，href 写相对路径 --&gt;
+    &lt;a href="index.html"&gt;首页&lt;/a&gt;
+    &lt;!-- 链接到第1章页面 --&gt;
+    &lt;a href="chapter1.html"&gt;第1章&lt;/a&gt;
+    &lt;!-- 链接到第2章页面 --&gt;
+    &lt;a href="chapter2.html"&gt;第2章&lt;/a&gt;
+    &lt;!-- 链接到第3章页面 --&gt;
+    &lt;a href="chapter3.html"&gt;第3章&lt;/a&gt;
+    &lt;!-- 链接到第4章页面 --&gt;
+    &lt;a href="chapter4.html"&gt;第4章&lt;/a&gt;
+&lt;/nav&gt;</div>
+
+                    <h3>关键代码 ② 首页与章节页互跳</h3>
+                    <p>首页卡片上放「进入章节」链接；章节页顶部放「返回首页」链接，形成双向跳转。</p>
+
+                    <div class="code-block"><span class="code-comment">&lt;!-- 这是写在首页 index.html 里的卡片链接 --&gt;</span>
+&lt;!-- href 指向同目录下的章节页，相对路径直接写文件名 --&gt;
+&lt;a href="chapter1.html"&gt;进入章节 →&lt;/a&gt;
+
+<span class="code-comment">&lt;--------------------------------------------------&gt;</span>
+<span class="code-comment">&lt;!-- 这是写在章节页（如 chapter4.html）顶部的返回链接 --&gt;</span>
+&lt;!-- 两个文件在同一目录，直接写 index.html 即可回到首页 --&gt;
+&lt;a href="index.html"&gt;← 返回首页&lt;/a&gt;</div>
+
+                    <h3>关键代码 ③ 新标签页打开外部链接</h3>
+                    <p>跳到本站以外的网址时，加上 <code>target="_blank"</code> 在新标签页打开。</p>
+
+                    <div class="code-block"><span class="code-comment">&lt;!-- href 写完整网址（绝对路径），跳转到外部网站 --&gt;</span>
+&lt;!-- target="_blank" 的作用：在新标签页打开，不离开本站 --&gt;
+&lt;a href="https://www.example.com" target="_blank"&gt;点这里新标签打开&lt;/a&gt;
+
+<span class="code-comment">&lt;!-- 注意：本站内部页面之间互跳，不要加 target="_blank"， --&gt;</span>
+&lt;!-- 否则每点一次都新开一个标签，用户体验很差 --&gt;</div>
+
+                    <div class="code-note">
+                        <strong>记忆要点：</strong><br>
+                        1. 导航栏用 <code>&lt;nav&gt;</code> 包裹一组 <code>&lt;a&gt;</code>，每个页面复用同一份<br>
+                        2. 首页 → 章节、章节 → 首页，靠相对路径互跳，形成闭环<br>
+                        3. 只有跳外部网址才加 <code>target="_blank"</code>，站内互跳不加
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3：演示 -->
+            <div class="tab-content" id="tab-demo">
+                <div class="section">
+                    <div class="demo-tip">
+                        下面用纯文本画出本站点的文件结构，并整理一张相对路径规则对照表，帮你把本章的知识点一眼看全。
+                    </div>
+
+                    <h4>本站点目录结构树形图</h4>
+                    <div class="demo-preview">
+<div class="tree">网站文件夹/
+├── index.html（首页）
+├── chapter1.html（第1章）
+├── chapter2.html
+├── chapter3.html
+├── chapter4.html
+├── chapter5.html
+├── css/（样式，可选）
+└── images/（图片，可选）</div>
+                    </div>
+
+                    <h4>相对路径规则对照表</h4>
+                    <table class="demo-table">
+                        <thead>
+                            <tr>
+                                <th>写法</th>
+                                <th>含义</th>
+                                <th>示例</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>chapter2.html</td><td>与当前文件同目录</td><td>href="chapter2.html"</td></tr>
+                            <tr><td>./chapter2.html</td><td>同目录（./ 表示当前目录）</td><td>href="./chapter2.html"</td></tr>
+                            <tr><td>css/style.css</td><td>当前目录下的子文件夹</td><td>href="css/style.css"</td></tr>
+                            <tr><td>../index.html</td><td>上一级目录</td><td>href="../index.html"</td></tr>
+                            <tr><td>https://...</td><td>外部网址（绝对路径）</td><td>target="_blank"</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="demo-tip">
+                        路径写错最常见的症状就是：点链接出现 404 页面，或者样式/图片全部丢失。排查时先检查文件名的<strong>大小写</strong>和<strong>拼写</strong>是否和真实文件完全一致。
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Tab 切换功能
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.getAttribute('data-tab');
+
+                // 切换按钮选中状态
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // 切换内容显示
+                tabContents.forEach(content => content.classList.remove('active'));
+                document.getElementById('tab-' + tabName).classList.add('active');
+            });
+        });
+
+        // 侧边栏点击高亮
+        const menuLinks = document.querySelectorAll('.menu-list a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
