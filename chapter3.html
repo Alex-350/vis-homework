@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第3章 JavaScript交互效果 - 网页制作入门教程</title>
+    <title data-zh="第3章 Grid网格布局 - 页面布局实战教程" data-en="Chapter 3 Grid Layout">第3章 Grid网格布局 - 页面布局实战教程</title>
     <style>
         * {
             margin: 0;
@@ -16,7 +16,31 @@
             color: #1e293b;
         }
 
-        /* 顶部导航 */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            overflow: hidden;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .lang-btn {
+            border: none;
+            background: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #64748b;
+        }
+        .lang-btn.active {
+            background: #1e293b;
+            color: white;
+        }
+
         .top-bar {
             height: 8px;
             background: #1e40af;
@@ -33,7 +57,6 @@
             font-size: 14px;
         }
 
-        /* 主布局：侧边栏 + 内容区 */
         .layout {
             max-width: 1200px;
             margin: 20px auto;
@@ -43,7 +66,6 @@
             align-items: flex-start;
         }
 
-        /* 左侧侧边栏 */
         .sidebar {
             width: 240px;
             flex-shrink: 0;
@@ -74,6 +96,7 @@
             text-decoration: none;
             font-size: 14px;
             border-left: 3px solid transparent;
+            scroll-margin-top: 20px;
         }
         .menu-list a.active {
             background: #eff6ff;
@@ -90,7 +113,6 @@
             margin: 16px 0;
         }
 
-        /* 右侧内容区 */
         .main-content {
             flex-grow: 1;
             background: white;
@@ -100,7 +122,6 @@
             min-height: 600px;
         }
 
-        /* 章节标题 */
         .chapter-title {
             font-size: 26px;
             color: #0f172a;
@@ -112,7 +133,6 @@
             margin-bottom: 24px;
         }
 
-        /* Tab 导航 */
         .tab-nav {
             display: flex;
             gap: 32px;
@@ -145,7 +165,6 @@
             background: #2563eb;
         }
 
-        /* Tab 内容 */
         .tab-content {
             display: none;
             line-height: 1.8;
@@ -154,19 +173,33 @@
             display: block;
         }
 
-        /* 内容样式 */
         .section {
-            margin-bottom: 40px;
+            margin-bottom: 48px;
+            scroll-margin-top: 20px;
         }
         .section h3 {
             font-size: 20px;
             color: #0f172a;
             margin-bottom: 12px;
         }
+        .section h4 {
+            font-size: 16px;
+            color: #1e293b;
+            margin: 16px 0 8px;
+        }
         .section p {
             color: #334155;
             margin-bottom: 12px;
             font-size: 15px;
+        }
+        .section ul {
+            color: #334155;
+            margin: 12px 0 12px 24px;
+            font-size: 15px;
+        }
+        .section li {
+            margin-bottom: 8px;
+            line-height: 1.7;
         }
         .highlight-box {
             background: #fef3c7;
@@ -176,8 +209,22 @@
             font-size: 14px;
             color: #92400e;
         }
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+        .compare-table th, .compare-table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        .compare-table th {
+            background: #f8fafc;
+            font-weight: 500;
+        }
 
-        /* 代码块 */
         .code-block {
             background: #0f172a;
             color: #e2e8f0;
@@ -188,7 +235,6 @@
             overflow-x: auto;
             margin: 12px 0 20px;
             line-height: 1.6;
-            white-space: pre;
         }
         .code-comment {
             color: #94a3b8;
@@ -203,21 +249,36 @@
             color: #0c4a6e;
         }
 
-        /* 演示表格 */
-        .demo-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 16px 0;
-            font-size: 14px;
-        }
-        .demo-table th, .demo-table td {
+        .demo-panel {
             border: 1px solid #e2e8f0;
-            padding: 10px 12px;
-            text-align: left;
-        }
-        .demo-table th {
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
             background: #f8fafc;
+        }
+        .demo-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .control-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .control-item label {
+            font-size: 13px;
+            color: #475569;
             font-weight: 500;
+        }
+        .control-item input[type="range"] {
+            width: 100%;
+        }
+        .control-value {
+            font-size: 13px;
+            color: #2563eb;
+            font-family: monospace;
         }
         .demo-tip {
             background: #f0f9ff;
@@ -228,209 +289,369 @@
             color: #075985;
         }
 
-        /* 演示效果框 */
-        .demo-preview {
-            border: 1px dashed #94a3b8;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 16px 0;
-            background: #f8fafc;
+        .grid-container {
+            background: white;
+            border: 1px dashed #cbd5e1;
+            border-radius: 6px;
+            padding: 16px;
+            display: grid;
+            gap: 8px;
+        }
+        .grid-item {
+            background: #8b5cf6;
+            color: white;
+            padding: 16px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
     <div class="top-bar"></div>
 
+    <div class="lang-switch">
+        <button class="lang-btn active" data-lang="zh">中</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+
     <div class="back-home">
-        <a href="index.html">← 返回首页</a>
+        <a href="index.html" data-zh="← 返回首页" data-en="← Back Home">← 返回首页</a>
     </div>
 
     <div class="layout">
-        <!-- 左侧侧边栏 -->
         <aside class="sidebar">
-            <h4>章节目录</h4>
+            <h4 data-zh="章节目录" data-en="Contents">章节目录</h4>
             <ul class="menu-list">
-                <li><a href="#sec1" class="active">3.1 认识JavaScript</a></li>
-                <li><a href="#sec2">3.2 变量与数据类型</a></li>
-                <li><a href="#sec3">3.3 函数</a></li>
-                <li><a href="#sec4">3.4 事件监听</a></li>
-                <li><a href="#sec5">3.5 DOM操作与Tab切换</a></li>
+                <li><a href="#sec1" class="active" data-zh="3.1 Grid基础概念" data-en="3.1 Grid Basics">3.1 Grid基础概念</a></li>
+                <li><a href="#sec2" data-zh="3.2 轨道与尺寸单位" data-en="3.2 Tracks & Units">3.2 轨道与尺寸单位</a></li>
+                <li><a href="#sec3" data-zh="3.3 区域命名与放置" data-en="3.3 Named Areas">3.3 区域命名与放置</a></li>
+                <li><a href="#sec4" data-zh="3.4 对齐与间距" data-en="3.4 Alignment & Gap">3.4 对齐与间距</a></li>
+                <li><a href="#sec5" data-zh="3.5 Grid实战场景" data-en="3.5 Use Cases">3.5 Grid实战场景</a></li>
             </ul>
             <div class="sidebar-divider"></div>
             <ul class="menu-list">
-                <li><a href="#">↗ 练习文件下载</a></li>
-                <li><a href="#">↗ 完整参考手册</a></li>
+                <li><a href="#" data-zh="↗ 练习文件下载" data-en="↗ Exercise Files">↗ 练习文件下载</a></li>
+                <li><a href="#" data-zh="↗ 完整参考手册" data-en="↗ Reference">↗ 完整参考手册</a></li>
             </ul>
         </aside>
 
-        <!-- 右侧主内容 -->
         <main class="main-content">
-            <h2 class="chapter-title">3.1 认识JavaScript</h2>
-            <p class="chapter-subtitle">让网页动起来、能交互</p>
+            <h2 class="chapter-title" data-zh="第3章 Grid网格布局" data-en="Chapter 3 Grid Layout">第3章 Grid网格布局</h2>
+            <p class="chapter-subtitle" data-zh="二维布局终极方案，行列同时精准控制" data-en="Ultimate 2D layout system with precise row and column control">二维布局终极方案，行列同时精准控制</p>
 
-            <!-- Tab 按钮 -->
             <div class="tab-nav">
-                <button class="tab-btn active" data-tab="lecture">📖 讲解</button>
-                <button class="tab-btn" data-tab="code">💻 关键代码</button>
-                <button class="tab-btn" data-tab="demo">▶️ 演示</button>
+                <button class="tab-btn active" data-tab="lecture" data-zh="📖 讲解" data-en="📖 Lecture">📖 讲解</button>
+                <button class="tab-btn" data-tab="code" data-zh="💻 关键代码" data-en="💻 Key Code">💻 关键代码</button>
+                <button class="tab-btn" data-tab="demo" data-zh="▶️ 交互演示" data-en="▶️ Demo">▶️ 交互演示</button>
             </div>
 
-            <!-- Tab 1：讲解内容 -->
             <div class="tab-content active" id="tab-lecture">
                 <div class="section" id="sec1">
-                    <h3>3.1 认识JavaScript</h3>
-                    <p>如果说 HTML 搭起了网页的骨架、CSS 做好了装修，那么 <strong>JavaScript（简称 JS）</strong> 就是网页的「灵魂」，相当于家电里的智能设备。有了它，网页才会动、才能响应你的操作——比如点击按钮弹出提示、输入内容实时校验、图片轮播切换。</p>
-                    <p>JS 代码写在 <code>&lt;script&gt;</code> 标签里，为了保证页面元素加载完再执行，<strong>通常把它放在 <code>&lt;/body&gt;</code> 结束标签之前</strong>。</p>
-                    <div class="highlight-box">
-                        HTML 搭骨架、CSS 做装修、JavaScript 装智能，三者配合起来，才是一个完整、能用、能动的网页。
+                    <h3 data-zh="3.1 Grid基础概念" data-en="3.1 Grid Fundamentals">3.1 Grid基础概念</h3>
+                    <p data-zh="CSS Grid 是2017年正式标准化的二维布局系统，可以同时控制行和列两个方向的排列、尺寸和对齐，是复杂页面布局的首选方案。Flex擅长一维排列，Grid擅长二维规划。" data-en="CSS Grid is a 2D layout system standardized in 2017, controlling rows and columns simultaneously. Flex excels at 1D, Grid at 2D.">
+                        CSS Grid 是2017年正式标准化的二维布局系统，可以同时控制行和列两个方向的排列、尺寸和对齐，是复杂页面布局的首选方案。Flex擅长一维排列，Grid擅长二维规划。
+                    </p>
+
+                    <h4 data-zh="Grid vs Flex：怎么选" data-en="Grid vs Flex: How to Choose">Grid vs Flex：怎么选</h4>
+                    <table class="compare-table">
+                        <thead>
+                            <tr>
+                                <th data-zh="维度" data-en="Dimension">维度</th>
+                                <th data-zh="Flexbox" data-en="Flexbox">Flexbox</th>
+                                <th data-zh="Grid" data-en="Grid">Grid</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-zh="布局维度" data-en="Layout dimension">布局维度</td>
+                                <td data-zh="一维（行或列二选一）" data-en="1D (row OR column)">一维（行或列二选一）</td>
+                                <td data-zh="二维（行和列同时）" data-en="2D (row AND column)">二维（行和列同时）</td>
+                            </tr>
+                            <tr>
+                                <td data-zh="内容优先" data-en="Content first">内容优先</td>
+                                <td data-zh="✅ 内容决定布局，弹性适应" data-en="✅ Content defines layout, flexible">✅ 内容决定布局，弹性适应</td>
+                                <td data-zh="❌ 先定义轨道，内容填充" data-en="❌ Tracks defined first, content fills">❌ 先定义轨道，内容填充</td>
+                            </tr>
+                            <tr>
+                                <td data-zh="布局优先" data-en="Layout first">布局优先</td>
+                                <td data-zh="❌ 难以精确控制行列" data-en="❌ Hard to control exact grid">❌ 难以精确控制行列</td>
+                                <td data-zh="✅ 精确规划结构" data-en="✅ Precise structure planning">✅ 精确规划结构</td>
+                            </tr>
+                            <tr>
+                                <td data-zh="适用场景" data-en="Best for">适用场景</td>
+                                <td data-zh="导航栏、按钮组、单行卡片" data-en="Navbars, button groups, single rows">导航栏、按钮组、单行卡片</td>
+                                <td data-zh="页面骨架、仪表盘、图片网格" data-en="Page skeletons, dashboards, image grids">页面骨架、仪表盘、图片网格</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4 data-zh="核心术语" data-en="Core Terminology">核心术语</h4>
+                    <ul>
+                        <li><strong data-zh="网格容器" data-en="Grid container"></strong> <span data-zh="：设置 display:grid 的父元素" data-en=": Parent with display:grid"></span></li>
+                        <li><strong data-zh="网格轨道" data-en="Grid track"></strong> <span data-zh="：所有行和列的统称，是Grid的基本结构单元" data-en=": All rows and columns collectively, basic structural unit"></span></li>
+                        <li><strong data-zh="网格线" data-en="Grid line"></strong> <span data-zh="：轨道之间的分隔线，从1开始编号，是元素放置的参考" data-en=": Lines separating tracks, numbered from 1, placement reference"></span></li>
+                        <li><strong data-zh="单元格" data-en="Grid cell"></strong> <span data-zh="：行列交叉的最小单元，内容的最小容器" data-en=": Smallest unit at row-column intersection, minimum content container"></span></li>
+                        <li><strong data-zh="网格区域" data-en="Grid area"></strong> <span data-zh="：由多个相邻单元格组成的矩形区域" data-en=": Rectangular region of multiple adjacent cells"></span></li>
+                    </ul>
+
+                    <div class="highlight-box" data-zh="核心优势：结构与内容分离。先在父容器定义好布局骨架，子元素只需要指定放在哪里，不需要管尺寸和位置。" data-en="Key advantage: Structure separated from content. Define skeleton in parent, children just specify placement.">
+                        核心优势：结构与内容分离。先在父容器定义好布局骨架，子元素只需要指定放在哪里，不需要管尺寸和位置。
                     </div>
                 </div>
 
                 <div class="section" id="sec2">
-                    <h3>3.2 变量与数据类型</h3>
-                    <p>变量就像一个贴了标签的盒子，用来存放数据。用 <code>let</code> 声明的变量以后可以改值，用 <code>const</code> 声明的是常量，一旦赋值就不能再改。例如 <code>let count = 0;</code> 表示新建一个叫 count 的变量，初始值是 0。</p>
-                    <p>常用的数据类型有：<strong>数字 number</strong>（如 0、3.14）、<strong>字符串 string</strong>（要用引号包起来，如 "你好"）、<strong>布尔 boolean</strong>（只有 true 真 / false 假两种）、<strong>数组 array</strong>（用方括号存放一串数据，如 [1, 2, 3]）。</p>
-                    <div class="highlight-box">
-                        注意：单个等号 <strong>=</strong> 在 JS 里不是「等于」，而是「赋值」——把右边的值放进左边的变量里。判断是否相等要用两个等号 == 或三个等号 ===。
+                    <h3 data-zh="3.2 轨道定义与尺寸单位" data-en="3.2 Track Definition & Units">3.2 轨道定义与尺寸单位</h3>
+                    
+                    <h4 data-zh="轨道定义语法" data-en="Track Definition Syntax">轨道定义语法</h4>
+                    <p data-zh="grid-template-columns 定义列轨道，grid-template-rows 定义行轨道。多个尺寸用空格分隔，有几个值就有几条轨道。" data-en="grid-template-columns defines columns, grid-template-rows defines rows. Space-separated values, one per track.">
+                        grid-template-columns 定义列轨道，grid-template-rows 定义行轨道。多个尺寸用空格分隔，有几个值就有几条轨道。
+                    </p>
+
+                    <h4 data-zh="尺寸单位详解" data-en="Size Units Explained">尺寸单位详解</h4>
+                    <ul>
+                        <li><strong>px</strong> <span data-zh="：固定像素，适合确定尺寸的侧边栏、按钮" data-en=": Fixed pixels, for fixed sidebars, buttons"></span></li>
+                        <li><strong>%</strong> <span data-zh="：相对于容器宽度的百分比" data-en=": Percentage of container width"></span></li>
+                        <li><strong>auto</strong> <span data-zh="：由内容决定尺寸，内容多就宽" data-en=": Size determined by content, more content = wider"></span></li>
+                        <li><strong>fr</strong> <span data-zh="：Grid专属单位，按比例分配剩余空间" data-en=": Grid-specific, distributes remaining space proportionally"></span></li>
+                        <li><strong>minmax(min, max)</strong> <span data-zh="：尺寸在最小和最大之间自适应" data-en=": Size adapts between min and max limits"></span></li>
+                    </ul>
+
+                    <h4 data-zh="repeat() 函数" data-en="repeat() Function">repeat() 函数</h4>
+                    <p data-zh="快速创建重复轨道，避免重复书写。repeat(3, 1fr) 等价于 1fr 1fr 1fr。" data-en="Quickly create repeating tracks. repeat(3, 1fr) equals 1fr 1fr 1fr.">
+                        快速创建重复轨道，避免重复书写。repeat(3, 1fr) 等价于 1fr 1fr 1fr。
+                    </p>
+
+                    <div class="code-note" data-zh="fr单位是Grid的灵魂：它分配的是「剩余空间」，不是总空间。先扣除固定尺寸轨道，剩下的空间按fr比例瓜分。" data-en="fr is the soul of Grid: distributes remaining space, not total. Fixed tracks first, then fr divides what's left.">
+                        fr单位是Grid的灵魂：它分配的是「剩余空间」，不是总空间。先扣除固定尺寸轨道，剩下的空间按fr比例瓜分。
                     </div>
                 </div>
 
                 <div class="section" id="sec3">
-                    <h3>3.3 函数</h3>
-                    <p>函数就是把一段可以重复使用的代码「打包」起来，取个名字。用 <code>function</code> 关键字定义，写完后用「函数名()」的形式就能调用执行。例如：</p>
-                    <div class="code-block">
-<span class="code-comment">// 定义一个加法函数，接收两个参数 a 和 b</span>
-function add(a, b) {
-    return a + b;   <span class="code-comment">// 把结果返回出去</span>
-}
+                    <h3 data-zh="3.3 区域命名与元素放置" data-en="3.3 Named Areas & Placement">3.3 区域命名与元素放置</h3>
+                    <p data-zh="grid-template-areas 可以给网格中的矩形区域命名，用字符串画出布局结构图，是Grid最具可读性的特性。" data-en="grid-template-areas names rectangular regions with ASCII-like strings. Grid's most readable feature.">
+                        grid-template-areas 可以给网格中的矩形区域命名，用字符串画出布局结构图，是Grid最具可读性的特性。
+                    </p>
 
-<span class="code-comment">// 调用函数，得到 5</span>
-let result = add(2, 3);
-                    </div>
-                    <div class="highlight-box">
-                        函数就是「做好的工具」：先把工具造好（定义），以后想用的时候按一下（调用）它就执行一次。
+                    <h4 data-zh="命名规则" data-en="Naming Rules">命名规则</h4>
+                    <ul>
+                        <li data-zh="每一行用一个字符串表示，字符串内的单词代表一列" data-en="Each row is a string, each word is a column">每一行用一个字符串表示，字符串内的单词代表一列</li>
+                        <li data-zh="相同的单词连在一起形成一个矩形区域" data-en="Same words connect to form a rectangular area">相同的单词连在一起形成一个矩形区域</li>
+                        <li data-zh="用 . 表示空单元格，不放置任何内容" data-en="Use . for empty cells">用 . 表示空单元格，不放置任何内容</li>
+                        <li data-zh="区域必须是矩形，不能有L形等不规则形状" data-en="Areas must be rectangular, no L-shapes">区域必须是矩形，不能有L形等不规则形状</li>
+                    </ul>
+
+                    <h4 data-zh="元素放置方式" data-en="Element Placement">元素放置方式</h4>
+                    <ul>
+                        <li><strong data-zh="命名区域放置" data-en="Named area placement"></strong> <span data-zh="：grid-area: 区域名，最直观，推荐" data-en=": grid-area: name, most intuitive, recommended"></span></li>
+                        <li><strong data-zh="网格线编号放置" data-en="Line number placement"></strong> <span data-zh="：grid-column: 1 / 3，从第1列线到第3列线" data-en=": grid-column: 1 / 3, from line 1 to line 3"></span></li>
+                        <li><strong data-zh="跨距放置" data-en="Span placement"></strong> <span data-zh="：grid-column: span 2，跨2列" data-en=": grid-column: span 2, spans 2 columns"></span></li>
+                    </ul>
+
+                    <div class="highlight-box" data-zh="为什么推荐命名区域：修改布局只需要改父容器的areas定义，子元素位置自动变化。响应式布局断点里改一行代码就能换整个布局。" data-en="Why named areas: Change layout by only modifying parent areas. Responsive breakpoints rearrange with one line.">
+                        为什么推荐命名区域：修改布局只需要改父容器的areas定义，子元素位置自动变化。响应式布局断点里改一行代码就能换整个布局。
                     </div>
                 </div>
 
                 <div class="section" id="sec4">
-                    <h3>3.4 事件监听</h3>
-                    <p>网页平时在「等」用户操作，这叫事件监听。用 <code>element.addEventListener('click', 函数)</code> 给某个元素绑定一个事件：一旦发生对应操作，就自动执行指定的函数。</p>
-                    <p>常用事件有：<code>click</code>（鼠标点击）、<code>mouseover</code>（鼠标移上去）、<code>input</code>（输入框内容变化）。整个过程就是：<strong>用户点按钮 → 触发事件 → 自动执行对应的函数</strong>。</p>
-                </div>
-
-                <div class="section" id="sec5">
-                    <h3>3.5 DOM操作与Tab切换</h3>
-                    <p><strong>DOM</strong> 就是浏览器把网页里的所有标签，变成一棵可以用 JS 操作的「对象树」。我们可以用 <code>document.querySelector('选择器')</code> 选中页面上的元素，然后对它进行操作：</p>
-                    <p>用 <code>classList.add / remove / toggle</code> 来增删切换 class，用 <code>textContent</code> 来修改元素里的文字。</p>
-                    <div class="highlight-box">
-                        本教程每章的「讲解 / 关键代码 / 演示」Tab 切换，用的正是这套原理：给按钮绑定 click 监听 → 点击时切换 active 类 → 有 active 的内容显示、没有的隐藏。
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab 2：关键代码 -->
-            <div class="tab-content" id="tab-code">
-                <div class="section">
-                    <h3>关键代码 ① 点击计数按钮</h3>
-                    <p>一个完整可运行的例子：点一次按钮，数字就加 1。先写好 HTML 元素，再用 JS 给按钮加上点击逻辑。</p>
-
-                    <div class="code-block">
-<span class="code-comment">&lt;!-- 第一步：在页面上放一个按钮和一个显示数字的段落 --&gt;</span>
-&lt;button id="countBtn"&gt;点我&lt;/button&gt;
-&lt;p id="show"&gt;0&lt;/p&gt;
-
-<span class="code-comment">// 第二步：编写 JS，放在 &lt;/body&gt; 之前</span>
-<span class="code-comment">// 新建一个变量，用来记录点击次数，初始为 0</span>
-let count = 0;
-
-<span class="code-comment">// 用 id 选中页面上的按钮和显示用的段落</span>
-const btn = document.getElementById('countBtn');
-const show = document.getElementById('show');
-
-<span class="code-comment">// 给按钮绑定点击事件，每次点击都执行后面的函数</span>
-btn.addEventListener('click', function () {
-    count = count + 1;        <span class="code-comment">// 次数加 1</span>
-    show.textContent = count; <span class="code-comment">// 把最新的数字写回段落里显示</span>
-});
-                    </div>
-
-                    <div class="code-note">
-                        <strong>记忆要点：</strong><br>
-                        1. HTML 负责「摆好元素」，JS 负责「给元素加行为」，两者通过 id 联系起来<br>
-                        2. addEventListener('click', 函数) 就是「监听点击，然后执行」<br>
-                        3. textContent 用来修改元素里显示的文字
-                    </div>
-
-                    <h3>关键代码 ② 本教程的 Tab 切换</h3>
-                    <p>下面这段就是本章 3.5 讲的 DOM 实操，也是本页底部真正运行的代码，逐行看一遍就懂了。</p>
-
-                    <div class="code-block">
-<span class="code-comment">// 选中页面上所有 Tab 按钮和所有 Tab 内容区</span>
-const tabBtns = document.querySelectorAll('.tab-btn');
-const tabContents = document.querySelectorAll('.tab-content');
-
-<span class="code-comment">// 逐个给每个按钮绑定点击事件</span>
-tabBtns.forEach(btn =&gt; {
-    btn.addEventListener('click', () =&gt; {
-        <span class="code-comment">// 读取按钮身上 data-tab 的值，如 lecture / code / demo</span>
-        const tabName = btn.getAttribute('data-tab');
-
-        <span class="code-comment">// 先移除所有按钮的 active，再给当前按钮加上 active</span>
-        tabBtns.forEach(b =&gt; b.classList.remove('active'));
-        btn.classList.add('active');
-
-        <span class="code-comment">// 先隐藏所有内容区，再显示 id 为 tab-xxx 的那一个</span>
-        tabContents.forEach(content =&gt; content.classList.remove('active'));
-        document.getElementById('tab-' + tabName).classList.add('active');
-    });
-});
-                    </div>
-
-                    <div class="code-note">
-                        <strong>记忆要点：</strong><br>
-                        1. querySelectorAll 选中「一批」元素，forEach 遍历它们<br>
-                        2. classList.remove / add 就是增删 class，从而控制样式和显示<br>
-                        3. 切换 Tab 的本质：同一时间只有一个元素带 active
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab 3：演示 -->
-            <div class="tab-content" id="tab-demo">
-                <div class="section">
-                    <div class="demo-tip">
-                        下面的按钮可以真实点击试试，每点一次数字和日志都会更新。
-                    </div>
-
-                    <h4>真实计数演示</h4>
-                    <div class="demo-preview">
-                        <button id="demoBtn" style="background:#2563eb;color:#fff;border:none;border-radius:6px;padding:10px 20px;font-size:15px;cursor:pointer;">点我 +1</button>
-                        <p id="demoCount" style="margin-top:16px;font-size:15px;color:#334155;">你点了 0 次</p>
-                    </div>
-
-                    <h4>操作日志</h4>
-                    <div id="demoLog" class="demo-preview">
-                        记录区：点击上面的按钮，这里会依次留下记录。
-                    </div>
-
-                    <h4>常用事件 vs 触发时机</h4>
-                    <table class="demo-table">
+                    <h3 data-zh="3.4 对齐与间距" data-en="3.4 Alignment & Spacing">3.4 对齐与间距</h3>
+                    
+                    <h4 data-zh="三级对齐体系" data-en="Three Levels of Alignment">三级对齐体系</h4>
+                    <table class="compare-table">
                         <thead>
                             <tr>
-                                <th>事件名</th>
-                                <th>什么时候触发</th>
+                                <th data-zh="对齐级别" data-en="Alignment Level">对齐级别</th>
+                                <th data-zh="水平方向" data-en="Horizontal">水平方向</th>
+                                <th data-zh="垂直方向" data-en="Vertical">垂直方向</th>
+                                <th data-zh="作用对象" data-en="Affects">作用对象</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>click</td><td>鼠标点击（按下并松开）某个元素时</td></tr>
-                            <tr><td>mouseover</td><td>鼠标指针移动到某个元素上方时</td></tr>
-                            <tr><td>input</td><td>输入框里的内容发生变化时（边打字边触发）</td></tr>
-                            <tr><td>keydown</td><td>在键盘上按下任意一个按键时</td></tr>
+                            <tr>
+                                <td data-zh="整个网格" data-en="Whole grid">整个网格</td>
+                                <td>justify-content</td>
+                                <td>align-content</td>
+                                <td data-zh="所有轨道整体" data-en="All tracks together">所有轨道整体</td>
+                            </tr>
+                            <tr>
+                                <td data-zh="单元格内" data-en="Inside cells">单元格内</td>
+                                <td>justify-items</td>
+                                <td>align-items</td>
+                                <td data-zh="单元格内的元素" data-en="Elements inside cells">单元格内的元素</td>
+                            </tr>
+                            <tr>
+                                <td data-zh="单个元素" data-en="Single element">单个元素</td>
+                                <td>justify-self</td>
+                                <td>align-self</td>
+                                <td data-zh="单独某个子元素" data-en="Individual child element">单独某个子元素</td>
+                            </tr>
                         </tbody>
                     </table>
 
-                    <div class="demo-tip">
-                        <strong>Tab 切换原理：</strong>选中元素 → 监听点击 → 点击时切换 active 类 → 有 active 的内容显示、没有的隐藏。本页顶部三个按钮就是这么实现的，你可以切换过去亲自感受一下。
+                    <h4 data-zh="间距控制" data-en="Spacing Control">间距控制</h4>
+                    <ul>
+                        <li><strong>gap</strong> <span data-zh="：行列统一间距" data-en=": Uniform row and column gap"></span></li>
+                        <li><strong>row-gap</strong> <span data-zh="：仅行间距" data-en=": Row gap only"></span></li>
+                        <li><strong>column-gap</strong> <span data-zh="：仅列间距" data-en=": Column gap only"></span></li>
+                    </ul>
+                    <p data-zh="gap是现代布局标准属性，比margin干净，不会出现边缘折叠问题，也不会让首末元素偏离对齐。" data-en="gap is the modern standard. Cleaner than margins, no collapse issues, no edge misalignment.">
+                        gap是现代布局标准属性，比margin干净，不会出现边缘折叠问题，也不会让首末元素偏离对齐。
+                    </p>
+                </div>
+
+                <div class="section" id="sec5">
+                    <h3 data-zh="3.5 Grid典型应用场景" data-en="3.5 Common Use Cases">3.5 Grid典型应用场景</h3>
+                    
+                    <h4 data-zh="场景1：整体页面骨架" data-en="Case 1: Page Skeleton">场景1：整体页面骨架</h4>
+                    <p data-zh="页眉、左侧导航、主内容、右侧栏、页脚的经典布局。用Grid命名区域实现，结构清晰，响应式调整方便。" data-en="Classic header-sidebar-main-footer layout. Named areas make structure clear and responsive adjustments easy.">
+                        页眉、左侧导航、主内容、右侧栏、页脚的经典布局。用Grid命名区域实现，结构清晰，响应式调整方便。
+                    </p>
+
+                    <h4 data-zh="场景2：图片画廊" data-en="Case 2: Image Gallery">场景2：图片画廊</h4>
+                    <p data-zh="等宽等高的整齐图片网格，或者瀑布流效果。配合object-fit控制图片裁剪。" data-en="Uniform image grids or masonry effects. Pair with object-fit for image cropping.">
+                        等宽等高的整齐图片网格，或者瀑布流效果。配合object-fit控制图片裁剪。
+                    </p>
+
+                    <h4 data-zh="场景3：数据仪表盘" data-en="Case 3: Data Dashboard">场景3：数据仪表盘</h4>
+                    <p data-zh="多个数据卡片、图表、指标模块的复杂排列。不同尺寸的卡片占据不同的行列跨度。" data-en="Complex arrangement of data cards, charts, metrics. Cards of different sizes span different rows and columns.">
+                        多个数据卡片、图表、指标模块的复杂排列。不同尺寸的卡片占据不同的行列跨度。
+                    </p>
+
+                    <h4 data-zh="场景4：表单布局" data-en="Case 4: Form Layout">场景4：表单布局</h4>
+                    <p data-zh="标签与输入框的对齐排列，多列表单。Grid可以轻松实现标签右对齐、输入框左对齐的专业表单。" data-en="Label and input alignment, multi-column forms. Professional right-aligned labels with ease.">
+                        标签与输入框的对齐排列，多列表单。Grid可以轻松实现标签右对齐、输入框左对齐的专业表单。
+                    </p>
+
+                    <h4 data-zh="场景5：自动响应式卡片" data-en="Case 5: Auto Responsive Cards">场景5：自动响应式卡片</h4>
+                    <p data-zh="auto-fill + minmax() 组合，无需媒体查询，自动根据容器宽度调整列数。" data-en="auto-fill + minmax() combo. Auto-adjust column count based on container width, no media queries needed.">
+                        auto-fill + minmax() 组合，无需媒体查询，自动根据容器宽度调整列数。
+                    </p>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-code">
+                <div class="section" id="sec1">
+                    <h3 data-zh="3.1 基础网格定义" data-en="3.1 Basic Grid Definition">3.1 基础网格定义</h3>
+                    <div class="code-block">
+.grid-container {
+    display: grid;
+    
+    <span class="code-comment">/* 3列等宽 */</span>
+    grid-template-columns: repeat(3, 1fr);
+    
+    <span class="code-comment">/* 行高自动适应内容 */</span>
+    grid-template-rows: auto;
+    
+    <span class="code-comment">/* 单元格间距 */</span>
+    gap: 16px;
+}
+                    </div>
+                </div>
+
+                <div class="section" id="sec2">
+                    <h3 data-zh="3.2 混合尺寸轨道" data-en="3.2 Mixed Track Sizes">3.2 混合尺寸轨道</h3>
+                    <div class="code-block">
+<span class="code-comment">/* 固定侧边栏 + 弹性主内容 */</span>
+.page-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: 64px 1fr 48px;
+    gap: 0;
+    min-height: 100vh;
+}
+                    </div>
+                    <div class="code-note" data-zh="1fr 会自动占满剩余空间，是最常用的Grid尺寸单位。" data-en="1fr fills remaining space automatically, the most used Grid unit.">
+                        1fr 会自动占满剩余空间，是最常用的Grid尺寸单位。
+                    </div>
+                </div>
+
+                <div class="section" id="sec3">
+                    <h3 data-zh="3.3 命名区域布局" data-en="3.3 Named Area Layout">3.3 命名区域布局</h3>
+                    <div class="code-block">
+.container {
+    display: grid;
+    grid-template-columns: 200px 1fr 200px;
+    grid-template-rows: 60px 1fr 40px;
+    grid-template-areas:
+        "header header header"
+        "sidebar main rightbar"
+        "footer footer footer";
+}
+
+.header { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main { grid-area: main; }
+.rightbar { grid-area: rightbar; }
+.footer { grid-area: footer; }
+                    </div>
+                </div>
+
+                <div class="section" id="sec4">
+                    <h3 data-zh="3.4 跨单元格放置" data-en="3.4 Spanning Cells">3.4 跨单元格放置</h3>
+                    <div class="code-block">
+<span class="code-comment">/* 从第1列线到第3列线 */</span>
+.item-wide {
+    grid-column: 1 / 3;
+}
+
+<span class="code-comment">/* 跨2行 */</span>
+.item-tall {
+    grid-row: span 2;
+}
+
+<span class="code-comment">/* 从第2列开始，跨3列 */</span>
+.item-mid {
+    grid-column: 2 / span 3;
+}
+                    </div>
+                </div>
+
+                <div class="section" id="sec5">
+                    <h3 data-zh="3.5 自动响应式网格" data-en="3.5 Auto Responsive Grid">3.5 自动响应式网格</h3>
+                    <div class="code-block">
+<span class="code-comment">/* 自动填充，最小280px，自动适应列数 */</span>
+.responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-demo">
+                <div class="section">
+                    <div class="demo-tip" data-zh="拖动滑块调整列数、间距和元素数量，实时观察网格布局的变化。" data-en="Drag sliders to adjust columns, gap and item count, see grid layout change in real time.">
+                        拖动滑块调整列数、间距和元素数量，实时观察网格布局的变化。
+                    </div>
+
+                    <div class="demo-controls">
+                        <div class="control-item">
+                            <label data-zh="列数 columns" data-en="Columns">列数 columns</label>
+                            <input type="range" id="colRange" min="2" max="6" value="3">
+                            <div class="control-value"><span id="colValue">3</span> 列</div>
+                        </div>
+                        <div class="control-item">
+                            <label data-zh="间距 gap" data-en="Gap">间距 gap</label>
+                            <input type="range" id="gapRange" min="4" max="40" value="8">
+                            <div class="control-value"><span id="gapValue">8</span> px</div>
+                        </div>
+                        <div class="control-item">
+                            <label data-zh="元素数量" data-en="Item count">元素数量</label>
+                            <input type="range" id="itemRange" min="4" max="12" value="6">
+                            <div class="control-value"><span id="itemValue">6</span> 个</div>
+                        </div>
+                    </div>
+
+                    <div class="grid-container" id="gridDemo">
+                        <div class="grid-item">1</div>
+                        <div class="grid-item">2</div>
+                        <div class="grid-item">3</div>
+                        <div class="grid-item">4</div>
+                        <div class="grid-item">5</div>
+                        <div class="grid-item">6</div>
                     </div>
                 </div>
             </div>
@@ -438,49 +659,79 @@ tabBtns.forEach(btn =&gt; {
     </div>
 
     <script>
-        // Tab 切换功能
+        // 双语切换
+        const langBtns = document.querySelectorAll('.lang-btn');
+        let currentLang = 'zh';
+        function switchLang(lang) {
+            currentLang = lang;
+            langBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+            document.querySelectorAll('[data-zh]').forEach(el => el.textContent = el.getAttribute('data-' + lang));
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        }
+        langBtns.forEach(btn => btn.addEventListener('click', () => switchLang(btn.dataset.lang)));
+
+        // 页面加载自动渲染中文
+        document.addEventListener('DOMContentLoaded', () => {
+            switchLang('zh');
+        });
+
+        // Tab切换
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
-
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                const tabName = btn.getAttribute('data-tab');
-                
-                // 切换按钮选中状态
+                const tabName = btn.dataset.tab;
                 tabBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                
-                // 切换内容显示
-                tabContents.forEach(content => content.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
                 document.getElementById('tab-' + tabName).classList.add('active');
             });
         });
 
-        // 侧边栏点击高亮
-        const menuLinks = document.querySelectorAll('.menu-list a');
-        menuLinks.forEach(link => {
+        // 侧边栏高亮
+        document.querySelectorAll('.menu-list a').forEach(link => {
             link.addEventListener('click', () => {
-                menuLinks.forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.menu-list a').forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
             });
         });
 
-        // 演示：真实可点击的计数按钮 + 操作日志
-        let demoCountNum = 0;
-        const demoBtn = document.getElementById('demoBtn');
-        const demoCount = document.getElementById('demoCount');
-        const demoLog = document.getElementById('demoLog');
+        // Grid交互演示
+        const gridDemo = document.getElementById('gridDemo');
+        const colRange = document.getElementById('colRange');
+        const gapRange = document.getElementById('gapRange');
+        const itemRange = document.getElementById('itemRange');
+        const colValue = document.getElementById('colValue');
+        const gapValue = document.getElementById('gapValue');
+        const itemValue = document.getElementById('itemValue');
 
-        demoBtn.addEventListener('click', () => {
-            demoCountNum++;
-            demoCount.textContent = '你点了 ' + demoCountNum + ' 次';
+        function updateGrid() {
+            const cols = colRange.value;
+            const gap = gapRange.value;
+            const count = itemRange.value;
 
-            // 把本次点击追加到日志区，带上当前时间
-            const time = new Date().toLocaleTimeString();
-            const line = document.createElement('div');
-            line.textContent = '第 ' + demoCountNum + ' 次点击，时间 ' + time;
-            demoLog.appendChild(line);
-        });
+            gridDemo.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            gridDemo.style.gap = gap + 'px';
+
+            colValue.textContent = cols;
+            gapValue.textContent = gap;
+            itemValue.textContent = count;
+
+            // 调整元素数量
+            while (gridDemo.children.length < count) {
+                const div = document.createElement('div');
+                div.className = 'grid-item';
+                div.textContent = gridDemo.children.length + 1;
+                gridDemo.appendChild(div);
+            }
+            while (gridDemo.children.length > count) {
+                gridDemo.removeChild(gridDemo.lastChild);
+            }
+        }
+
+        colRange.addEventListener('input', updateGrid);
+        gapRange.addEventListener('input', updateGrid);
+        itemRange.addEventListener('input', updateGrid);
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第1章 网页基础与HTML结构 - 网页制作入门教程</title>
+    <title data-zh="第1章 布局基础理论 - 页面布局实战教程" data-en="Chapter 1 Layout Fundamentals">第1章 布局基础理论 - 页面布局实战教程</title>
     <style>
         * {
             margin: 0;
@@ -14,6 +14,32 @@
         body {
             background-color: #f8fafc;
             color: #1e293b;
+        }
+
+        /* 语言切换 */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            overflow: hidden;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .lang-btn {
+            border: none;
+            background: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #64748b;
+        }
+        .lang-btn.active {
+            background: #1e293b;
+            color: white;
         }
 
         /* 顶部导航 */
@@ -33,7 +59,7 @@
             font-size: 14px;
         }
 
-        /* 主布局：侧边栏 + 内容区 */
+        /* 主布局 */
         .layout {
             max-width: 1200px;
             margin: 20px auto;
@@ -74,6 +100,7 @@
             text-decoration: none;
             font-size: 14px;
             border-left: 3px solid transparent;
+            scroll-margin-top: 20px;
         }
         .menu-list a.active {
             background: #eff6ff;
@@ -157,11 +184,17 @@
         /* 内容样式 */
         .section {
             margin-bottom: 48px;
+            scroll-margin-top: 20px;
         }
         .section h3 {
             font-size: 20px;
             color: #0f172a;
             margin-bottom: 12px;
+        }
+        .section h4 {
+            font-size: 16px;
+            color: #1e293b;
+            margin: 16px 0 8px;
         }
         .section p {
             color: #334155;
@@ -174,7 +207,8 @@
             font-size: 15px;
         }
         .section li {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            line-height: 1.7;
         }
         .highlight-box {
             background: #fef3c7;
@@ -183,6 +217,21 @@
             margin: 16px 0;
             font-size: 14px;
             color: #92400e;
+        }
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+        .compare-table th, .compare-table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        .compare-table th {
+            background: #f8fafc;
+            font-weight: 500;
         }
 
         /* 代码块 */
@@ -210,21 +259,37 @@
             color: #0c4a6e;
         }
 
-        /* 演示表格 */
-        .demo-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 16px 0;
-            font-size: 14px;
-        }
-        .demo-table th, .demo-table td {
+        /* 交互演示区域 */
+        .demo-panel {
             border: 1px solid #e2e8f0;
-            padding: 10px 12px;
-            text-align: left;
-        }
-        .demo-table th {
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
             background: #f8fafc;
+        }
+        .demo-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .control-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .control-item label {
+            font-size: 13px;
+            color: #475569;
             font-weight: 500;
+        }
+        .control-item input[type="range"] {
+            width: 100%;
+        }
+        .control-value {
+            font-size: 13px;
+            color: #2563eb;
+            font-family: monospace;
         }
         .demo-tip {
             background: #f0f9ff;
@@ -243,364 +308,442 @@
             margin: 16px 0;
             background: #f8fafc;
         }
+        .demo-stage {
+            background: white;
+            border: 1px dashed #cbd5e1;
+            border-radius: 6px;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 240px;
+        }
+        .demo-box {
+            width: 150px;
+            height: 100px;
+            background: #3b82f6;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
     </style>
 </head>
 <body>
     <div class="top-bar"></div>
 
+    <!-- 语言切换 -->
+    <div class="lang-switch">
+        <button class="lang-btn active" data-lang="zh">中</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+
     <div class="back-home">
-        <a href="index.html">← 返回首页</a>
+        <a href="index.html" data-zh="← 返回首页" data-en="← Back Home">← 返回首页</a>
     </div>
 
     <div class="layout">
         <!-- 左侧侧边栏 -->
         <aside class="sidebar">
-            <h4>章节目录</h4>
+            <h4 data-zh="章节目录" data-en="Contents">章节目录</h4>
             <ul class="menu-list">
-                <li><a href="#sec1" class="active">1.1 认识网页</a></li>
-                <li><a href="#sec2">1.2 HTML基本结构</a></li>
-                <li><a href="#sec3">1.3 常用文本标签</a></li>
-                <li><a href="#sec4">1.4 图片与链接</a></li>
-                <li><a href="#sec5">1.5 列表与表格</a></li>
+                <li><a href="#sec1" class="active" data-zh="1.1 布局的本质" data-en="1.1 What is Layout">1.1 布局的本质</a></li>
+                <li><a href="#sec2" data-zh="1.2 盒子模型深度解析" data-en="1.2 Box Model Deep Dive">1.2 盒子模型深度解析</a></li>
+                <li><a href="#sec3" data-zh="1.3 正常文档流与BFC" data-en="1.3 Normal Flow & BFC">1.3 正常文档流与BFC</a></li>
+                <li><a href="#sec4" data-zh="1.4 现代布局方案对比" data-en="1.4 Layout Systems Comparison">1.4 现代布局方案对比</a></li>
+                <li><a href="#sec5" data-zh="1.5 布局设计原则" data-en="1.5 Design Principles">1.5 布局设计原则</a></li>
             </ul>
             <div class="sidebar-divider"></div>
             <ul class="menu-list">
-                <li><a href="#">↗ 练习文件下载</a></li>
-                <li><a href="#">↗ 完整参考手册</a></li>
+                <li><a href="#" data-zh="↗ 练习文件下载" data-en="↗ Exercise Files">↗ 练习文件下载</a></li>
+                <li><a href="#" data-zh="↗ 完整参考手册" data-en="↗ Reference">↗ 完整参考手册</a></li>
             </ul>
         </aside>
 
         <!-- 右侧主内容 -->
         <main class="main-content">
-            <h2 class="chapter-title">第1章 网页基础与HTML结构</h2>
-            <p class="chapter-subtitle">从零认识网页本质，掌握HTML核心语法与常用标签</p>
+            <h2 class="chapter-title" data-zh="第1章 布局基础理论" data-en="Chapter 1 Layout Fundamentals">第1章 布局基础理论</h2>
+            <p class="chapter-subtitle" data-zh="理解底层原理，掌握布局的核心思维" data-en="Understand the fundamentals and master layout thinking">理解底层原理，掌握布局的核心思维</p>
 
             <!-- Tab 按钮 -->
             <div class="tab-nav">
-                <button class="tab-btn active" data-tab="lecture">📖 讲解</button>
-                <button class="tab-btn" data-tab="code">💻 关键代码</button>
-                <button class="tab-btn" data-tab="demo">▶️ 演示</button>
+                <button class="tab-btn active" data-tab="lecture" data-zh="📖 讲解" data-en="📖 Lecture">📖 讲解</button>
+                <button class="tab-btn" data-tab="code" data-zh="💻 关键代码" data-en="💻 Key Code">💻 关键代码</button>
+                <button class="tab-btn" data-tab="demo" data-zh="▶️ 交互演示" data-en="▶️ Demo">▶️ 交互演示</button>
             </div>
 
             <!-- Tab 1：讲解内容 -->
             <div class="tab-content active" id="tab-lecture">
                 <div class="section" id="sec1">
-                    <h3>1.1 认识网页</h3>
-                    <p>我们平时在浏览器中看到的网页，本质上就是一个后缀为 <code>.html</code> 的纯文本文件。浏览器读取文件中的标签代码，将其渲染成图文并茂的可视化页面。</p>
-                    <p>网页开发的三大核心技术各司其职：</p>
-                    <ul>
-                        <li><strong>HTML</strong> —— 网页的骨架，定义页面包含哪些内容（标题、段落、图片、按钮等）</li>
-                        <li><strong>CSS</strong> —— 网页的外观，定义内容的样式（颜色、大小、位置、排版）</li>
-                        <li><strong>JavaScript</strong> —— 网页的行为，定义页面的交互逻辑（点击、动画、数据处理）</li>
-                    </ul>
+                    <h3 data-zh="1.1 布局的本质" data-en="1.1 What is Layout">1.1 布局的本质</h3>
+                    <p data-zh="页面布局，本质上是在二维平面内解决两个核心问题：元素放在什么位置、元素占据多大空间。所有CSS布局技术，无论语法如何变化，最终都是在控制元素的尺寸和坐标。" data-en="Page layout essentially solves two problems in 2D space: where to place elements, and how much space they occupy. All CSS layout techniques ultimately control size and position.">
+                        页面布局，本质上是在二维平面内解决两个核心问题：元素放在什么位置、元素占据多大空间。所有CSS布局技术，无论语法如何变化，最终都是在控制元素的尺寸和坐标。
+                    </p>
                     
-                    <div class="highlight-box">
-                        入门类比：HTML 是毛坯房的墙体结构，CSS 是装修和家具，JavaScript 是家电和智能控制系统。
+                    <h4 data-zh="布局技术的演进历史" data-en="Evolution of Layout Techniques">布局技术的演进历史</h4>
+                    <ul>
+                        <li data-zh="表格布局时代：利用table标签的行列特性做布局，优点是简单兼容，缺点是语义混乱、渲染慢、难以维护" data-en="Table era: Use table tags for layout. Simple but semantically wrong, slow and hard to maintain.">
+                            表格布局时代：利用table标签的行列特性做布局，优点是简单兼容，缺点是语义混乱、渲染慢、难以维护
+                        </li>
+                        <li data-zh="浮动布局时代：利用float属性实现多列布局，是Web2.0时期的主流方案，缺点是会脱离文档流，需要清除浮动" data-en="Float era: Multi-column layouts with float. Dominant in Web 2.0. Breaks normal flow, requires clearfix.">
+                            浮动布局时代：利用float属性实现多列布局，是Web2.0时期的主流方案，缺点是会脱离文档流，需要清除浮动
+                        </li>
+                        <li data-zh="定位布局时代：利用position属性精确控制位置，适合弹窗、悬浮层，不适合整体页面骨架" data-en="Positioning era: Precise control with position. Good for popups, not for page skeletons.">
+                            定位布局时代：利用position属性精确控制位置，适合弹窗、悬浮层，不适合整体页面骨架
+                        </li>
+                        <li data-zh="现代布局时代：Flexbox + Grid，专门为布局设计的语法体系，语义清晰、功能强大、可维护性强" data-en="Modern era: Flexbox + Grid. Designed specifically for layout. Semantic, powerful, maintainable.">
+                            现代布局时代：Flexbox + Grid，专门为布局设计的语法体系，语义清晰、功能强大、可维护性强
+                        </li>
+                    </ul>
+
+                    <div class="highlight-box" data-zh="核心思想：先理解规则，再写代码。好的布局不是靠试错调出来的，而是知道每一行代码为什么生效、会产生什么影响。" data-en="Core idea: Understand rules before coding. Good layout isn't trial and error—it's knowing why each line works.">
+                        核心思想：先理解规则，再写代码。好的布局不是靠试错调出来的，而是知道每一行代码为什么生效、会产生什么影响。
                     </div>
                 </div>
 
                 <div class="section" id="sec2">
-                    <h3>1.2 HTML基本结构</h3>
-                    <p>HTML 使用「标签」来标记内容，绝大多数标签成对出现，分为开始标签和结束标签，标签之间可以嵌套形成层级结构。</p>
-                    <p>一个标准的 HTML 文档必须包含三大部分：</p>
+                    <h3 data-zh="1.2 盒子模型深度解析" data-en="1.2 The Box Model Deep Dive">1.2 盒子模型深度解析</h3>
+                    <p data-zh="页面中所有元素本质都是一个矩形盒子，由内到外分为四层：内容区content、内边距padding、边框border、外边距margin。这是所有布局的基础单元。" data-en="Every element is a rectangular box with four layers: content, padding, border, margin. This is the basic unit of all layout.">
+                        页面中所有元素本质都是一个矩形盒子，由内到外分为四层：内容区content、内边距padding、边框border、外边距margin。这是所有布局的基础单元。
+                    </p>
+
+                    <h4 data-zh="两种盒子模型对比" data-en="Two Box Models Compared">两种盒子模型对比</h4>
+                    <table class="compare-table">
+                        <thead>
+                            <tr>
+                                <th data-zh="特性" data-en="Feature">特性</th>
+                                <th data-zh="content-box（标准）" data-en="content-box (Standard)">content-box（标准）</th>
+                                <th data-zh="border-box（IE）" data-en="border-box (IE)">border-box（IE）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-zh="width定义" data-en="width defines">width定义</td>
+                                <td data-zh="仅内容区宽度" data-en="Content area only">仅内容区宽度</td>
+                                <td data-zh="内容+内边距+边框" data-en="Content + padding + border">内容+内边距+边框</td>
+                            </tr>
+                            <tr>
+                                <td data-zh="加padding后" data-en="With padding added">加padding后</td>
+                                <td data-zh="盒子整体变宽" data-en="Total box gets wider">盒子整体变宽</td>
+                                <td data-zh="内容区挤压，总宽不变" data-en="Content shrinks, total width stays">内容区挤压，总宽不变</td>
+                            </tr>
+                            <tr>
+                                <td data-zh="直观性" data-en="Intuitiveness">直观性</td>
+                                <td data-zh="符合物理直觉" data-en="Matches physical intuition">符合物理直觉</td>
+                                <td data-zh="符合设计直觉" data-en="Matches design intuition">符合设计直觉</td>
+                            </tr>
+                            <tr>
+                                <td data-zh="布局可控性" data-en="Layout control">布局可控性</td>
+                                <td data-zh="差，尺寸容易超出预期" data-en="Poor, sizes often unexpected">差，尺寸容易超出预期</td>
+                                <td data-zh="好，设置多少就是多少" data-en="Excellent, what you set is what you get">好，设置多少就是多少</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4 data-zh="外边距折叠问题" data-en="Margin Collapse">外边距折叠问题</h4>
+                    <p data-zh="正常文档流中，两个垂直方向的外边距相遇时，不会相加，而是取较大值，这就是外边距折叠。这是新手最容易踩坑的布局问题之一。" data-en="In normal flow, vertical margins collapse to the larger value instead of adding. One of the most common pitfalls for beginners.">
+                        正常文档流中，两个垂直方向的外边距相遇时，不会相加，而是取较大值，这就是外边距折叠。这是新手最容易踩坑的布局问题之一。
+                    </p>
                     <ul>
-                        <li><code>&lt;!DOCTYPE html&gt;</code>：文档类型声明，告诉浏览器使用 HTML5 标准解析</li>
-                        <li><code>&lt;head&gt;</code>：头部区域，存放页面配置信息（编码、标题、样式引用），用户不可见</li>
-                        <li><code>&lt;body&gt;</code>：主体区域，存放所有用户可见的页面内容</li>
+                        <li data-zh="发生条件：同属正常文档流、块级元素、垂直方向、没有边框或内边距隔开" data-en="Conditions: normal flow, block elements, vertical, no border/padding separating">
+                            发生条件：同属正常文档流、块级元素、垂直方向、没有边框或内边距隔开
+                        </li>
+                        <li data-zh="解决方法：加border/padding隔开、触发BFC、使用flex/grid布局" data-en="Solutions: add border/padding, trigger BFC, use flex/grid">
+                            解决方法：加border/padding隔开、触发BFC、使用flex/grid布局
+                        </li>
                     </ul>
-                    <p>标签的核心语法规则：标签名用尖括号包裹，结束标签带斜杠；标签可以添加属性来扩展功能。</p>
                 </div>
 
                 <div class="section" id="sec3">
-                    <h3>1.3 常用文本标签</h3>
-                    <p>文本是网页最基础的内容形式，HTML 提供了一套完整的标签来定义文本的语义和层级。</p>
-                    <p>标题标签 <code>h1</code>~<code>h6</code> 共六级，h1 权重最高，一个页面建议只出现一次，用于页面主标题。</p>
-                    <p>段落标签 <code>p</code> 用于包裹普通文本，浏览器会自动在段落前后添加间距。</p>
-                    <p>常用文本格式化标签：
-                        <code>strong</code> 表示重要强调（加粗），
-                        <code>em</code> 表示语气强调（倾斜），
-                        <code>br</code> 表示强制换行，
-                        <code>hr</code> 表示水平分割线。
+                    <h3 data-zh="1.3 正常文档流与BFC" data-en="1.3 Normal Flow & BFC">1.3 正常文档流与BFC</h3>
+                    <p data-zh="不加任何布局属性时，浏览器默认的元素排列规则就是正常文档流。这是所有布局的基准状态，所有布局技术本质上都是在打破或修改正常流。" data-en="Without any layout properties, browsers follow normal flow. This is the baseline. All layout techniques break or modify normal flow.">
+                        不加任何布局属性时，浏览器默认的元素排列规则就是正常文档流。这是所有布局的基准状态，所有布局技术本质上都是在打破或修改正常流。
                     </p>
-                    <div class="highlight-box">
-                        编写原则：优先使用语义化标签，而不是单纯用样式标签。用 strong 而不是 b，用 em 而不是 i。
-                    </div>
+
+                    <h4 data-zh="元素的三种流动类型" data-en="Three Flow Types">元素的三种流动类型</h4>
+                    <ul>
+                        <li><strong data-zh="块级元素（block）" data-en="Block"></strong> <span data-zh="：独占一行，可设宽高，上下margin有效。代表：div、p、h1-h6、section" data-en=": Own line, width/height works, vertical margin works. Examples: div, p, h1-h6">
+                            ：独占一行，可设宽高，上下margin有效。代表：div、p、h1-h6、section
+                        </span></li>
+                        <li><strong data-zh="行内元素（inline）" data-en="Inline"></strong> <span data-zh="：并排排列，宽高无效，上下margin无效。代表：span、a、strong、em" data-en=": Flow horizontally, width/height ignored, vertical margin ignored. Examples: span, a, strong">
+                            ：并排排列，宽高无效，上下margin无效。代表：span、a、strong、em
+                        </span></li>
+                        <li><strong data-zh="行内块元素（inline-block）" data-en="Inline-block"></strong> <span data-zh="：并排排列，可设宽高，兼具两者特性。代表：img、button、input" data-en=": Flow horizontally, width/height works. Best of both. Examples: img, button, input">
+                            ：并排排列，可设宽高，兼具两者特性。代表：img、button、input
+                        </span></li>
+                    </ul>
+
+                    <h4 data-zh="BFC（块级格式化上下文）" data-en="BFC (Block Formatting Context)">BFC（块级格式化上下文）</h4>
+                    <p data-zh="BFC是一个独立的渲染区域，内部元素的布局不会影响到外部。可以理解为页面中的一个「隔离容器」。" data-en="BFC is an independent rendering region. Internal layout doesn't affect outside. Think of it as an isolated container.">
+                        BFC是一个独立的渲染区域，内部元素的布局不会影响到外部。可以理解为页面中的一个「隔离容器」。
+                    </p>
+                    <ul>
+                        <li data-zh="触发方式：overflow:hidden、float不为none、position:absolute/fixed、display:flex/grid" data-en="Trigger: overflow:hidden, float, position:absolute/fixed, display:flex/grid">
+                            触发方式：overflow:hidden、float不为none、position:absolute/fixed、display:flex/grid
+                        </li>
+                        <li data-zh="典型用途：清除浮动、解决外边距折叠、两栏自适应布局" data-en="Uses: clear floats, fix margin collapse, two-column adaptive layouts">
+                            典型用途：清除浮动、解决外边距折叠、两栏自适应布局
+                        </li>
+                    </ul>
                 </div>
 
                 <div class="section" id="sec4">
-                    <h3>1.4 图片与链接</h3>
-                    <p>图片标签 <code>img</code> 是典型的单标签，通过 <code>src</code> 属性指定图片地址，<code>alt</code> 属性指定图片加载失败时的替代文字。</p>
-                    <p>超链接标签 <code>a</code> 是网页的核心特性，通过 <code>href</code> 属性指定跳转目标地址。</p>
-                    <p>路径分为两种：
-                        <strong>相对路径</strong>：相对于当前文件的位置，适合站内跳转；
-                        <strong>绝对路径</strong>：完整的网址，适合跳转到外部网站。
+                    <h3 data-zh="1.4 现代布局方案对比" data-en="1.4 Modern Layout Systems Comparison">1.4 现代布局方案对比</h3>
+                    <p data-zh="现代CSS有三套核心布局系统，各有分工，没有谁替代谁，选择正确的工具做正确的事。" data-en="Modern CSS has three core layout systems, each with its own role. Use the right tool for the job.">
+                        现代CSS有三套核心布局系统，各有分工，没有谁替代谁，选择正确的工具做正确的事。
                     </p>
-                    <p><code>target="_blank"</code> 属性可以让链接在新标签页中打开，避免离开当前页面。</p>
+
+                    <table class="compare-table">
+                        <thead>
+                            <tr>
+                                <th data-zh="布局方案" data-en="System">布局方案</th>
+                                <th data-zh="维度" data-en="Dimension">维度</th>
+                                <th data-zh="核心优势" data-en="Strength">核心优势</th>
+                                <th data-zh="最佳场景" data-en="Best For">最佳场景</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Flexbox</strong></td>
+                                <td data-zh="一维" data-en="1D">一维</td>
+                                <td data-zh="对齐、分配空间、弹性伸缩" data-en="Alignment, space distribution, flexibility">对齐、分配空间、弹性伸缩</td>
+                                <td data-zh="导航栏、按钮组、单行卡片" data-en="Navbars, button groups, single rows">导航栏、按钮组、单行卡片</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Grid</strong></td>
+                                <td data-zh="二维" data-en="2D">二维</td>
+                                <td data-zh="行列同时控制、区域命名、精确划分" data-en="Row+column control, named areas, precision">行列同时控制、区域命名、精确划分</td>
+                                <td data-zh="页面骨架、仪表盘、图片网格" data-en="Page skeletons, dashboards, image grids">页面骨架、仪表盘、图片网格</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Positioning</strong></td>
+                                <td data-zh="坐标定位" data-en="Coordinate">坐标定位</td>
+                                <td data-zh="精确位置、层叠、脱离文档流" data-en="Precise position, stacking, out of flow">精确位置、层叠、脱离文档流</td>
+                                <td data-zh="弹窗、悬浮按钮、角标、遮罩" data-en="Popups, floating buttons, badges, overlays">弹窗、悬浮按钮、角标、遮罩</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="highlight-box" data-zh="选型口诀：一维用Flex，二维用Grid，固定位置用Position。大多数页面是三者组合使用。" data-en="Rule of thumb: 1D = Flex, 2D = Grid, fixed position = Positioning. Most pages use all three.">
+                        选型口诀：一维用Flex，二维用Grid，固定位置用Position。大多数页面是三者组合使用。
+                    </div>
                 </div>
 
                 <div class="section" id="sec5">
-                    <h3>1.5 列表与表格</h3>
-                    <p>列表分为无序列表 <code>ul</code> 和有序列表 <code>ol</code>，列表项都用 <code>li</code> 标签包裹。无序列表用于展示并列内容，有序列表用于有先后顺序的内容。</p>
-                    <p>表格由 <code>table</code> 标签定义，内部结构包括：
-                        <code>thead</code> 表头、
-                        <code>tbody</code> 表体、
-                        <code>tr</code> 行、
-                        <code>th</code> 表头单元格、
-                        <code>td</code> 普通单元格。
+                    <h3 data-zh="1.5 优秀布局的设计原则" data-en="1.5 Good Layout Design Principles">1.5 优秀布局的设计原则</h3>
+                    
+                    <h4 data-zh="1. 最小惊讶原则" data-en="1. Principle of Least Surprise">1. 最小惊讶原则</h4>
+                    <p data-zh="元素的行为应该符合用户的预期。按钮看起来像按钮，链接看起来像链接，可点击区域足够大。布局变化时，用户能猜到哪里变了、为什么变。" data-en="Elements behave as expected. Buttons look like buttons, links look like links. Layout changes make sense.">
+                        元素的行为应该符合用户的预期。按钮看起来像按钮，链接看起来像链接，可点击区域足够大。布局变化时，用户能猜到哪里变了、为什么变。
                     </p>
-                    <p>表格适合展示二维结构化数据，不建议用来做页面布局。</p>
+
+                    <h4 data-zh="2. 流动优先原则" data-en="2. Flow First">2. 流动优先原则</h4>
+                    <p data-zh="默认让内容决定尺寸，而不是写死固定值。布局应该像水一样适应容器，而不是反过来。多使用相对单位，少用绝对像素。" data-en="Let content determine size by default. Layout adapts to container like water. Prefer relative units over fixed pixels.">
+                        默认让内容决定尺寸，而不是写死固定值。布局应该像水一样适应容器，而不是反过来。多使用相对单位，少用绝对像素。
+                    </p>
+
+                    <h4 data-zh="3. 关注点分离原则" data-en="3. Separation of Concerns">3. 关注点分离原则</h4>
+                    <p data-zh="结构（HTML）、样式（CSS）、行为（JavaScript）三者分离。不要在HTML里写样式，不要在CSS里写逻辑，不要用JS做纯布局的事。" data-en="Structure (HTML), style (CSS), behavior (JS) separated. No inline styles, no logic in CSS, no layout in JS.">
+                        结构（HTML）、样式（CSS）、行为（JavaScript）三者分离。不要在HTML里写样式，不要在CSS里写逻辑，不要用JS做纯布局的事。
+                    </p>
+
+                    <h4 data-zh="4. 渐进增强原则" data-en="4. Progressive Enhancement">4. 渐进增强原则</h4>
+                    <p data-zh="基础功能在所有设备都能用，高级特性在支持的设备上锦上添花。布局不应该因为某个特性不支持就彻底崩溃。" data-en="Core functionality works everywhere. Advanced features add value where supported. Layout shouldn't break if a feature is missing.">
+                        基础功能在所有设备都能用，高级特性在支持的设备上锦上添花。布局不应该因为某个特性不支持就彻底崩溃。
+                    </p>
                 </div>
             </div>
 
             <!-- Tab 2：关键代码 -->
             <div class="tab-content" id="tab-code">
                 <div class="section" id="sec1">
-                    <h3>1.1 网页三大技术角色示意</h3>
-                    <p>通过注释可以清晰看到 HTML、CSS、JavaScript 在文件中的位置和分工。</p>
+                    <h3 data-zh="1.1 全局重置：现代布局标配" data-en="1.1 Global Reset: Modern Layout Standard">1.1 全局重置：现代布局标配</h3>
+                    <p data-zh="所有布局项目的第一行CSS，统一盒子模型，清除默认边距，避免浏览器差异。" data-en="First line of CSS in any layout project. Unify box model, remove default margins, normalize browser differences.">
+                        所有布局项目的第一行CSS，统一盒子模型，清除默认边距，避免浏览器差异。
+                    </p>
                     
                     <div class="code-block">
-<span class="code-comment">&lt;!-- HTML：负责结构和内容 --&gt;</span>
-&lt;!DOCTYPE html&gt;
-&lt;html lang="zh-CN"&gt;
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;网页示例&lt;/title&gt;
-    
-<span class="code-comment">    /* CSS：负责样式和外观 */</span>
-    &lt;style&gt;
-        h1 { color: blue; }
-    &lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;h1&gt;你好，网页&lt;/h1&gt;
-    &lt;button id="btn"&gt;点击我&lt;/button&gt;
-    
-<span class="code-comment">    &lt;!-- JavaScript：负责交互和行为 --&gt;</span>
-    &lt;script&gt;
-        btn.onclick = function() { alert('点击了按钮') }
-    &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
+<span class="code-comment">/* 全局使用 border-box 盒子模型 */</span>
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    line-height: 1.6;
+    font-family: system-ui, sans-serif;
+}
                     </div>
 
-                    <div class="code-note">
-                        <strong>分工原则：</strong>结构、样式、行为三者分离。不要在 HTML 标签里写大量样式，不要在 CSS 里写逻辑。
+                    <div class="code-note" data-zh="为什么这是标配：border-box模式下，设置width: 300px后，最终盒子就是300px宽，padding和border向内挤压，不撑大盒子，布局尺寸完全可控。" data-en="Why standard: With border-box, width: 300px means total box is 300px. Padding and border squeeze inward. Fully predictable.">
+                        为什么这是标配：border-box模式下，设置width: 300px后，最终盒子就是300px宽，padding和border向内挤压，不撑大盒子，布局尺寸完全可控。
                     </div>
                 </div>
 
                 <div class="section" id="sec2">
-                    <h3>1.2 标准HTML完整骨架</h3>
-                    <p>这是每个网页都必须具备的最小完整结构。</p>
+                    <h3 data-zh="1.2 盒子模型完整属性" data-en="1.2 Full Box Model Properties">1.2 盒子模型完整属性</h3>
                     
                     <div class="code-block">
-<span class="code-comment">&lt;!-- 文档类型声明：必须放在第一行 --&gt;</span>
-&lt;!DOCTYPE html&gt;
+.box {
+    <span class="code-comment">/* 内容区尺寸 */</span>
+    width: 200px;
+    height: 100px;
+    min-width: 100px;
+    max-width: 400px;
 
-<span class="code-comment">&lt;!-- 根标签：整个网页的容器 --&gt;</span>
-&lt;html lang="zh-CN"&gt;
+    <span class="code-comment">/* 内边距：上 右 下 左（顺时针） */</span>
+    padding: 20px 16px 20px 16px;
+    <span class="code-comment">/* 简写：上下 左右 */</span>
+    padding: 20px 16px;
 
-<span class="code-comment">&lt;!-- 头部：页面元信息 --&gt;</span>
-&lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-    &lt;title&gt;页面标题&lt;/title&gt;
-&lt;/head&gt;
+    <span class="code-comment">/* 边框：粗细 样式 颜色 */</span>
+    border: 2px solid #2563eb;
+    border-radius: 8px;
 
-<span class="code-comment">&lt;!-- 主体：可见内容区域 --&gt;</span>
-&lt;body&gt;
-    页面内容写在这里
-&lt;/body&gt;
-
-&lt;/html&gt;
+    <span class="code-comment">/* 外边距 */</span>
+    margin: 24px auto; <span class="code-comment">/* 上下24px，左右居中 */</span>
+}
                     </div>
                 </div>
 
                 <div class="section" id="sec3">
-                    <h3>1.3 文本标签完整示例</h3>
+                    <h3 data-zh="1.3 display属性大全" data-en="1.3 display Property Reference">1.3 display属性大全</h3>
                     
                     <div class="code-block">
-<span class="code-comment">&lt;!-- 六级标题 --&gt;</span>
-&lt;h1&gt;一级标题&lt;/h1&gt;
-&lt;h2&gt;二级标题&lt;/h2&gt;
-&lt;h3&gt;三级标题&lt;/h3&gt;
+<span class="code-comment">/* 块级：独占一行 */</span>
+display: block;
 
-<span class="code-comment">&lt;!-- 段落与文本格式化 --&gt;</span>
-&lt;p&gt;这是一个普通段落，包含&lt;strong&gt;加粗文字&lt;/strong&gt;和&lt;em&gt;倾斜文字&lt;/em&gt;。&lt;/p&gt;
+<span class="code-comment">/* 行内：并排流动 */</span>
+display: inline;
 
-&lt;p&gt;第一行文字&lt;br&gt;
-第二行文字（强制换行）&lt;/p&gt;
+<span class="code-comment">/* 行内块：并排+可设尺寸 */</span>
+display: inline-block;
 
-&lt;hr&gt;
+<span class="code-comment">/* 弹性布局 */</span>
+display: flex;
 
-&lt;p&gt;分割线下方的内容&lt;/p&gt;
+<span class="code-comment">/* 网格布局 */</span>
+display: grid;
+
+<span class="code-comment">/* 隐藏元素，不占空间 */</span>
+display: none;
                     </div>
                 </div>
 
                 <div class="section" id="sec4">
-                    <h3>1.4 图片与链接代码</h3>
+                    <h3 data-zh="1.4 BFC触发代码" data-en="1.4 BFC Trigger Code">1.4 BFC触发代码</h3>
                     
                     <div class="code-block">
-<span class="code-comment">&lt;!-- 图片标签 --&gt;</span>
-&lt;img src="images/photo.jpg" alt="风景照片" width="400"&gt;
+<span class="code-comment">/* 最常用触发方式 */</span>
+.bfc {
+    overflow: hidden;
+}
 
-<span class="code-comment">&lt;!-- 站内链接（相对路径） --&gt;</span>
-&lt;a href="chapter2.html"&gt;跳转到第2章&lt;/a&gt;
+<span class="code-comment">/* 现代布局自动触发BFC */</span>
+.flex-container {
+    display: flex; <span class="code-comment">/* flex容器天然是BFC */</span>
+}
 
-<span class="code-comment">&lt;!-- 站外链接（绝对路径） --&gt;</span>
-&lt;a href="https://www.baidu.com" target="_blank"&gt;打开百度&lt;/a&gt;
-
-<span class="code-comment">&lt;!-- 锚点链接：跳转到当前页面指定位置 --&gt;</span>
-&lt;a href="#sec1"&gt;回到顶部&lt;/a&gt;
-                    </div>
-
-                    <div class="code-note">
-                        <strong>路径注意事项：</strong>相对路径中，<code>../</code> 表示上一级文件夹，<code>./</code> 表示当前文件夹。路径错误会导致图片不显示、链接404。
+.grid-container {
+    display: grid; <span class="code-comment">/* grid容器天然是BFC */</span>
+}
                     </div>
                 </div>
 
                 <div class="section" id="sec5">
-                    <h3>1.5 列表与表格代码</h3>
+                    <h3 data-zh="1.5 居中布局方案汇总" data-en="1.5 Centering Solutions Summary">1.5 居中布局方案汇总</h3>
                     
                     <div class="code-block">
-<span class="code-comment">&lt;!-- 无序列表 --&gt;</span>
-&lt;ul&gt;
-    &lt;li&gt;苹果&lt;/li&gt;
-    &lt;li&gt;香蕉&lt;/li&gt;
-    &lt;li&gt;橙子&lt;/li&gt;
-&lt;/ul&gt;
+<span class="code-comment">/* 方案1：Flex 完美居中（推荐） */</span>
+.center-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-<span class="code-comment">&lt;!-- 有序列表 --&gt;</span>
-&lt;ol&gt;
-    &lt;li&gt;第一步：新建文件&lt;/li&gt;
-    &lt;li&gt;第二步：编写代码&lt;/li&gt;
-    &lt;li&gt;第三步：保存预览&lt;/li&gt;
-&lt;/ol&gt;
+<span class="code-comment">/* 方案2：Grid 一行居中 */</span>
+.center-grid {
+    display: grid;
+    place-items: center;
+}
 
-<span class="code-comment">&lt;!-- 表格 --&gt;</span>
-&lt;table&gt;
-    &lt;thead&gt;
-        &lt;tr&gt;
-            &lt;th&gt;姓名&lt;/th&gt;
-            &lt;th&gt;年龄&lt;/th&gt;
-        &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-        &lt;tr&gt;
-            &lt;td&gt;张三&lt;/td&gt;
-            &lt;td&gt;20&lt;/td&gt;
-        &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
+<span class="code-comment">/* 方案3：绝对定位+位移 */</span>
+.center-absolute {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
                     </div>
                 </div>
             </div>
 
-            <!-- Tab 3：演示 -->
+            <!-- Tab 3：交互演示 -->
             <div class="tab-content" id="tab-demo">
-                <div class="section" id="sec1">
-                    <div class="demo-tip">
-                        浏览器实际渲染效果：HTML 定义内容，CSS 控制外观，JS 响应用户操作。
+                <div class="section">
+                    <div class="demo-tip" data-zh="拖动下方滑块，实时调整 padding、border、margin 的值，观察盒子模型各层的变化，直观理解四层结构。" data-en="Drag sliders to adjust padding, border, margin and see the four box model layers change in real time.">
+                        拖动下方滑块，实时调整 padding、border、margin 的值，观察盒子模型各层的变化，直观理解四层结构。
                     </div>
-                    <h4>三大技术协同效果演示</h4>
-                    <div class="demo-preview">
-                        <h2 style="color: #2563eb; margin-bottom: 12px;">我是标题（HTML+CSS）</h2>
-                        <p style="margin-bottom: 16px;">我是段落文字，由 HTML 定义内容。</p>
-                        <button onclick="alert('这是JavaScript交互效果！')" style="padding: 8px 16px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer;">
-                            点击我试试（JS交互）
-                        </button>
-                    </div>
-                </div>
 
-                <div class="section" id="sec2">
-                    <h4>HTML 结构层级示意</h4>
-                    <div class="demo-preview">
-                        <div style="border: 2px solid #94a3b8; padding: 16px; border-radius: 6px;">
-                            <strong style="color: #475569;">html（根）</strong>
-                            <div style="border: 2px solid #60a5fa; padding: 12px; margin: 12px 0; border-radius: 6px;">
-                                <strong style="color: #2563eb;">head（头部）</strong>
-                                <p style="font-size: 13px; color: #64748b; margin-top: 4px;">meta、title、style...</p>
-                            </div>
-                            <div style="border: 2px solid #34d399; padding: 12px; border-radius: 6px;">
-                                <strong style="color: #059669;">body（主体）</strong>
-                                <p style="font-size: 13px; color: #64748b; margin-top: 4px;">标题、段落、图片、按钮...</p>
-                            </div>
+                    <div class="demo-controls">
+                        <div class="control-item">
+                            <label data-zh="内边距 padding" data-en="Padding">内边距 padding</label>
+                            <input type="range" id="paddingRange" min="0" max="40" value="20">
+                            <div class="control-value"><span id="paddingValue">20</span> px</div>
+                        </div>
+                        <div class="control-item">
+                            <label data-zh="边框 border" data-en="Border">边框 border</label>
+                            <input type="range" id="borderRange" min="0" max="20" value="2">
+                            <div class="control-value"><span id="borderValue">2</span> px</div>
+                        </div>
+                        <div class="control-item">
+                            <label data-zh="外边距 margin" data-en="Margin">外边距 margin</label>
+                            <input type="range" id="marginRange" min="0" max="60" value="24">
+                            <div class="control-value"><span id="marginValue">24</span> px</div>
                         </div>
                     </div>
-                </div>
 
-                <div class="section" id="sec3">
-                    <h4>文本标签效果一览</h4>
-                    <div class="demo-preview">
-                        <h1 style="font-size: 32px; margin-bottom: 8px;">一级标题 h1</h1>
-                        <h2 style="font-size: 24px; margin-bottom: 8px;">二级标题 h2</h2>
-                        <h3 style="font-size: 20px; margin-bottom: 12px;">三级标题 h3</h3>
-                        <p style="margin-bottom: 12px;">普通段落 p 标签，文字正常显示。</p>
-                        <p>
-                            <strong>strong 加粗</strong>　
-                            <em>em 倾斜</em>　
-                            <u>下划线</u>
-                        </p>
-                        <hr style="margin: 16px 0;">
-                        <p style="font-size: 14px; color: #64748b;">分割线 hr 下方内容</p>
-                    </div>
-                </div>
-
-                <div class="section" id="sec4">
-                    <h4>图片与链接效果</h4>
-                    <div class="demo-preview">
-                        <p style="margin-bottom: 12px;">可点击的超链接：
-                            <a href="#" style="color: #2563eb; text-decoration: underline;">站内链接</a> 　
-                            <a href="#" style="color: #2563eb; text-decoration: underline;">新窗口打开</a>
-                        </p>
-                        <div style="width: 300px; height: 150px; background: #e2e8f0; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #64748b;">
-                            🖼️ 图片占位（img 标签）
-                        </div>
-                        <p style="font-size: 13px; color: #64748b; margin-top: 8px;">alt 属性：图片加载失败时显示这段文字</p>
-                    </div>
-                </div>
-
-                <div class="section" id="sec5">
-                    <h4>列表与表格实际效果</h4>
-                    <div class="demo-preview" style="display: flex; gap: 40px; flex-wrap: wrap;">
-                        <div>
-                            <p style="font-weight: 500; margin-bottom: 8px;">无序列表</p>
-                            <ul style="margin-left: 20px;">
-                                <li>HTML</li>
-                                <li>CSS</li>
-                                <li>JavaScript</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <p style="font-weight: 500; margin-bottom: 8px;">有序列表</p>
-                            <ol style="margin-left: 20px;">
-                                <li>新建文件</li>
-                                <li>编写代码</li>
-                                <li>保存预览</li>
-                            </ol>
+                    <div class="demo-stage">
+                        <div class="demo-box" id="demoBox">
+                            Demo Box
                         </div>
                     </div>
-                    
-                    <h4 style="margin-top: 20px;">表格效果</h4>
-                    <table class="demo-table">
-                        <thead>
-                            <tr>
-                                <th>技术</th>
-                                <th>作用</th>
-                                <th>学习难度</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>HTML</td><td>页面结构</td><td>★☆☆</td></tr>
-                            <tr><td>CSS</td><td>页面样式</td><td>★★☆</td></tr>
-                            <tr><td>JavaScript</td><td>页面交互</td><td>★★★</td></tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </main>
     </div>
 
     <script>
+        // 中英双语切换
+        const langBtns = document.querySelectorAll('.lang-btn');
+        let currentLang = 'zh';
+
+        function switchLang(lang) {
+            currentLang = lang;
+            langBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            document.querySelectorAll('[data-zh]').forEach(el => {
+                el.textContent = el.getAttribute('data-' + lang);
+            });
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        }
+
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchLang(btn.dataset.lang);
+            });
+        });
+
+        // 页面加载自动渲染中文
+        document.addEventListener('DOMContentLoaded', () => {
+            switchLang('zh');
+        });
+
         // Tab 切换功能
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
@@ -608,25 +751,48 @@
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const tabName = btn.getAttribute('data-tab');
-                
-                // 切换按钮选中状态
                 tabBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                
-                // 切换内容显示
                 tabContents.forEach(content => content.classList.remove('active'));
                 document.getElementById('tab-' + tabName).classList.add('active');
             });
         });
 
-        // 侧边栏点击高亮
+        // 侧边栏点击高亮 + 锚点跳转
         const menuLinks = document.querySelectorAll('.menu-list a');
         menuLinks.forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', (e) => {
                 menuLinks.forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
             });
         });
+
+        // 盒子模型交互演示
+        const demoBox = document.getElementById('demoBox');
+        const paddingRange = document.getElementById('paddingRange');
+        const borderRange = document.getElementById('borderRange');
+        const marginRange = document.getElementById('marginRange');
+        const paddingValue = document.getElementById('paddingValue');
+        const borderValue = document.getElementById('borderValue');
+        const marginValue = document.getElementById('marginValue');
+
+        function updateBox() {
+            const p = paddingRange.value;
+            const b = borderRange.value;
+            const m = marginRange.value;
+            
+            demoBox.style.padding = p + 'px';
+            demoBox.style.borderWidth = b + 'px';
+            demoBox.style.margin = m + 'px';
+            
+            paddingValue.textContent = p;
+            borderValue.textContent = b;
+            marginValue.textContent = m;
+        }
+
+        paddingRange.addEventListener('input', updateBox);
+        borderRange.addEventListener('input', updateBox);
+        marginRange.addEventListener('input', updateBox);
     </script>
 </body>
 </html>

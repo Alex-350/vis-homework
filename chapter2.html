@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第2章 CSS样式与页面美化 - 网页制作入门教程</title>
+    <title data-zh="第2章 Flex弹性布局 - 页面布局实战教程" data-en="Chapter 2 Flexbox Layout">第2章 Flex弹性布局 - 页面布局实战教程</title>
     <style>
         * {
             margin: 0;
@@ -16,7 +16,31 @@
             color: #1e293b;
         }
 
-        /* 顶部导航 */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            overflow: hidden;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .lang-btn {
+            border: none;
+            background: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #64748b;
+        }
+        .lang-btn.active {
+            background: #1e293b;
+            color: white;
+        }
+
         .top-bar {
             height: 8px;
             background: #1e40af;
@@ -33,7 +57,6 @@
             font-size: 14px;
         }
 
-        /* 主布局：侧边栏 + 内容区 */
         .layout {
             max-width: 1200px;
             margin: 20px auto;
@@ -43,7 +66,6 @@
             align-items: flex-start;
         }
 
-        /* 左侧侧边栏 */
         .sidebar {
             width: 240px;
             flex-shrink: 0;
@@ -90,7 +112,6 @@
             margin: 16px 0;
         }
 
-        /* 右侧内容区 */
         .main-content {
             flex-grow: 1;
             background: white;
@@ -100,7 +121,6 @@
             min-height: 600px;
         }
 
-        /* 章节标题 */
         .chapter-title {
             font-size: 26px;
             color: #0f172a;
@@ -112,7 +132,6 @@
             margin-bottom: 24px;
         }
 
-        /* Tab 导航 */
         .tab-nav {
             display: flex;
             gap: 32px;
@@ -145,7 +164,6 @@
             background: #2563eb;
         }
 
-        /* Tab 内容 */
         .tab-content {
             display: none;
             line-height: 1.8;
@@ -154,19 +172,33 @@
             display: block;
         }
 
-        /* 内容样式 */
         .section {
-            margin-bottom: 40px;
+            margin-bottom: 48px;
+            scroll-margin-top: 20px;
         }
         .section h3 {
             font-size: 20px;
             color: #0f172a;
             margin-bottom: 12px;
         }
+        .section h4 {
+            font-size: 16px;
+            color: #1e293b;
+            margin: 16px 0 8px;
+        }
         .section p {
             color: #334155;
             margin-bottom: 12px;
             font-size: 15px;
+        }
+        .section ul {
+            color: #334155;
+            margin: 12px 0 12px 24px;
+            font-size: 15px;
+        }
+        .section li {
+            margin-bottom: 8px;
+            line-height: 1.7;
         }
         .highlight-box {
             background: #fef3c7;
@@ -176,8 +208,22 @@
             font-size: 14px;
             color: #92400e;
         }
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+        .compare-table th, .compare-table td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        .compare-table th {
+            background: #f8fafc;
+            font-weight: 500;
+        }
 
-        /* 代码块 */
         .code-block {
             background: #0f172a;
             color: #e2e8f0;
@@ -202,21 +248,35 @@
             color: #0c4a6e;
         }
 
-        /* 演示表格 */
-        .demo-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 16px 0;
-            font-size: 14px;
-        }
-        .demo-table th, .demo-table td {
+        .demo-panel {
             border: 1px solid #e2e8f0;
-            padding: 10px 12px;
-            text-align: left;
-        }
-        .demo-table th {
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
             background: #f8fafc;
+        }
+        .demo-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .control-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .control-item label {
+            font-size: 13px;
+            color: #475569;
             font-weight: 500;
+        }
+        .control-item select {
+            padding: 6px 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
         }
         .demo-tip {
             background: #f0f9ff;
@@ -227,278 +287,452 @@
             color: #075985;
         }
 
-        /* 演示效果框 */
-        .demo-preview {
-            border: 1px dashed #94a3b8;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 16px 0;
-            background: #f8fafc;
+        .flex-container {
+            background: white;
+            border: 1px dashed #cbd5e1;
+            border-radius: 6px;
+            padding: 16px;
+            min-height: 200px;
+            display: flex;
+            gap: 8px;
+        }
+        .flex-item {
+            background: #3b82f6;
+            color: white;
+            padding: 20px 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
     <div class="top-bar"></div>
 
+    <div class="lang-switch">
+        <button class="lang-btn active" data-lang="zh">中</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+
     <div class="back-home">
-        <a href="index.html">← 返回首页</a>
+        <a href="index.html" data-zh="← 返回首页" data-en="← Back Home">← 返回首页</a>
     </div>
 
     <div class="layout">
-        <!-- 左侧侧边栏 -->
         <aside class="sidebar">
-            <h4>章节目录</h4>
+            <h4 data-zh="章节目录" data-en="Contents">章节目录</h4>
             <ul class="menu-list">
-                <li><a href="#sec1" class="active">2.1 CSS是什么与三种引入方式</a></li>
-                <li><a href="#sec2">2.2 选择器</a></li>
-                <li><a href="#sec3">2.3 颜色与字体</a></li>
-                <li><a href="#sec4">2.4 盒子模型</a></li>
-                <li><a href="#sec5">2.5 Flex布局与卡片样式</a></li>
+                <li><a href="#sec1" class="active" data-zh="2.1 Flex基本概念" data-en="2.1 Flex Basics">2.1 Flex基本概念</a></li>
+                <li><a href="#sec2" data-zh="2.2 主轴方向与对齐" data-en="2.2 Main Axis Alignment">2.2 主轴方向与对齐</a></li>
+                <li><a href="#sec3" data-zh="2.3 交叉轴与换行" data-en="2.3 Cross Axis & Wrapping">2.3 交叉轴与换行</a></li>
+                <li><a href="#sec4" data-zh="2.4 弹性比例与排序" data-en="2.4 Flex & Order">2.4 弹性比例与排序</a></li>
+                <li><a href="#sec5" data-zh="2.5 经典Flex场景" data-en="2.5 Classic Patterns">2.5 经典Flex场景</a></li>
             </ul>
             <div class="sidebar-divider"></div>
             <ul class="menu-list">
-                <li><a href="#">↗ 练习文件下载</a></li>
-                <li><a href="#">↗ 完整参考手册</a></li>
+                <li><a href="#" data-zh="↗ 练习文件下载" data-en="↗ Exercise Files">↗ 练习文件下载</a></li>
+                <li><a href="#" data-zh="↗ 完整参考手册" data-en="↗ Reference">↗ 完整参考手册</a></li>
             </ul>
         </aside>
 
-        <!-- 右侧主内容 -->
         <main class="main-content">
-            <h2 class="chapter-title">2.1 CSS是什么与三种引入方式</h2>
-            <p class="chapter-subtitle">让网页从朴素变好看</p>
+            <h2 class="chapter-title" data-zh="第2章 Flex弹性布局" data-en="Chapter 2 Flexbox Layout">第2章 Flex弹性布局</h2>
+            <p class="chapter-subtitle" data-zh="现代一维布局首选方案，掌握弹性排列与对齐" data-en="Modern 1D layout solution for flexible alignment">现代一维布局首选方案，掌握弹性排列与对齐</p>
 
-            <!-- Tab 按钮 -->
             <div class="tab-nav">
-                <button class="tab-btn active" data-tab="lecture">📖 讲解</button>
-                <button class="tab-btn" data-tab="code">💻 关键代码</button>
-                <button class="tab-btn" data-tab="demo">▶️ 演示</button>
+                <button class="tab-btn active" data-tab="lecture" data-zh="📖 讲解" data-en="📖 Lecture">📖 讲解</button>
+                <button class="tab-btn" data-tab="code" data-zh="💻 关键代码" data-en="💻 Key Code">💻 关键代码</button>
+                <button class="tab-btn" data-tab="demo" data-zh="▶️ 交互演示" data-en="▶️ Demo">▶️ 交互演示</button>
             </div>
 
-            <!-- Tab 1：讲解内容 -->
             <div class="tab-content active" id="tab-lecture">
                 <div class="section" id="sec1">
-                    <h3>2.1 CSS是什么与三种引入方式</h3>
-                    <p>CSS 的全称是「层叠样式表」（Cascading Style Sheets）。HTML 负责页面里<strong>有什么</strong>，CSS 负责这些内容<strong>长什么样</strong>——颜色、大小、位置、间距、边框、背景，全都归 CSS 管。</p>
-                    <p>用装修打个比方：HTML 是一套「毛坯房」，有墙、有门、有窗户，但光秃秃的；CSS 就是「装修」——刷成什么颜色的墙、铺什么地板、家具怎么摆，房子立刻就好看了。</p>
-                    <p>把 CSS 写进网页有三种方式：</p>
-                    <p><strong>① 内联样式</strong>：直接写在某个标签的 <code>style</code> 属性里，只对这一个标签生效。改起来最麻烦，不推荐大量使用。</p>
-                    <p><strong>② 内部样式表</strong>：把所有样式集中写在 <code>&lt;head&gt;</code> 里的 <code>&lt;style&gt;</code> 标签中，作用范围是当前这一个页面。适合做单个小页面、练习时用。</p>
-                    <p><strong>③ 外部样式表</strong>：把样式单独写在一个 <code>.css</code> 文件里，再用 <code>&lt;link&gt;</code> 标签引入到 HTML 中。一个 CSS 文件可以被很多页面同时引用。</p>
+                    <h3 data-zh="2.1 Flex基本概念" data-en="2.1 Flexbox Basics">2.1 Flex基本概念</h3>
+                    <p data-zh="Flexbox（弹性盒子）是2009年提出、2017年正式标准化的一维布局模型，专门为解决「单行/单列内元素的排列、对齐、空间分配」问题而设计。" data-en="Flexbox is a 1D layout model standardized in 2017, designed for aligning and distributing space in a single row or column.">
+                        Flexbox（弹性盒子）是2009年提出、2017年正式标准化的一维布局模型，专门为解决「单行/单列内元素的排列、对齐、空间分配」问题而设计。
+                    </p>
 
-                    <div class="highlight-box">
-                        做网站推荐使用「外部样式表」：全站样式集中在一个文件里，改一处，所有页面同时生效，维护起来最省事。
+                    <h4 data-zh="Flex解决了什么痛点" data-en="What Problems Flex Solves">Flex解决了什么痛点</h4>
+                    <ul>
+                        <li data-zh="垂直居中：之前需要用各种hack技巧，现在一行代码搞定" data-en="Vertical centering: Previously required hacks, now one line of code">
+                            垂直居中：之前需要用各种hack技巧，现在一行代码搞定
+                        </li>
+                        <li data-zh="等分空间：多个元素自动平分宽度，无需计算百分比" data-en="Equal space: Elements divide width automatically, no math needed">
+                            等分空间：多个元素自动平分宽度，无需计算百分比
+                        </li>
+                        <li data-zh="弹性伸缩：空间多就撑满，空间少就压缩，自适应容器" data-en="Flexible sizing: Grow when roomy, shrink when tight, adapts to container">
+                            弹性伸缩：空间多就撑满，空间少就压缩，自适应容器
+                        </li>
+                        <li data-zh="顺序调整：不用改HTML，只用CSS就能调换元素顺序" data-en="Reordering: Change order with CSS only, no HTML changes">
+                            顺序调整：不用改HTML，只用CSS就能调换元素顺序
+                        </li>
+                    </ul>
+
+                    <h4 data-zh="核心术语体系" data-en="Core Terminology">核心术语体系</h4>
+                    <ul>
+                        <li><strong data-zh="弹性容器" data-en="Flex container"></strong> <span data-zh="：设置了 display:flex 的父元素，是规则的制定者" data-en=": Parent with display:flex, sets the rules"></span></li>
+                        <li><strong data-zh="弹性项" data-en="Flex item"></strong> <span data-zh="：容器的直接子元素，自动成为弹性项，遵循弹性规则" data-en=": Direct children, automatically follow flex rules"></span></li>
+                        <li><strong data-zh="主轴" data-en="Main axis"></strong> <span data-zh="：弹性项排列的主要方向，是尺寸分配的主要方向" data-en=": Primary direction of arrangement, where space is distributed"></span></li>
+                        <li><strong data-zh="交叉轴" data-en="Cross axis"></strong> <span data-zh="：垂直于主轴的方向，负责对齐和换行" data-en=": Perpendicular to main axis, handles alignment and wrapping"></span></li>
+                        <li><strong data-zh="起始线/终止线" data-en="Start / End lines"></strong> <span data-zh="：主轴和交叉轴的两端，对齐的基准" data-en=": Ends of each axis, alignment reference points"></span></li>
+                    </ul>
+
+                    <div class="highlight-box" data-zh="核心优势：维度分离。主轴管排列和分配，交叉轴管对齐。两套系统独立工作，互不干扰。" data-en="Key advantage: Separation of dimensions. Main axis = arrangement + distribution. Cross axis = alignment. Independent systems.">
+                        核心优势：维度分离。主轴管排列和分配，交叉轴管对齐。两套系统独立工作，互不干扰。
                     </div>
                 </div>
 
                 <div class="section" id="sec2">
-                    <h3>2.2 选择器</h3>
-                    <p>CSS 的每条规则都长这样：<code>选择器 { 属性: 值; }</code>。选择器的作用，就是「告诉浏览器：我要美化谁」。它负责从一大堆标签里，精准找到你想改样式的那一个或那一类标签。</p>
-                    <p>最常用的三种选择器：</p>
-                    <p><strong>标签选择器</strong>：直接写标签名，例如 <code>p { }</code>，会选中页面上所有的 <code>&lt;p&gt;</code> 段落，统一样式。</p>
-                    <p><strong>类选择器</strong>：在类名前加一个点，例如 <code>.box { }</code>，HTML 里用 <code>class="box"</code> 来标记。一个类可以给很多标签用，一个标签也能同时用好几个类。</p>
-                    <p><strong>id 选择器</strong>：在 id 名前加井号，例如 <code>#title { }</code>。id 在一个页面里必须唯一，只能给一个标签用。</p>
+                    <h3 data-zh="2.2 主轴方向与对齐" data-en="2.2 Main Axis & Alignment">2.2 主轴方向与对齐</h3>
+                    
+                    <h4 data-zh="主轴方向 flex-direction" data-en="flex-direction">主轴方向 flex-direction</h4>
+                    <p data-zh="定义主轴的方向，也就是弹性项排列的方向。" data-en="Defines the main axis direction, how items are arranged.">
+                        定义主轴的方向，也就是弹性项排列的方向。
+                    </p>
+                    <ul>
+                        <li><strong>row</strong> <span data-zh="：水平从左到右，默认值" data-en=": Horizontal left to right, default"></span></li>
+                        <li><strong>row-reverse</strong> <span data-zh="：水平从右到左" data-en=": Horizontal right to left"></span></li>
+                        <li><strong>column</strong> <span data-zh="：垂直从上到下" data-en=": Vertical top to bottom"></span></li>
+                        <li><strong>column-reverse</strong> <span data-zh="：垂直从下到上" data-en=": Vertical bottom to top"></span></li>
+                    </ul>
 
-                    <div class="highlight-box">
-                        类选择器最灵活、用得最多。想让全站按钮、卡片长得一模一样，就是靠统一的 class 来实现的。
-                    </div>
+                    <h4 data-zh="主轴对齐 justify-content" data-en="justify-content">主轴对齐 justify-content</h4>
+                    <p data-zh="控制弹性项在主轴上的分布方式，是最常用的Flex属性之一。" data-en="Controls distribution of items along the main axis. One of the most used flex properties.">
+                        控制弹性项在主轴上的分布方式，是最常用的Flex属性之一。
+                    </p>
+                    
+                    <table class="compare-table">
+                        <thead>
+                            <tr>
+                                <th data-zh="属性值" data-en="Value">属性值</th>
+                                <th data-zh="效果" data-en="Effect">效果</th>
+                                <th data-zh="典型应用" data-en="Typical Use">典型应用</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>flex-start</td>
+                                <td data-zh="靠起始线对齐" data-en="Align to start line">靠起始线对齐</td>
+                                <td data-zh="默认状态、左对齐菜单" data-en="Default, left-aligned menus">默认状态、左对齐菜单</td>
+                            </tr>
+                            <tr>
+                                <td>center</td>
+                                <td data-zh="居中对齐" data-en="Center alignment">居中对齐</td>
+                                <td data-zh="按钮组、分页、居中标题" data-en="Button groups, pagination, centered titles">按钮组、分页、居中标题</td>
+                            </tr>
+                            <tr>
+                                <td>flex-end</td>
+                                <td data-zh="靠终止线对齐" data-en="Align to end line">靠终止线对齐</td>
+                                <td data-zh="右对齐按钮、底部操作栏" data-en="Right-aligned buttons, bottom action bars">右对齐按钮、底部操作栏</td>
+                            </tr>
+                            <tr>
+                                <td>space-between</td>
+                                <td data-zh="两端对齐，中间平分空间" data-en="Space between items">两端对齐，中间平分空间</td>
+                                <td data-zh="导航栏、两端分布布局" data-en="Navbars, distributed layouts">导航栏、两端分布布局</td>
+                            </tr>
+                            <tr>
+                                <td>space-around</td>
+                                <td data-zh="每个元素两侧空间相等" data-en="Equal space around each item">每个元素两侧空间相等</td>
+                                <td data-zh="卡片组、均匀分布图标" data-en="Card groups, evenly spaced icons">卡片组、均匀分布图标</td>
+                            </tr>
+                            <tr>
+                                <td>space-evenly</td>
+                                <td data-zh="所有间距完全相等" data-en="All gaps completely equal">所有间距完全相等</td>
+                                <td data-zh="精确均匀分布" data-en="Precise even distribution">精确均匀分布</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="section" id="sec3">
-                    <h3>2.3 颜色与字体</h3>
-                    <p>颜色有三种常见写法：</p>
-                    <p><strong>命名色</strong>：直接写颜色英文，如 <code>red</code>、<code>blue</code>、<code>green</code>，简单但可选颜色少。</p>
-                    <p><strong>十六进制</strong>：以 <code>#</code> 开头加六位，如 <code>#2563eb</code>（本教程的主蓝色）。这是网页里最常用的写法。</p>
-                    <p><strong>RGB</strong>：<code>rgb(红, 绿, 蓝)</code>，如 <code>rgb(37, 99, 235)</code>，和上面的十六进制是同一个蓝色。</p>
-                    <p>控制文字外观的几个常用属性：</p>
-                    <p><code>color</code> 文字颜色；<code>font-family</code> 字体族；<code>font-size</code> 字号（单位 px）；<code>font-weight</code> 粗细（normal 正常 / bold 加粗）；<code>text-align</code> 对齐方式（left / center / right）。</p>
-                    <p>把它们组合起来，就能轻松地做出一行颜色漂亮、大小合适、居中对齐的文字。</p>
+                    <h3 data-zh="2.3 交叉轴与换行" data-en="2.3 Cross Axis & Wrapping">2.3 交叉轴与换行</h3>
+                    
+                    <h4 data-zh="交叉轴对齐 align-items" data-en="align-items">交叉轴对齐 align-items</h4>
+                    <p data-zh="控制弹性项在交叉轴上的对齐方式，单行时生效。" data-en="Controls alignment on the cross axis. Works for single line.">
+                        控制弹性项在交叉轴上的对齐方式，单行时生效。
+                    </p>
+                    <ul>
+                        <li><strong>stretch</strong> <span data-zh="：拉伸填满，默认值。元素高度不一致时全部拉平" data-en=": Stretch to fill, default. Equalizes heights"></span></li>
+                        <li><strong>flex-start</strong> <span data-zh="：靠交叉轴起始线" data-en=": Align to cross start"></span></li>
+                        <li><strong>center</strong> <span data-zh="：交叉轴居中，最常用" data-en=": Cross center, most common"></span></li>
+                        <li><strong>flex-end</strong> <span data-zh="：靠交叉轴终止线" data-en=": Align to cross end"></span></li>
+                        <li><strong>baseline</strong> <span data-zh="：文字基线对齐" data-en=": Text baseline alignment"></span></li>
+                    </ul>
+
+                    <h4 data-zh="换行模式 flex-wrap" data-en="flex-wrap">换行模式 flex-wrap</h4>
+                    <p data-zh="默认情况下，所有弹性项挤在一行，空间不足时自动压缩。设置换行后，空间不足会自动换到下一行。" data-en="By default all items squeeze into one line, shrinking when tight. Wrapping moves excess items to new lines.">
+                        默认情况下，所有弹性项挤在一行，空间不足时自动压缩。设置换行后，空间不足会自动换到下一行。
+                    </p>
+                    <ul>
+                        <li><strong>nowrap</strong> <span data-zh="：不换行，默认" data-en=": No wrap, default"></span></li>
+                        <li><strong>wrap</strong> <span data-zh="：正常换行" data-en=": Normal wrapping"></span></li>
+                        <li><strong>wrap-reverse</strong> <span data-zh="：反向换行，从下往上排" data-en=": Reverse wrapping, bottom to top"></span></li>
+                    </ul>
+
+                    <h4 data-zh="多行对齐 align-content" data-en="align-content">多行对齐 align-content</h4>
+                    <p data-zh="只有在换行模式下，有多行弹性项时才生效。控制行与行之间在交叉轴的分布方式。" data-en="Only works with wrapping and multiple lines. Controls distribution of lines along cross axis.">
+                        只有在换行模式下，有多行弹性项时才生效。控制行与行之间在交叉轴的分布方式。
+                    </p>
+
+                    <div class="highlight-box" data-zh="常见混淆：align-items管单行对齐，align-content管多行分布。只有一行时align-content无效。" data-en="Common confusion: align-items = single line alignment. align-content = multi-line distribution. No effect with only one line.">
+                        常见混淆：align-items管单行对齐，align-content管多行分布。只有一行时align-content无效。
+                    </div>
                 </div>
 
                 <div class="section" id="sec4">
-                    <h3>2.4 盒子模型</h3>
-                    <p>这是 CSS 里最重要的概念之一：浏览器会把每一个 HTML 元素，都看成一个「盒子」。这个盒子从内到外一共四层：</p>
-                    <p><strong>content 内容</strong>：盒子最中间，真正放文字、图片的地方。</p>
-                    <p><strong>padding 内边距</strong>：内容与边框之间的空白，把内容「往里推」。</p>
-                    <p><strong>border 边框</strong>：围着内容那一圈的线，可以设置粗细、颜色、圆角。</p>
-                    <p><strong>margin 外边距</strong>：盒子与盒子之间的距离，把这个盒子「往外推」。</p>
+                    <h3 data-zh="2.4 弹性比例与排序" data-en="2.4 Flex Factors & Order">2.4 弹性比例与排序</h3>
+                    
+                    <h4 data-zh="放大比例 flex-grow" data-en="flex-grow">放大比例 flex-grow</h4>
+                    <p data-zh="当主轴有剩余空间时，弹性项按比例瓜分剩余空间。默认值0，不放大。" data-en="When there's extra space on main axis, items grow proportionally. Default 0 = no growth.">
+                        当主轴有剩余空间时，弹性项按比例瓜分剩余空间。默认值0，不放大。
+                    </p>
+                    <ul>
+                        <li data-zh="所有项flex-grow都为1：平分剩余空间" data-en="All items = 1: divide extra space equally">所有项flex-grow都为1：平分剩余空间</li>
+                        <li data-zh="A为2，B为1：剩余空间分3份，A拿2份，B拿1份" data-en="A=2, B=1: 3 parts total, A gets 2, B gets 1">A为2，B为1：剩余空间分3份，A拿2份，B拿1份</li>
+                        <li data-zh="注意：分配的是「剩余空间」，不是总宽度" data-en="Note: distributes extra space, not total width">注意：分配的是「剩余空间」，不是总宽度</li>
+                    </ul>
 
-                    <div class="highlight-box">
-                        一句话记住：padding 是在盒子内部撑出空白，margin 是把盒子和旁边元素推开。卡片之间留出的呼吸感，主要靠它们。
+                    <h4 data-zh="缩小比例 flex-shrink" data-en="flex-shrink">缩小比例 flex-shrink</h4>
+                    <p data-zh="当主轴空间不足时，弹性项按比例压缩。默认值1，自动压缩。" data-en="When space is insufficient, items shrink proportionally. Default 1 = auto shrink.">
+                        当主轴空间不足时，弹性项按比例压缩。默认值1，自动压缩。
+                    </p>
+                    <ul>
+                        <li data-zh="设为0：禁止压缩，元素保持原始宽度" data-en="Set to 0: never shrink, keep original width">设为0：禁止压缩，元素保持原始宽度</li>
+                        <li data-zh="数值越大，压缩得越多" data-en="Higher value = shrinks more">数值越大，压缩得越多</li>
+                    </ul>
+
+                    <h4 data-zh="基准尺寸 flex-basis" data-en="flex-basis">基准尺寸 flex-basis</h4>
+                    <p data-zh="在分配空间之前，弹性项的初始尺寸。可以是像素、百分比，默认auto（由内容决定）。" data-en="Initial size before space distribution. Can be px, %. Default auto = content-based.">
+                        在分配空间之前，弹性项的初始尺寸。可以是像素、百分比，默认auto（由内容决定）。
+                    </p>
+
+                    <h4 data-zh="排序 order" data-en="order">排序 order</h4>
+                    <p data-zh="控制弹性项的排列顺序，数值越小越靠前。默认值0。可以是负数。" data-en="Controls display order. Smaller = earlier. Default 0. Can be negative.">
+                        控制弹性项的排列顺序，数值越小越靠前。默认值0。可以是负数。
+                    </p>
+                    <div class="code-note" data-zh="注意：order只改变视觉顺序，不改变DOM顺序。屏幕阅读器和Tab键仍然按HTML顺序访问。" data-en="Note: order only changes visual order, not DOM order. Screen readers and tab order follow HTML.">
+                        注意：order只改变视觉顺序，不改变DOM顺序。屏幕阅读器和Tab键仍然按HTML顺序访问。
                     </div>
                 </div>
 
                 <div class="section" id="sec5">
-                    <h3>2.5 Flex布局与卡片样式</h3>
-                    <p>以前要把一排元素整齐地横着排，写法很麻烦。现在只要给容器加上 <code>display: flex</code>，它里面的子元素就会自动横向排成一行，非常省事。</p>
-                    <p>Flex 里两个最常用的对齐属性：</p>
-                    <p><code>justify-content</code>：控制子元素在「主轴」（默认横向）上的对齐，常用值有 <code>center</code> 居中、<code>space-between</code> 两端对齐。</p>
-                    <p><code>align-items</code>：控制子元素在「交叉轴」（默认纵向）上的对齐，常用值 <code>center</code> 垂直居中。</p>
-                    <p>配合前面学的 padding、border、border-radius，就能把一个个内容块做成漂漂亮亮的卡片，再用 Flex 让它们并排整齐排列。</p>
+                    <h3 data-zh="2.5 经典Flex布局场景" data-en="2.5 Classic Flexbox Patterns">2.5 经典Flex布局场景</h3>
+                    
+                    <h4 data-zh="场景1：完美居中" data-en="Pattern 1: Perfect Centering">场景1：完美居中</h4>
+                    <p data-zh="父元素设置三行代码，实现子元素水平垂直同时居中。这是Flex最广为人知的用法。" data-en="Three lines on parent centers child perfectly. Flex's most famous use case.">
+                        父元素设置三行代码，实现子元素水平垂直同时居中。这是Flex最广为人知的用法。
+                    </p>
 
-                    <div class="highlight-box">
-                        学会 Flex，你就能做出本教程首页那种「一排卡片整齐排列」的效果——这也是现代网页最常见的布局方式。
-                    </div>
+                    <h4 data-zh="场景2：两端对齐导航栏" data-en="Pattern 2: Space-between Navbar">场景2：两端对齐导航栏</h4>
+                    <p data-zh="左侧品牌，右侧菜单，自动贴靠两端。用space-between实现，无需浮动，无需margin。" data-en="Brand left, menu right, stick to ends. No floats, no margins needed.">
+                        左侧品牌，右侧菜单，自动贴靠两端。用space-between实现，无需浮动，无需margin。
+                    </p>
+
+                    <h4 data-zh="场景3：自适应卡片流" data-en="Pattern 3: Responsive Card Flow">场景3：自适应卡片流</h4>
+                    <p data-zh="flex-wrap: wrap + gap，卡片自动换行，容器宽就多排几列，容器窄就少排几列。" data-en="flex-wrap: wrap + gap. Cards wrap automatically. More columns when wide, fewer when narrow.">
+                        flex-wrap: wrap + gap，卡片自动换行，容器宽就多排几列，容器窄就少排几列。
+                    </p>
+
+                    <h4 data-zh="场景4：底栏固定按钮" data-en="Pattern 4: Bottom Bar Buttons">场景4：底栏固定按钮</h4>
+                    <p data-zh="一个按钮固定宽度，另一个按钮撑满剩余空间。用flex: 0 0 100px和flex: 1配合实现。" data-en="One fixed width button, one fills remaining space. flex: 0 0 100px + flex: 1.">
+                        一个按钮固定宽度，另一个按钮撑满剩余空间。用flex: 0 0 100px和flex: 1配合实现。
+                    </p>
+
+                    <h4 data-zh="场景5：等高列" data-en="Pattern 5: Equal Height Columns">场景5：等高列</h4>
+                    <p data-zh="同一行的列自动保持等高，无需设置固定高度。内容多的列有多高，其他列就跟着多高。" data-en="Columns automatically same height. Tallest content defines all heights. No fixed height needed.">
+                        同一行的列自动保持等高，无需设置固定高度。内容多的列有多高，其他列就跟着多高。
+                    </p>
                 </div>
             </div>
 
-            <!-- Tab 2：关键代码 -->
             <div class="tab-content" id="tab-code">
-                <div class="section">
-                    <h3>关键代码 ① CSS 的三种引入方式</h3>
-                    <p>同一段样式，可以用三种不同的方式写进页面，适用场景各不相同。</p>
-
+                <div class="section" id="sec1">
+                    <h3 data-zh="2.1 启用Flex布局" data-en="2.1 Enable Flexbox">2.1 启用Flex布局</h3>
                     <div class="code-block">
-<span class="code-comment">/* ① 内联样式：写在标签的 style 里，只作用于这一个标签 */</span>
-&lt;p style="color: red; font-size: 20px;"&gt;我是红色大字&lt;/p&gt;
-<span class="code-comment">/* 适用：临时改一个标签，不推荐大量使用 */</span>
+<span class="code-comment">/* 父容器：弹性容器 */</span>
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 16px;
+}
 
-<span class="code-comment">/* ② 内部样式表：写在 &lt;head&gt; 的 &lt;style&gt; 里，作用本页 */</span>
-&lt;style&gt;
-    p { color: blue; }   <span class="code-comment">/* 本页所有段落变蓝 */</span>
-&lt;/style&gt;
-<span class="code-comment">/* 适用：单个小页面、做练习时 */</span>
-
-<span class="code-comment">/* ③ 外部样式表：单独的 style.css 文件，用 link 引入 */</span>
-&lt;link rel="stylesheet" href="style.css"&gt;
-<span class="code-comment">/* 适用：正式网站，多个页面共用一份样式，推荐 */</span>
+<span class="code-comment">/* 子元素：弹性项 */</span>
+.flex-item {
+    flex: 1 1 auto;
+}
                     </div>
+                    <div class="code-note" data-zh="gap属性是现代写法，直接设置元素间距，比margin更干净，不会出现边缘边距折叠问题。" data-en="gap sets spacing cleanly. No margin collapse issues at edges.">
+                        gap属性是现代写法，直接设置元素间距，比margin更干净，不会出现边缘边距折叠问题。
+                    </div>
+                </div>
 
-                    <h3>关键代码 ② 三种选择器</h3>
-                    <p>标签、类、id 三种选择器，优先级依次升高。</p>
-
+                <div class="section" id="sec2">
+                    <h3 data-zh="2.2 主轴对齐完整写法" data-en="2.2 Main Axis Alignment">2.2 主轴对齐完整写法</h3>
                     <div class="code-block">
-<span class="code-comment">/* 标签选择器：选中所有 &lt;p&gt; 标签，全站段落统一 */</span>
-p {
-    color: #334155;
-    line-height: 1.8;
+.container {
+    display: flex;
+    
+    <span class="code-comment">/* 主轴方向 */</span>
+    flex-direction: row;
+    
+    <span class="code-comment">/* 主轴对齐 */</span>
+    justify-content: flex-start;
+    
+    <span class="code-comment">/* 交叉轴对齐 */</span>
+    align-items: stretch;
+    
+    <span class="code-comment">/* 换行方式 */</span>
+    flex-wrap: wrap;
 }
-
-<span class="code-comment">/* 类选择器：用 class="card" 标记的元素，最灵活最常用 */</span>
-.card {
-    background: white;
-    padding: 16px;
-}
-
-<span class="code-comment">/* id 选择器：用 id="title" 的元素，一个页面只能用一次 */</span>
-#title {
-    font-size: 26px;
-    color: #0f172a;
-}
-
-<span class="code-comment">/* 优先级：id 选择器 # &gt; 类选择器 . &gt; 标签选择器 */</span>
                     </div>
+                </div>
 
-                    <div class="code-note">
-                        <strong>记忆要点：</strong><br>
-                        1. 标签选择器写标签名，类选择器前面加点 .，id 选择器前面加井号 #<br>
-                        2. 一个类可以反复用在很多元素上，id 在页面里必须唯一<br>
-                        3. 优先级：id &gt; class &gt; 标签，想让样式生效就用更具体的选择器
-                    </div>
-
-                    <h3>关键代码 ③ 一个完整的卡片样式</h3>
-                    <p>把前面学过的属性组合起来，做出一张好看的卡片。</p>
-
+                <div class="section" id="sec3">
+                    <h3 data-zh="2.3 完美居中代码" data-en="2.3 Perfect Centering Code">2.3 完美居中代码</h3>
                     <div class="code-block">
-<span class="code-comment">&lt;!-- 这是对应的 HTML 结构 --&gt;</span>
-&lt;div class="card"&gt;
-    &lt;h3&gt;卡片标题&lt;/h3&gt;
-    &lt;p&gt;这是卡片里的一段说明文字。&lt;/p&gt;
-&lt;/div&gt;
-
-<span class="code-comment">/* 这是对应的 CSS 样式 */</span>
-.card {
-    background: #ffffff;            <span class="code-comment">/* 卡片背景白色 */</span>
-    border: 1px solid #e2e8f0;      <span class="code-comment">/* 一圈浅灰边框 */</span>
-    border-radius: 10px;            <span class="code-comment">/* 四角圆润 */</span>
-    padding: 20px;                  <span class="code-comment">/* 内容与边框的内边距 */</span>
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08); <span class="code-comment">/* 淡淡的阴影 */</span>
-}
-.card:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15); <span class="code-comment">/* 鼠标移上去阴影变深 */</span>
-}
-.card h3 {
-    color: #2563eb;                 <span class="code-comment">/* 标题用主题蓝 */</span>
-    margin-bottom: 8px;
+<span class="code-comment">/* 三行代码实现完美居中 */</span>
+.center-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
 }
                     </div>
+                </div>
 
-                    <div class="code-note">
-                        <strong>记忆要点：</strong><br>
-                        1. 一张好看的卡片 = 白底 + 边框 + 圆角 + 内边距 + 阴影<br>
-                        2. hover 是鼠标悬停时的效果，能让卡片「活」起来<br>
-                        3. CSS 属性一句一个分号，最后一句可省略
+                <div class="section" id="sec4">
+                    <h3 data-zh="2.4 弹性比例控制" data-en="2.4 Flex Factor Control">2.4 弹性比例控制</h3>
+                    <div class="code-block">
+.item-fixed {
+    flex: 0 0 200px; <span class="code-comment">/* 不放大不缩小，固定200px */</span>
+}
+
+.item-fill {
+    flex: 1 1 auto; <span class="code-comment">/* 撑满剩余空间 */</span>
+}
+
+.item-double {
+    flex-grow: 2; <span class="code-comment">/* 占2份剩余空间 */</span>
+}
+
+.item-no-shrink {
+    flex-shrink: 0; <span class="code-comment">/* 禁止压缩 */</span>
+}
+                    </div>
+                </div>
+
+                <div class="section" id="sec5">
+                    <h3 data-zh="2.5 导航栏布局模板" data-en="2.5 Navbar Layout Template">2.5 导航栏布局模板</h3>
+                    <div class="code-block">
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 64px;
+}
+
+.navbar__brand { font-weight: 600; }
+.navbar__menu { 
+    display: flex; 
+    gap: 24px;
+    list-style: none;
+}
                     </div>
                 </div>
             </div>
 
-            <!-- Tab 3：演示 -->
             <div class="tab-content" id="tab-demo">
                 <div class="section">
-                    <div class="demo-tip">
-                        下面用同一组内容，左边是「没有写任何 CSS」的朴素样子，右边是「加上 CSS 美化」后的样子，一眼就能看出 CSS 的作用。
+                    <div class="demo-tip" data-zh="切换下方选项，实时观察Flex容器的主轴方向、对齐方式和换行效果。" data-en="Toggle options to see flex direction, alignment and wrapping in real time.">
+                        切换下方选项，实时观察Flex容器的主轴方向、对齐方式和换行效果。
                     </div>
 
-                    <h4>美化前 vs 美化后</h4>
-                    <div class="demo-preview" style="display:flex; gap:16px; flex-wrap:wrap;">
-                        <div style="flex:1; min-width:220px; border:1px solid #e2e8f0; border-radius:8px; padding:16px;">
-                            <p style="font-size:13px; color:#64748b; margin-bottom:10px;">美化前（纯 HTML，无样式）</p>
-                            <h3>卡片标题</h3>
-                            <p>这是卡片里的一段说明文字。没有颜色、没有间距、没有边框，就是浏览器默认的朴素样子。</p>
+                    <div class="demo-controls">
+                        <div class="control-item">
+                            <label data-zh="主轴方向 flex-direction" data-en="flex-direction">主轴方向 flex-direction</label>
+                            <select id="directionSelect">
+                                <option value="row">row（水平）</option>
+                                <option value="column">column（垂直）</option>
+                                <option value="row-reverse">row-reverse</option>
+                            </select>
                         </div>
-                        <div style="flex:1; min-width:220px; background:#2563eb; border-radius:10px; padding:20px; box-shadow:0 4px 16px rgba(37,99,235,0.3);">
-                            <p style="font-size:13px; color:#bfdbfe; margin-bottom:10px;">美化后（加了 CSS）</p>
-                            <h3 style="color:#ffffff; margin-bottom:8px;">卡片标题</h3>
-                            <p style="color:#eff6ff;">这是卡片里的一段说明文字。蓝底白字、圆角、间距和阴影都安排好了，是不是一下就精致多了？</p>
+                        <div class="control-item">
+                            <label data-zh="主轴对齐 justify-content" data-en="justify-content">主轴对齐 justify-content</label>
+                            <select id="justifySelect">
+                                <option value="flex-start">flex-start</option>
+                                <option value="center">center</option>
+                                <option value="flex-end">flex-end</option>
+                                <option value="space-between">space-between</option>
+                                <option value="space-around">space-around</option>
+                            </select>
+                        </div>
+                        <div class="control-item">
+                            <label data-zh="交叉轴对齐 align-items" data-en="align-items">交叉轴对齐 align-items</label>
+                            <select id="alignSelect">
+                                <option value="stretch">stretch（拉伸）</option>
+                                <option value="center">center</option>
+                                <option value="flex-start">flex-start</option>
+                                <option value="flex-end">flex-end</option>
+                            </select>
                         </div>
                     </div>
 
-                    <h4>常用 CSS 属性速查表</h4>
-                    <table class="demo-table">
-                        <thead>
-                            <tr>
-                                <th>属性</th>
-                                <th>作用</th>
-                                <th>示例值</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>color</td><td>文字颜色</td><td>red / #2563eb</td></tr>
-                            <tr><td>font-size</td><td>字号大小</td><td>14px / 16px</td></tr>
-                            <tr><td>font-weight</td><td>文字粗细</td><td>normal / bold</td></tr>
-                            <tr><td>background</td><td>背景颜色</td><td>#ffffff / #f0f9ff</td></tr>
-                            <tr><td>padding</td><td>内边距（内部留白）</td><td>16px / 20px</td></tr>
-                            <tr><td>margin</td><td>外边距（与外部距离）</td><td>16px auto</td></tr>
-                            <tr><td>border</td><td>边框</td><td>1px solid #e2e8f0</td></tr>
-                            <tr><td>border-radius</td><td>圆角</td><td>8px / 10px</td></tr>
-                            <tr><td>display:flex</td><td>弹性横向布局</td><td>flex</td></tr>
-                            <tr><td>text-align</td><td>文字对齐</td><td>left / center / right</td></tr>
-                        </tbody>
-                    </table>
+                    <div class="flex-container" id="flexDemo">
+                        <div class="flex-item">Item 1</div>
+                        <div class="flex-item">Item 2</div>
+                        <div class="flex-item">Item 3</div>
+                        <div class="flex-item">Item 4</div>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
     <script>
-        // Tab 切换功能
+        // 中英双语切换
+        const langBtns = document.querySelectorAll('.lang-btn');
+        let currentLang = 'zh';
+
+        function switchLang(lang) {
+            currentLang = lang;
+            langBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            document.querySelectorAll('[data-zh]').forEach(el => {
+                el.textContent = el.getAttribute('data-' + lang);
+            });
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        }
+
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchLang(btn.dataset.lang);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchLang('zh');
+        });
+
+        // Tab 切换
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
 
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const tabName = btn.getAttribute('data-tab');
-                
-                // 切换按钮选中状态
                 tabBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                
-                // 切换内容显示
                 tabContents.forEach(content => content.classList.remove('active'));
                 document.getElementById('tab-' + tabName).classList.add('active');
             });
         });
 
-        // 侧边栏点击高亮
+        // 侧边栏高亮
         const menuLinks = document.querySelectorAll('.menu-list a');
         menuLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -506,6 +740,22 @@ p {
                 link.classList.add('active');
             });
         });
+
+        // Flex交互演示
+        const flexDemo = document.getElementById('flexDemo');
+        const directionSelect = document.getElementById('directionSelect');
+        const justifySelect = document.getElementById('justifySelect');
+        const alignSelect = document.getElementById('alignSelect');
+
+        function updateFlex() {
+            flexDemo.style.flexDirection = directionSelect.value;
+            flexDemo.style.justifyContent = justifySelect.value;
+            flexDemo.style.alignItems = alignSelect.value;
+        }
+
+        directionSelect.addEventListener('change', updateFlex);
+        justifySelect.addEventListener('change', updateFlex);
+        alignSelect.addEventListener('change', updateFlex);
     </script>
 </body>
 </html>

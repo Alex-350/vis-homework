@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>网页制作入门教程</title>
+    <title data-zh="页面布局实战教程" data-en="Page Layout Tutorial">页面布局实战教程</title>
     <style>
         * {
             margin: 0;
@@ -14,6 +14,32 @@
         body {
             background-color: #f8fafc;
             color: #1e293b;
+        }
+
+        /* 语言切换 */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            overflow: hidden;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .lang-btn {
+            border: none;
+            background: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #64748b;
+        }
+        .lang-btn.active {
+            background: #1e293b;
+            color: white;
         }
 
         /* 顶部英雄区 */
@@ -177,107 +203,150 @@
     </style>
 </head>
 <body>
+    <!-- 语言切换 -->
+    <div class="lang-switch">
+        <button class="lang-btn active" data-lang="zh">中</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+
     <!-- 顶部英雄区 -->
     <div class="hero">
-        <div class="small-title">WEB TUTORIAL · BEGINNER</div>
-        <h1>《网页制作入门教程》</h1>
-        <div class="sub-title">从零开始学会做自己的网页</div>
-        <div class="info">HTML + CSS + JavaScript 全流程实战 · 零基础友好</div>
+        <div class="small-title" data-zh="PAGE LAYOUT · MASTERY" data-en="PAGE LAYOUT · MASTERY">PAGE LAYOUT · MASTERY</div>
+        <h1 data-zh="《页面布局实战教程》" data-en="Page Layout Mastery">《页面布局实战教程》</h1>
+        <div class="sub-title" data-zh="从理论到实战：掌握现代CSS布局核心方法" data-en="From Theory to Practice: Master Modern CSS Layout">从理论到实战：掌握现代CSS布局核心方法</div>
+        <div class="info" data-zh="HTML + CSS 全案例教学 · 交互式演示 · 零基础友好" data-en="HTML + CSS Case-based Learning · Interactive Demo · Beginner Friendly">HTML + CSS 全案例教学 · 交互式演示 · 零基础友好</div>
     </div>
 
     <!-- 导航栏 -->
     <div class="nav">
-        <a href="index.html">📚 章节</a>
-        <a href="#">💡 学习指南</a>
-        <a href="#">ℹ️ 关于</a>
+        <a href="index.html" data-zh="📚 章节" data-en="📚 Chapters">📚 章节</a>
+        <a href="#" data-zh="💡 学习指南" data-en="💡 Guide">💡 学习指南</a>
+        <a href="#" data-zh="ℹ️ 关于" data-en="ℹ️ About">ℹ️ 关于</a>
     </div>
 
     <!-- 主体内容 -->
     <div class="container">
-        <h2>课程章节</h2>
-        <p class="desc">点击任一卡片进入该章节，每章节含 3 个板块：📖 讲解 / 💻 关键代码 / ▶️ 演示。</p>
+        <h2 data-zh="课程章节" data-en="Course Chapters">课程章节</h2>
+        <p class="desc" data-zh="点击任一卡片进入该章节，每章节含 3 个板块：📖 讲解 / 💻 关键代码 / ▶️ 交互演示。" data-en="Click any card to enter. Each chapter has 3 sections: 📖 Lecture / 💻 Key Code / ▶️ Interactive Demo.">
+            点击任一卡片进入该章节，每章节含 3 个板块：📖 讲解 / 💻 关键代码 / ▶️ 交互演示。
+        </p>
 
         <div class="card-grid">
             <!-- 第1章 -->
             <div class="chapter-card" onclick="location.href='chapter1.html'">
-                <div class="status">✅ 已上线</div>
-                <div class="chapter-num">第 1 章</div>
-                <h3>网页基础与HTML结构</h3>
-                <p class="card-desc">入门必修：认识网页的本质</p>
-                <p class="card-text">了解网页的构成原理，学习HTML基本语法，掌握常用标签，写出第一个属于自己的完整网页文件。</p>
+                <div class="status" data-zh="✅ 已上线" data-en="✅ Online">✅ 已上线</div>
+                <div class="chapter-num" data-zh="第 1 章" data-en="Chapter 1">第 1 章</div>
+                <h3 data-zh="布局基础理论" data-en="Layout Fundamentals">布局基础理论</h3>
+                <p class="card-desc" data-zh="核心必修：理解布局的底层逻辑" data-en="Core: Understand the logic of layout">核心必修：理解布局的底层逻辑</p>
+                <p class="card-text" data-zh="深入理解盒子模型、正常文档流、CSS布局三剑客，掌握布局设计的核心原则与常见误区。" data-en="Deep dive into box model, normal flow, core layout principles and common pitfalls.">
+                    深入理解盒子模型、正常文档流、CSS布局三剑客，掌握布局设计的核心原则与常见误区。
+                </p>
                 <div class="tag-group">
-                    <span class="tag">HTML骨架</span>
-                    <span class="tag">常用标签</span>
-                    <span class="tag">文本与图片</span>
-                    <span class="tag">列表与表格</span>
+                    <span class="tag" data-zh="盒子模型" data-en="Box Model">盒子模型</span>
+                    <span class="tag" data-zh="文档流" data-en="Normal Flow">文档流</span>
+                    <span class="tag" data-zh="布局原则" data-en="Principles">布局原则</span>
+                    <span class="tag" data-zh="交互演示" data-en="Interactive">交互演示</span>
                 </div>
-                <a href="chapter1.html" class="enter-link">进入章节 →</a>
+                <a href="chapter1.html" class="enter-link" data-zh="进入章节 →" data-en="Enter Chapter →">进入章节 →</a>
             </div>
 
             <!-- 第2章 -->
             <div class="chapter-card" onclick="location.href='chapter2.html'">
-                <div class="status">✅ 已上线</div>
-                <div class="chapter-num">第 2 章</div>
-                <h3>CSS样式与页面美化</h3>
-                <p class="card-desc">让网页从朴素变好看</p>
-                <p class="card-text">学习CSS选择器、颜色字体、盒子模型，掌握页面布局方法，做出整齐美观的卡片和导航栏。</p>
+                <div class="status" data-zh="✅ 已上线" data-en="✅ Online">✅ 已上线</div>
+                <div class="chapter-num" data-zh="第 2 章" data-en="Chapter 2">第 2 章</div>
+                <h3 data-zh="Flex 弹性布局" data-en="Flexbox Layout">Flex 弹性布局</h3>
+                <p class="card-desc" data-zh="现代一维布局首选方案" data-en="Modern 1D layout solution">现代一维布局首选方案</p>
+                <p class="card-text" data-zh="系统讲解主轴与交叉轴、对齐方式、弹性比例，掌握导航栏、卡片流、居中布局等经典场景。" data-en="Master main/cross axis, alignment, flex grow, and classic patterns like navbar and card flow.">
+                    系统讲解主轴与交叉轴、对齐方式、弹性比例，掌握导航栏、卡片流、居中布局等经典场景。
+                </p>
                 <div class="tag-group">
-                    <span class="tag">选择器</span>
-                    <span class="tag">颜色字体</span>
-                    <span class="tag">盒子模型</span>
-                    <span class="tag">Flex布局</span>
+                    <span class="tag" data-zh="主轴交叉轴" data-en="Axis">主轴交叉轴</span>
+                    <span class="tag" data-zh="对齐方式" data-en="Alignment">对齐方式</span>
+                    <span class="tag" data-zh="弹性比例" data-en="Flex Grow">弹性比例</span>
+                    <span class="tag" data-zh="实时演示" data-en="Live Demo">实时演示</span>
                 </div>
-                <a href="chapter2.html" class="enter-link">进入章节 →</a>
+                <a href="chapter2.html" class="enter-link" data-zh="进入章节 →" data-en="Enter Chapter →">进入章节 →</a>
             </div>
 
             <!-- 第3章 -->
             <div class="chapter-card" onclick="location.href='chapter3.html'">
-                <div class="status">✅ 已上线</div>
-                <div class="chapter-num">第 3 章</div>
-                <h3>JavaScript交互效果</h3>
-                <p class="card-desc">让网页动起来</p>
-                <p class="card-text">学习JS基础语法，掌握事件监听和DOM操作，实现Tab切换、按钮点击、弹窗等常用交互效果。</p>
+                <div class="status" data-zh="✅ 已上线" data-en="✅ Online">✅ 已上线</div>
+                <div class="chapter-num" data-zh="第 3 章" data-en="Chapter 3">第 3 章</div>
+                <h3 data-zh="Grid 网格布局" data-en="Grid Layout">Grid 网格布局</h3>
+                <p class="card-desc" data-zh="二维布局终极解决方案" data-en="Ultimate 2D layout system">二维布局终极解决方案</p>
+                <p class="card-text" data-zh="掌握网格轨道定义、单元格命名、区域划分，实现复杂仪表盘、画廊、响应式网格等二维布局。" data-en="Master grid tracks, named areas, and build complex dashboards, galleries and responsive grids.">
+                    掌握网格轨道定义、单元格命名、区域划分，实现复杂仪表盘、画廊、响应式网格等二维布局。
+                </p>
                 <div class="tag-group">
-                    <span class="tag">变量与函数</span>
-                    <span class="tag">事件监听</span>
-                    <span class="tag">DOM操作</span>
-                    <span class="tag">Tab切换</span>
+                    <span class="tag" data-zh="网格轨道" data-en="Tracks">网格轨道</span>
+                    <span class="tag" data-zh="区域命名" data-en="Named Areas">区域命名</span>
+                    <span class="tag" data-zh="二维布局" data-en="2D Layout">二维布局</span>
+                    <span class="tag" data-zh="交互演示" data-en="Interactive">交互演示</span>
                 </div>
-                <a href="chapter3.html" class="enter-link">进入章节 →</a>
+                <a href="chapter3.html" class="enter-link" data-zh="进入章节 →" data-en="Enter Chapter →">进入章节 →</a>
             </div>
 
             <!-- 第4章 -->
             <div class="chapter-card" onclick="location.href='chapter4.html'">
-                <div class="status">✅ 已上线</div>
-                <div class="chapter-num">第 4 章</div>
-                <h3>多页面网站架构</h3>
-                <p class="card-desc">搭建完整的网站结构</p>
-                <p class="card-text">学习多页面网站的文件组织，掌握相对路径和超链接，实现主页与子页面之间的顺畅跳转导航。</p>
+                <div class="status" data-zh="✅ 已上线" data-en="✅ Online">✅ 已上线</div>
+                <div class="chapter-num" data-zh="第 4 章" data-en="Chapter 4">第 4 章</div>
+                <h3 data-zh="响应式布局原理" data-en="Responsive Design">响应式布局原理</h3>
+                <p class="card-desc" data-zh="适配所有屏幕尺寸的设计方法" data-en="Design for all screen sizes">适配所有屏幕尺寸的设计方法</p>
+                <p class="card-text" data-zh="学习媒体查询语法、断点设计原则、流动布局思想，实现桌面到手机的无缝适配。" data-en="Learn media queries, breakpoint design, fluid layout, seamless adaptation from desktop to mobile.">
+                    学习媒体查询语法、断点设计原则、流动布局思想，实现桌面到手机的无缝适配。
+                </p>
                 <div class="tag-group">
-                    <span class="tag">文件结构</span>
-                    <span class="tag">相对路径</span>
-                    <span class="tag">超链接</span>
-                    <span class="tag">导航栏</span>
+                    <span class="tag" data-zh="媒体查询" data-en="Media Query">媒体查询</span>
+                    <span class="tag" data-zh="断点设计" data-en="Breakpoints">断点设计</span>
+                    <span class="tag" data-zh="流动布局" data-en="Fluid Layout">流动布局</span>
+                    <span class="tag" data-zh="移动端" data-en="Mobile">移动端</span>
                 </div>
-                <a href="chapter4.html" class="enter-link">进入章节 →</a>
+                <a href="chapter4.html" class="enter-link" data-zh="进入章节 →" data-en="Enter Chapter →">进入章节 →</a>
             </div>
 
             <!-- 第5章 -->
             <div class="chapter-card" onclick="location.href='chapter5.html'">
-                <div class="status">✅ 已上线</div>
-                <div class="chapter-num">第 5 章</div>
-                <h3>网页发布与上线</h3>
-                <p class="card-desc">把网页发到公网上</p>
-                <p class="card-text">学习GitHub Pages免费托管服务，掌握完整发布流程，排查常见问题，让所有人都能访问你的网页。</p>
+                <div class="status" data-zh="✅ 已上线" data-en="✅ Online">✅ 已上线</div>
+                <div class="chapter-num" data-zh="第 5 章" data-en="Chapter 5">第 5 章</div>
+                <h3 data-zh="经典布局案例实战" data-en="Classic Layout Cases">经典布局案例实战</h3>
+                <p class="card-desc" data-zh="案例式综合实战（加分项）" data-en="Case-based practice (Bonus)">案例式综合实战（加分项）</p>
+                <p class="card-text" data-zh="手把手实现五大经典布局：顶部导航栏、卡片瀑布流、圣杯布局、双栏文档、固定侧边栏，即学即用。" data-en="Build 5 classic layouts: navbar, card masonry, holy grail, two-column, fixed sidebar.">
+                    手把手实现五大经典布局：顶部导航栏、卡片瀑布流、圣杯布局、双栏文档、固定侧边栏，即学即用。
+                </p>
                 <div class="tag-group">
-                    <span class="tag">GitHub注册</span>
-                    <span class="tag">仓库创建</span>
-                    <span class="tag">Pages部署</span>
-                    <span class="tag">问题排查</span>
+                    <span class="tag" data-zh="导航栏" data-en="Navbar">导航栏</span>
+                    <span class="tag" data-zh="圣杯布局" data-en="Holy Grail">圣杯布局</span>
+                    <span class="tag" data-zh="双栏布局" data-en="Two Column">双栏布局</span>
+                    <span class="tag" data-zh="完整案例" data-en="Full Cases">完整案例</span>
                 </div>
-                <a href="chapter5.html" class="enter-link">进入章节 →</a>
+                <a href="chapter5.html" class="enter-link" data-zh="进入章节 →" data-en="Enter Chapter →">进入章节 →</a>
             </div>
         </div>
     </div>
+
+    <script>
+        // 中英双语切换
+        const langBtns = document.querySelectorAll('.lang-btn');
+        let currentLang = 'zh';
+
+        function switchLang(lang) {
+            currentLang = lang;
+            // 切换按钮状态
+            langBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+            // 切换所有文本
+            document.querySelectorAll('[data-zh]').forEach(el => {
+                el.textContent = el.getAttribute('data-' + lang);
+            });
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        }
+
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchLang(btn.dataset.lang);
+            });
+        });
+    </script>
 </body>
 </html>

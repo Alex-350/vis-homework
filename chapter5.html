@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第5章 网页发布与上线 - 网页制作入门教程</title>
+    <title data-zh="第5章 经典布局案例实战 - 页面布局实战教程" data-en="Chapter 5 Classic Layout Cases">第5章 经典布局案例实战 - 页面布局实战教程</title>
     <style>
         * {
             margin: 0;
@@ -16,7 +16,31 @@
             color: #1e293b;
         }
 
-        /* 顶部导航 */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            overflow: hidden;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .lang-btn {
+            border: none;
+            background: white;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #64748b;
+        }
+        .lang-btn.active {
+            background: #1e293b;
+            color: white;
+        }
+
         .top-bar {
             height: 8px;
             background: #1e40af;
@@ -33,7 +57,6 @@
             font-size: 14px;
         }
 
-        /* 主布局：侧边栏 + 内容区 */
         .layout {
             max-width: 1200px;
             margin: 20px auto;
@@ -43,7 +66,6 @@
             align-items: flex-start;
         }
 
-        /* 左侧侧边栏 */
         .sidebar {
             width: 240px;
             flex-shrink: 0;
@@ -90,7 +112,6 @@
             margin: 16px 0;
         }
 
-        /* 右侧内容区 */
         .main-content {
             flex-grow: 1;
             background: white;
@@ -100,7 +121,6 @@
             min-height: 600px;
         }
 
-        /* 章节标题 */
         .chapter-title {
             font-size: 26px;
             color: #0f172a;
@@ -112,7 +132,6 @@
             margin-bottom: 24px;
         }
 
-        /* Tab 导航 */
         .tab-nav {
             display: flex;
             gap: 32px;
@@ -145,7 +164,6 @@
             background: #2563eb;
         }
 
-        /* Tab 内容 */
         .tab-content {
             display: none;
             line-height: 1.8;
@@ -154,19 +172,33 @@
             display: block;
         }
 
-        /* 内容样式 */
         .section {
-            margin-bottom: 40px;
+            margin-bottom: 48px;
+            scroll-margin-top: 20px;
         }
         .section h3 {
             font-size: 20px;
             color: #0f172a;
             margin-bottom: 12px;
         }
+        .section h4 {
+            font-size: 16px;
+            color: #1e293b;
+            margin: 16px 0 8px;
+        }
         .section p {
             color: #334155;
             margin-bottom: 12px;
             font-size: 15px;
+        }
+        .section ul {
+            color: #334155;
+            margin: 12px 0 12px 24px;
+            font-size: 15px;
+        }
+        .section li {
+            margin-bottom: 8px;
+            line-height: 1.7;
         }
         .highlight-box {
             background: #fef3c7;
@@ -177,7 +209,6 @@
             color: #92400e;
         }
 
-        /* 代码块 */
         .code-block {
             background: #0f172a;
             color: #e2e8f0;
@@ -202,21 +233,12 @@
             color: #0c4a6e;
         }
 
-        /* 演示表格 */
-        .demo-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 16px 0;
-            font-size: 14px;
-        }
-        .demo-table th, .demo-table td {
+        .demo-panel {
             border: 1px solid #e2e8f0;
-            padding: 10px 12px;
-            text-align: left;
-        }
-        .demo-table th {
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
             background: #f8fafc;
-            font-weight: 500;
         }
         .demo-tip {
             background: #f0f9ff;
@@ -226,253 +248,473 @@
             font-size: 14px;
             color: #075985;
         }
+        .case-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .case-btn {
+            padding: 8px 16px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #475569;
+        }
+        .case-btn.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
 
-        /* 演示效果框 */
-        .demo-preview {
-            border: 1px dashed #94a3b8;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 16px 0;
-            background: #f8fafc;
+        .layout-demo {
+            border: 1px dashed #cbd5e1;
+            border-radius: 6px;
+            overflow: hidden;
+            min-height: 320px;
+            background: white;
+        }
+        .demo-block {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: white;
+        }
+
+        /* 案例1：导航栏 */
+        .case-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 56px;
+            background: #1e293b;
+            color: white;
+        }
+        .case-navbar__menu {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+        }
+
+        /* 案例2：双栏布局 */
+        .case-twocol {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            min-height: 280px;
+        }
+        .case-twocol__side {
+            background: #334155;
+            color: white;
+            padding: 16px;
+        }
+        .case-twocol__main {
+            background: #f1f5f9;
+            padding: 16px;
+        }
+
+        /* 案例3：圣杯布局 */
+        .case-holy {
+            display: grid;
+            grid-template-columns: 180px 1fr 180px;
+            grid-template-rows: 50px 1fr 40px;
+            grid-template-areas:
+                "header header header"
+                "left main right"
+                "footer footer footer";
+            min-height: 280px;
+        }
+        .case-holy__header { grid-area: header; background: #1e40af; color: white; }
+        .case-holy__left { grid-area: left; background: #3b82f6; color: white; }
+        .case-holy__main { grid-area: main; background: #eff6ff; }
+        .case-holy__right { grid-area: right; background: #60a5fa; color: white; }
+        .case-holy__footer { grid-area: footer; background: #1e3a8a; color: white; }
+
+        /* 案例4：卡片流 */
+        .case-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            padding: 16px;
+        }
+        .case-card {
+            background: #8b5cf6;
+            color: white;
+            padding: 24px 12px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        /* 案例5：固定侧边栏 */
+        .case-fixedside {
+            display: flex;
+            min-height: 280px;
+        }
+        .case-fixedside__nav {
+            width: 180px;
+            background: #0f172a;
+            color: white;
+            padding: 16px;
+            position: sticky;
+            top: 0;
+        }
+        .case-fixedside__content {
+            flex: 1;
+            padding: 16px;
+            line-height: 2;
         }
     </style>
 </head>
 <body>
     <div class="top-bar"></div>
 
+    <div class="lang-switch">
+        <button class="lang-btn active" data-lang="zh">中</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+
     <div class="back-home">
-        <a href="index.html">← 返回首页</a>
+        <a href="index.html" data-zh="← 返回首页" data-en="← Back Home">← 返回首页</a>
     </div>
 
     <div class="layout">
-        <!-- 左侧侧边栏 -->
         <aside class="sidebar">
-            <h4>章节目录</h4>
+            <h4 data-zh="章节目录" data-en="Contents">章节目录</h4>
             <ul class="menu-list">
-                <li><a href="#sec1" class="active">5.1 发布方式概览</a></li>
-                <li><a href="#sec2">5.2 注册GitHub账号</a></li>
-                <li><a href="#sec3">5.3 创建仓库并上传文件</a></li>
-                <li><a href="#sec4">5.4 开启GitHub Pages</a></li>
-                <li><a href="#sec5">5.5 常见问题排查</a></li>
+                <li><a href="#sec1" class="active" data-zh="5.1 顶部导航栏" data-en="5.1 Top Navbar">5.1 顶部导航栏</a></li>
+                <li><a href="#sec2" data-zh="5.2 双栏文档布局" data-en="5.2 Two Column">5.2 双栏文档布局</a></li>
+                <li><a href="#sec3" data-zh="5.3 圣杯布局" data-en="5.3 Holy Grail">5.3 圣杯布局</a></li>
+                <li><a href="#sec4" data-zh="5.4 响应式卡片流" data-en="5.4 Card Flow">5.4 响应式卡片流</a></li>
+                <li><a href="#sec5" data-zh="5.5 固定侧边栏" data-en="5.5 Sticky Sidebar">5.5 固定侧边栏</a></li>
             </ul>
             <div class="sidebar-divider"></div>
             <ul class="menu-list">
-                <li><a href="#">↗ 练习文件下载</a></li>
-                <li><a href="#">↗ 完整参考手册</a></li>
+                <li><a href="#" data-zh="↗ 练习文件下载" data-en="↗ Exercise Files">↗ 练习文件下载</a></li>
+                <li><a href="#" data-zh="↗ 完整参考手册" data-en="↗ Reference">↗ 完整参考手册</a></li>
             </ul>
         </aside>
 
-        <!-- 右侧主内容 -->
         <main class="main-content">
-            <h2 class="chapter-title">5.1 发布方式概览</h2>
-            <p class="chapter-subtitle">把网页发到公网，让所有人访问</p>
+            <h2 class="chapter-title" data-zh="第5章 经典布局案例实战" data-en="Chapter 5 Classic Layout Cases">第5章 经典布局案例实战</h2>
+            <p class="chapter-subtitle" data-zh="即学即用的五大常用布局模板" data-en="Five commonly used layout templates ready to use">即学即用的五大常用布局模板</p>
 
-            <!-- Tab 按钮 -->
             <div class="tab-nav">
-                <button class="tab-btn active" data-tab="lecture">📖 讲解</button>
-                <button class="tab-btn" data-tab="code">💻 关键代码</button>
-                <button class="tab-btn" data-tab="demo">▶️ 演示</button>
+                <button class="tab-btn active" data-tab="lecture" data-zh="📖 讲解" data-en="📖 Lecture">📖 讲解</button>
+                <button class="tab-btn" data-tab="code" data-zh="💻 关键代码" data-en="💻 Key Code">💻 关键代码</button>
+                <button class="tab-btn" data-tab="demo" data-zh="▶️ 交互演示" data-en="▶️ Demo">▶️ 交互演示</button>
             </div>
 
-            <!-- Tab 1：讲解内容 -->
             <div class="tab-content active" id="tab-lecture">
                 <div class="section" id="sec1">
-                    <h3>5.1 发布方式概览</h3>
-                    <p>在前面的章节里，我们都是在自己电脑上双击 <code>.html</code> 文件用浏览器打开。这种方式只能<strong>自己看</strong>，别人是访问不到的。</p>
-                    <p>要让全世界的人都能通过浏览器访问你的网页，就必须把网页文件<strong>发布（部署）到一台一直开机、连着互联网的服务器</strong>上。</p>
-                    <p>本教程使用 <strong>GitHub Pages</strong>：它是代码托管平台 GitHub 提供的<strong>免费静态网页托管服务</strong>，非常适合新手发布 HTML / CSS / JavaScript 编写的静态网站。它的优点是：<strong>不需要自己买服务器、完全免费、还会给你一个固定的网址</strong>。</p>
+                    <h3 data-zh="5.1 顶部导航栏" data-en="5.1 Top Navigation Bar">5.1 顶部导航栏</h3>
+                    <p data-zh="网页最常见的布局模式，左侧品牌标识，右侧菜单列表，整体垂直居中。是几乎所有网站的标配组件。" data-en="The most common web pattern: brand left, menu right, vertically centered. Standard on nearly all websites.">
+                        网页最常见的布局模式，左侧品牌标识，右侧菜单列表，整体垂直居中。是几乎所有网站的标配组件。
+                    </p>
 
-                    <div class="highlight-box">
-                        发布成功后，你的网站网址格式是：<strong>https://用户名.github.io/仓库名/</strong>
-                    </div>
+                    <h4 data-zh="设计要点" data-en="Design Key Points">设计要点</h4>
+                    <ul>
+                        <li data-zh="两端对齐：用 justify-content: space-between 实现，无需浮动和margin" data-en="Space between for left-right split. No floats, no margins">两端对齐：用 justify-content: space-between 实现，无需浮动和margin</li>
+                        <li data-zh="垂直居中：align-items: center，一行代码解决历史难题" data-en="align-items: center. One line solves the classic centering problem">垂直居中：align-items: center，一行代码解决历史难题</li>
+                        <li data-zh="菜单本身也是Flex容器，控制菜单项间距" data-en="Menu is also a Flex container for item spacing">菜单本身也是Flex容器，控制菜单项间距</li>
+                        <li data-zh="固定高度：导航栏通常固定高度，保证视觉稳定" data-en="Fixed height for visual stability">固定高度：导航栏通常固定高度，保证视觉稳定</li>
+                    </ul>
+
+                    <h4 data-zh="常见变体" data-en="Common Variations">常见变体</h4>
+                    <ul>
+                        <li data-zh="左中右结构：logo左、导航中、操作按钮右" data-en="Left-center-right: logo left, nav center, actions right">左中右结构：logo左、导航中、操作按钮右</li>
+                        <li data-zh="粘性导航：position: sticky，滚动时保持在顶部" data-en="Sticky nav: stays at top while scrolling">粘性导航：position: sticky，滚动时保持在顶部</li>
+                        <li data-zh="响应式导航：小屏幕折叠成汉堡菜单" data-en="Responsive: collapses to hamburger on mobile">响应式导航：小屏幕折叠成汉堡菜单</li>
+                    </ul>
                 </div>
 
                 <div class="section" id="sec2">
-                    <h3>5.2 注册GitHub账号</h3>
-                    <p>第一步，先去 GitHub 注册一个账号：</p>
-                    <p>① 打开浏览器，访问 <code>github.com</code>，点击 <strong>Sign up</strong>。</p>
-                    <p>② 依次填写：<strong>邮箱地址</strong>、设置一个<strong>密码</strong>、再取一个<strong>用户名</strong>。</p>
-                    <p>③ 这个用户名会直接出现在你将来的网址里，所以<strong>建议用英文、简短好记</strong>，比如 <code>alex2026</code>。</p>
-                    <p>④ 注册过程中 GitHub 会发一封验证邮件到你的邮箱，记得打开邮件点击验证链接，否则账号功能不完整。</p>
-                </div>
+                    <h3 data-zh="5.2 双栏文档布局" data-en="5.2 Two-Column Document Layout">5.2 双栏文档布局</h3>
+                    <p data-zh="左侧目录导航 + 右侧正文内容，是文档站、教程、后台管理系统最经典的结构。本站就是用的这种布局。" data-en="Left sidebar navigation + right main content. Classic for docs, tutorials, admin systems. This very site uses it.">
+                        左侧目录导航 + 右侧正文内容，是文档站、教程、后台管理系统最经典的结构。本站就是用的这种布局。
+                    </p>
 
-                <div class="section" id="sec3">
-                    <h3>5.3 创建仓库并上传文件</h3>
-                    <p>仓库（Repository）可以理解成 GitHub 上的一个「项目文件夹」，用来存放你的网页文件。</p>
-                    <p>① 登录后，点击右上角 <strong>+</strong> → <strong>New repository</strong>，新建仓库。</p>
-                    <p>② 给仓库起个名字，<strong>建议用英文</strong>（比如 <code>my-web</code>）；下面的公开性一定要选 <strong>Public（公开）</strong>，否则 GitHub Pages 无法免费发布。</p>
-                    <p>③ 创建完成后，进入仓库页面，点击 <strong>Add file → Upload files</strong>，把本地写好的 <code>index.html</code>、<code>chapter1.html</code> ~ <code>chapter5.html</code> 以及 css、images 等文件夹一起拖进去，拉到最下面点 <strong>Commit changes</strong> 上传。</p>
-
-                    <div class="highlight-box">
-                        特别注意：首页文件<strong>必须叫 index.html</strong>（全小写）。如果首页叫别的名字，访问网址时浏览器找不到默认页面，就会打不开。
-                    </div>
-                </div>
-
-                <div class="section" id="sec4">
-                    <h3>5.4 开启GitHub Pages</h3>
-                    <p>文件上传后，网页还不会自动上线，需要手动开启 Pages 服务：</p>
-                    <p>① 进入仓库页面，点击顶部的 <strong>Settings（设置）</strong>。</p>
-                    <p>② 在左侧菜单找到 <strong>Pages</strong> 这一项，点进去。</p>
-                    <p>③ 找到 <strong>Source</strong>，选择 <strong>Deploy from a branch</strong>。</p>
-                    <p>④ 下面的 Branch 分支选择 <strong>main</strong>，旁边的目录选择 <strong>/(root)（根目录）</strong>，然后点 <strong>Save</strong>。</p>
-                    <p>⑤ 保存后耐心等 <strong>1~2 分钟</strong>，GitHub 正在帮你部署。部署完成后，回到 Pages 页面会出现一个绿色提示，告诉你网站已经上线。</p>
-                    <p>⑥ 在浏览器里访问 <strong>https://用户名.github.io/仓库名/</strong>，就能看到你自己发布的网站了！</p>
-                </div>
-
-                <div class="section" id="sec5">
-                    <h3>5.5 常见问题排查</h3>
-                    <p><strong>问题一：打开网址显示 404。</strong><br>
-                    常见原因：首页文件名不是 <code>index.html</code>；或者 Pages 根本没开启；或者刚上传完、GitHub 还没部署好（多等一会儿）。</p>
-                    <p><strong>问题二：改了本地文件，网站却不更新。</strong><br>
-                    这通常是浏览器缓存造成的。先确认你已经把新文件<strong>重新上传</strong>到仓库，然后按 <strong>Ctrl + F5</strong> 强制刷新页面。</p>
-                    <p><strong>问题三：中文显示成乱码（一堆问号或方块）。</strong><br>
-                    这是编码问题。确保文件以 <strong>UTF-8</strong> 编码保存，并且 <code>&lt;head&gt;</code> 里有 <code>&lt;meta charset="UTF-8"&gt;</code> 这一行。</p>
-                    <p><strong>问题四：点链接打不开或跳错页面。</strong><br>
-                    检查 <code>href</code> 里写的相对路径和实际文件名是否<strong>完全一致</strong>，特别注意<strong>大小写</strong>（GitHub 服务器对大小写敏感，<code>Index.html</code> 和 <code>index.html</code> 是两个不同文件）。</p>
-
-                    <div class="highlight-box">
-                        记住：每次改完本地文件，都必须重新上传到 GitHub 仓库，网站才会更新，光改本地是不会生效的。
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab 2：关键代码 -->
-            <div class="tab-content" id="tab-code">
-                <div class="section">
-                    <h3>关键代码 ① 发布前检查清单</h3>
-                    <p>发布前，对照下面这张清单逐项打勾，能避开 90% 的常见问题。</p>
-
-                    <div class="code-block">
-<span class="code-comment"># ===== 发布前检查清单（逐项打勾）=====</span>
-
-<span class="code-comment"># 1. 首页文件名必须是 index.html（全小写），否则打开网址找不到首页</span>
-index.html
-
-<span class="code-comment"># 2. 仓库必须设为 Public（公开），私有仓库不能免费开启 Pages</span>
-Repository = Public
-
-<span class="code-comment"># 3. Pages 的分支（Branch）选择 main</span>
-Branch = main
-
-<span class="code-comment"># 4. Pages 的目录选择 /(root) 根目录（文件直接放在仓库根目录）</span>
-Directory = / (root)
-
-<span class="code-comment"># 5. 所有页面放在同一目录，互相之间用相对路径链接（如 href="chapter1.html"）</span>
-相对路径 = 正确
-
-<span class="code-comment"># 6. 文件编码必须是 UTF-8，并且 head 里写有这一行：</span>
-&lt;meta charset="UTF-8"&gt;
-
-<span class="code-comment"># 7. 保存设置后等 1~2 分钟，再按 Ctrl + F5 强制刷新查看</span>
-等待部署 = 1~2 分钟
-                    </div>
-
-                    <div class="code-note">
-                        <strong>记忆要点：</strong><br>
-                        1. <strong>index.html</strong> 是浏览器默认首页，名字一个字母都不能错<br>
-                        2. 仓库必须 <strong>Public</strong>，分支 <strong>main</strong>，目录 <strong>/(root)</strong>，三者缺一不可<br>
-                        3. 每次改完文件都要<strong>重新上传</strong>，再 <strong>Ctrl + F5</strong> 刷新
-                    </div>
-
-                    <h3>关键代码 ② 网址格式示例</h3>
-                    <p>发布成功后，你的网站网址由「用户名」和「仓库名」两部分拼成。</p>
-
-                    <div class="code-block">
-<span class="code-comment"># 网址通用格式：</span>
-https://用户名.github.io/仓库名/
-
-<span class="code-comment"># 例如：用户名是 alex，仓库名叫 my-web，则完整网址是：</span>
-https://alex.github.io/my-web/
-
-<span class="code-comment"># 访问首页直接打开这个网址即可；</span>
-<span class="code-comment"># 访问子页面：https://alex.github.io/my-web/chapter1.html</span>
-                    </div>
-
-                    <div class="code-note">
-                        <strong>记忆要点：</strong><br>
-                        1. 用户名就是你注册时取的名字，仓库名就是 New repository 时填的名字<br>
-                        2. 用户名和仓库名要和 GitHub 上写的<strong>完全一致</strong>（包括大小写）<br>
-                        3. 这个网址是<strong>固定不变</strong>的，可以直接发给别人访问
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab 3：演示 -->
-            <div class="tab-content" id="tab-demo">
-                <div class="section">
-                    <div class="demo-tip">
-                        把网页发布到 GitHub Pages 一共就 5 步，照着下面的流程走一遍即可上线。
-                    </div>
-
-                    <h4>发布流程步骤图</h4>
-                    <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                        <div style="flex:1; min-width:150px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:16px;">
-                            <div style="width:32px; height:32px; border-radius:50%; background:#2563eb; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:600; margin-bottom:10px;">1</div>
-                            <div style="font-weight:600; color:#0f172a; margin-bottom:6px;">注册GitHub账号</div>
-                            <div style="font-size:13px; color:#475569;">打开 github.com，填邮箱、密码、英文用户名并验证邮箱。</div>
-                        </div>
-                        <div style="flex:1; min-width:150px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:16px;">
-                            <div style="width:32px; height:32px; border-radius:50%; background:#2563eb; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:600; margin-bottom:10px;">2</div>
-                            <div style="font-weight:600; color:#0f172a; margin-bottom:6px;">创建Public仓库</div>
-                            <div style="font-size:13px; color:#475569;">New repository，仓库名用英文，务必选择 Public 公开。</div>
-                        </div>
-                        <div style="flex:1; min-width:150px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:16px;">
-                            <div style="width:32px; height:32px; border-radius:50%; background:#2563eb; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:600; margin-bottom:10px;">3</div>
-                            <div style="font-weight:600; color:#0f172a; margin-bottom:6px;">上传文件</div>
-                            <div style="font-size:13px; color:#475569;">Add file → Upload files，把 index.html 等文件 Commit 上传。</div>
-                        </div>
-                        <div style="flex:1; min-width:150px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:16px;">
-                            <div style="width:32px; height:32px; border-radius:50%; background:#2563eb; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:600; margin-bottom:10px;">4</div>
-                            <div style="font-weight:600; color:#0f172a; margin-bottom:6px;">开启Pages</div>
-                            <div style="font-size:13px; color:#475569;">Settings → Pages，Source 选 Deploy from a branch，分支 main、目录 /(root)，保存。</div>
-                        </div>
-                        <div style="flex:1; min-width:150px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:16px;">
-                            <div style="width:32px; height:32px; border-radius:50%; background:#2563eb; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:600; margin-bottom:10px;">5</div>
-                            <div style="font-weight:600; color:#0f172a; margin-bottom:6px;">访问网址</div>
-                            <div style="font-size:13px; color:#475569;">等1~2分钟，打开 https://用户名.github.io/仓库名/ 看成果。</div>
-                        </div>
-                    </div>
-
-                    <h4 style="margin-top:28px;">常见问题排查表</h4>
-                    <table class="demo-table">
+                    <h4 data-zh="实现方案对比" data-en="Implementation Comparison">实现方案对比</h4>
+                    <table class="compare-table">
                         <thead>
                             <tr>
-                                <th>现象</th>
-                                <th>可能原因</th>
-                                <th>解决办法</th>
+                                <th data-zh="方案" data-en="Approach">方案</th>
+                                <th data-zh="优点" data-en="Pros">优点</th>
+                                <th data-zh="缺点" data-en="Cons">缺点</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>打开网址显示 404</td>
-                                <td>首页不叫 index.html，或 Pages 没开启</td>
-                                <td>把首页改名 index.html，并重新到 Settings → Pages 开启服务</td>
+                                <td data-zh="Grid实现" data-en="Grid">Grid实现</td>
+                                <td data-zh="代码简洁、结构清晰、推荐" data-en="Clean code, clear structure, recommended">代码简洁、结构清晰、推荐</td>
+                                <td data-zh="较新浏览器支持" data-en="Modern browser support">较新浏览器支持</td>
                             </tr>
                             <tr>
-                                <td>上传后页面没变</td>
-                                <td>浏览器缓存，或 GitHub 还没部署完</td>
-                                <td>等 2 分钟，再按 Ctrl + F5 强制刷新</td>
+                                <td data-zh="Flex实现" data-en="Flex">Flex实现</td>
+                                <td data-zh="兼容性好、灵活" data-en="Good compatibility, flexible">兼容性好、灵活</td>
+                                <td data-zh="需要设置宽度比例" data-en="Need to set width ratios">需要设置宽度比例</td>
                             </tr>
                             <tr>
-                                <td>中文显示成乱码</td>
-                                <td>文件编码不是 UTF-8</td>
-                                <td>用 UTF-8 重新保存文件，确认 head 里有 &lt;meta charset="UTF-8"&gt;</td>
-                            </tr>
-                            <tr>
-                                <td>点链接打不开 / 跳错</td>
-                                <td>相对路径或文件名大小写错误</td>
-                                <td>检查 href 与实际文件名是否完全一致（注意大小写）</td>
-                            </tr>
-                            <tr>
-                                <td>图片、样式丢失</td>
-                                <td>资源路径写错，或 css/images 没上传</td>
-                                <td>确认 css、images 等文件夹都已上传到仓库，路径与本地一致</td>
+                                <td data-zh="浮动实现" data-en="Float">浮动实现</td>
+                                <td data-zh="兼容所有浏览器" data-en="Works everywhere">兼容所有浏览器</td>
+                                <td data-zh="需要清除浮动、难维护" data-en="Needs clearfix, hard to maintain">需要清除浮动、难维护</td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <div class="demo-tip">
-                        发布成功后，把网址发给同学或老师，就能在任何设备、任何浏览器上打开你的网站了。
+                    <h4 data-zh="最佳实践" data-en="Best Practices">最佳实践</h4>
+                    <ul>
+                        <li data-zh="侧边栏固定宽度，主内容区弹性占满剩余空间" data-en="Fixed sidebar width, main content fills remaining space">侧边栏固定宽度，主内容区弹性占满剩余空间</li>
+                        <li data-zh="侧边栏用 position: sticky 实现滚动跟随" data-en="Sidebar uses position: sticky to scroll with content">侧边栏用 position: sticky 实现滚动跟随</li>
+                        <li data-zh="主内容区设置最大宽度，超宽屏不拉伸过度" data-en="Main content max-width to prevent over-stretching on wide screens">主内容区设置最大宽度，超宽屏不拉伸过度</li>
+                    </ul>
+                </div>
+
+                <div class="section" id="sec3">
+                    <h3 data-zh="5.3 圣杯布局" data-en="5.3 Holy Grail Layout">5.3 圣杯布局</h3>
+                    <p data-zh="经典的完整页面骨架：顶部页眉、底部页脚、中间三栏（左侧导航、主内容、右侧边栏）。因为早年实现难度大，被称为「圣杯」布局。" data-en="Classic full page skeleton: header, footer, three-column middle. Named Holy Grail because it was once very hard to implement.">
+                        经典的完整页面骨架：顶部页眉、底部页脚、中间三栏（左侧导航、主内容、右侧边栏）。因为早年实现难度大，被称为「圣杯」布局。
+                    </p>
+
+                    <h4 data-zh="演进历史" data-en="Evolution History">演进历史</h4>
+                    <ul>
+                        <li data-zh="表格时代：用table实现，简单但语义错误" data-en="Table era: Simple but semantically wrong">表格时代：用table实现，简单但语义错误</li>
+                        <li data-zh="浮动时代：负margin技巧，复杂脆弱" data-en="Float era: Negative margin hacks, complex and fragile">浮动时代：负margin技巧，复杂脆弱</li>
+                        <li data-zh="Flex时代：Flex实现，简单很多" data-en="Flex era: Much simpler with Flex">Flex时代：Flex实现，简单很多</li>
+                        <li data-zh="Grid时代：命名区域，代码像结构图一样直观" data-en="Grid era: Named areas, code reads like a blueprint">Grid时代：命名区域，代码像结构图一样直观</li>
+                    </ul>
+
+                    <div class="highlight-box" data-zh="Grid命名区域是圣杯布局的终极方案：代码结构和视觉结构一一对应，修改布局只需要改一行字符串。" data-en="Grid named areas are the ultimate solution: Code structure matches visual structure. Change layout with one string.">
+                        Grid命名区域是圣杯布局的终极方案：代码结构和视觉结构一一对应，修改布局只需要改一行字符串。
+                    </div>
+                </div>
+
+                <div class="section" id="sec4">
+                    <h3 data-zh="5.4 响应式卡片流" data-en="5.4 Responsive Card Flow">5.4 响应式卡片流</h3>
+                    <p data-zh="产品列表、图片画廊、功能入口、搜索结果页最常用的布局形式。卡片自动换行，自适应容器宽度。" data-en="Most common for product lists, galleries, feature grids, search results. Cards wrap automatically, adapt to container width.">
+                        产品列表、图片画廊、功能入口、搜索结果页最常用的布局形式。卡片自动换行，自适应容器宽度。
+                    </p>
+
+                    <h4 data-zh="两种实现方式" data-en="Two Implementation Approaches">两种实现方式</h4>
+                    <ul>
+                        <li><strong data-zh="Flex换行" data-en="Flex wrap"></strong> <span data-zh="：flex-wrap: wrap + gap，简单灵活，卡片宽度固定" data-en=": Simple and flexible, fixed card widths"></span></li>
+                        <li><strong data-zh="Grid自动填充" data-en="Grid auto-fill"></strong> <span data-zh="：auto-fill + minmax()，自动调整列数，卡片弹性宽度，推荐" data-en=": Auto-adjust column count, elastic card widths, recommended"></span></li>
+                    </ul>
+
+                    <h4 data-zh="设计要点" data-en="Design Tips">设计要点</h4>
+                    <ul>
+                        <li data-zh="卡片统一高度，视觉整齐" data-en="Uniform card heights for visual alignment">卡片统一高度，视觉整齐</li>
+                        <li data-zh="间距一致，不要用margin，用gap" data-en="Consistent spacing, use gap not margins">间距一致，不要用margin，用gap</li>
+                        <li data-zh="最小宽度根据内容确定，保证可读性" data-en="Min width based on content for readability">最小宽度根据内容确定，保证可读性</li>
+                        <li data-zh="卡片内边距要充足，避免内容拥挤" data-en="Adequate padding, avoid cramped content">卡片内边距要充足，避免内容拥挤</li>
+                    </ul>
+                </div>
+
+                <div class="section" id="sec5">
+                    <h3 data-zh="5.5 固定侧边栏" data-en="5.5 Sticky Sidebar">5.5 固定侧边栏</h3>
+                    <p data-zh="页面滚动时，侧边栏保持在视口中不动，方便用户随时切换导航或查看信息。" data-en="Sidebar stays visible while page scrolls, for easy navigation access and persistent information.">
+                        页面滚动时，侧边栏保持在视口中不动，方便用户随时切换导航或查看信息。
+                    </p>
+
+                    <h4 data-zh="sticky vs fixed" data-en="sticky vs fixed">sticky vs fixed</h4>
+                    <table class="compare-table">
+                        <thead>
+                            <tr>
+                                <th data-zh="特性" data-en="Feature">特性</th>
+                                <th data-zh="position: sticky" data-en="position: sticky">position: sticky</th>
+                                <th data-zh="position: fixed" data-en="position: fixed">position: fixed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-zh="定位基准" data-en="Position reference">定位基准</td>
+                                <td data-zh="相对于最近滚动祖先" data-en="Relative to nearest scrolling ancestor">相对于最近滚动祖先</td>
+                                <td data-zh="相对于视口" data-en="Relative to viewport">相对于视口</td>
+                            </tr>
+                            <tr>
+                                <td data-zh="占据空间" data-en="Occupies space">占据空间</td>
+                                <td data-zh="✅ 保留原位置，不脱离文档流" data-en="✅ Keeps space, stays in flow">✅ 保留原位置，不脱离文档流</td>
+                                <td data-zh="❌ 脱离文档流，不占空间" data-en="❌ Out of flow, no space">❌ 脱离文档流，不占空间</td>
+                            </tr>
+                            <tr>
+                                <td data-zh="页眉页脚" data-en="Header & footer">页眉页脚</td>
+                                <td data-zh="✅ 不会遮挡，滚出去就跟着走" data-en="✅ Doesn't overlap, scrolls away">✅ 不会遮挡，滚出去就跟着走</td>
+                                <td data-zh="❌ 永远固定，可能遮挡" data-en="❌ Always fixed, can overlap">❌ 永远固定，可能遮挡</td>
+                            </tr>
+                            <tr>
+                                <td data-zh="兼容性" data-en="Compatibility">兼容性</td>
+                                <td data-zh="现代浏览器支持" data-en="Modern browsers">现代浏览器支持</td>
+                                <td data-zh="全浏览器支持" data-en="All browsers">全浏览器支持</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="code-note" data-zh="注意：sticky元素的父容器不能有 overflow: hidden，否则sticky会失效。这是最常见的坑。" data-en="Note: Sticky won't work if parent has overflow: hidden. The most common pitfall.">
+                        注意：sticky元素的父容器不能有 overflow: hidden，否则sticky会失效。这是最常见的坑。
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-code">
+                <div class="section" id="sec1">
+                    <h3 data-zh="5.1 导航栏完整代码" data-en="5.1 Navbar Full Code">5.1 导航栏完整代码</h3>
+                    <div class="code-block">
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding: 0 32px;
+    background: #1e293b;
+    color: white;
+}
+
+.navbar__brand {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.navbar__menu {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+}
+                    </div>
+                </div>
+
+                <div class="section" id="sec2">
+                    <h3 data-zh="5.2 双栏布局代码" data-en="5.2 Two Column Code">5.2 双栏布局代码</h3>
+                    <div class="code-block">
+.layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.sidebar { 
+    position: sticky; 
+    top: 20px;
+    align-self: start;
+}
+.content { min-height: 600px; }
+                    </div>
+                </div>
+
+                <div class="section" id="sec3">
+                    <h3 data-zh="5.3 圣杯布局代码" data-en="5.3 Holy Grail Code">5.3 圣杯布局代码</h3>
+                    <div class="code-block">
+.page {
+    display: grid;
+    grid-template-columns: 200px 1fr 200px;
+    grid-template-rows: 60px 1fr 50px;
+    grid-template-areas:
+        "header header header"
+        "left main right"
+        "footer footer footer";
+    min-height: 100vh;
+}
+
+.header { grid-area: header; }
+.left-sidebar { grid-area: left; }
+.main-content { grid-area: main; }
+.right-sidebar { grid-area: right; }
+.footer { grid-area: footer; }
+                    </div>
+                </div>
+
+                <div class="section" id="sec4">
+                    <h3 data-zh="5.4 响应式卡片流代码" data-en="5.4 Responsive Card Code">5.4 响应式卡片流代码</h3>
+                    <div class="code-block">
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+                    </div>
+                </div>
+
+                <div class="section" id="sec5">
+                    <h3 data-zh="5.5 粘性侧边栏代码" data-en="5.5 Sticky Sidebar Code">5.5 粘性侧边栏代码</h3>
+                    <div class="code-block">
+.sidebar {
+    position: sticky;
+    top: 20px;
+    align-self: start;
+    width: 240px;
+}
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tab-demo">
+                <div class="section">
+                    <div class="demo-tip" data-zh="点击下方按钮切换不同的布局案例，直观对比每种布局的结构效果。" data-en="Click buttons to switch between layout cases and compare their structures.">
+                        点击下方按钮切换不同的布局案例，直观对比每种布局的结构效果。
+                    </div>
+
+                    <div class="case-buttons">
+                        <button class="case-btn active" data-case="navbar" data-zh="导航栏" data-en="Navbar">导航栏</button>
+                        <button class="case-btn" data-case="twocol" data-zh="双栏布局" data-en="Two Column">双栏布局</button>
+                        <button class="case-btn" data-case="holy" data-zh="圣杯布局" data-en="Holy Grail">圣杯布局</button>
+                        <button class="case-btn" data-case="cards" data-zh="卡片流" data-en="Card Grid">卡片流</button>
+                        <button class="case-btn" data-case="fixedside" data-zh="固定侧边栏" data-en="Sticky Sidebar">固定侧边栏</button>
+                    </div>
+
+                    <div class="layout-demo">
+                        <div id="case-navbar" class="case-navbar">
+                            <div class="demo-block"><strong>LOGO</strong></div>
+                            <div class="case-navbar__menu">
+                                <span>首页</span>
+                                <span>教程</span>
+                                <span>关于</span>
+                            </div>
+                        </div>
+
+                        <div id="case-twocol" class="case-twocol" style="display:none;">
+                            <div class="case-twocol__side demo-block">侧边栏</div>
+                            <div class="case-twocol__main">主内容区</div>
+                        </div>
+
+                        <div id="case-holy" class="case-holy" style="display:none;">
+                            <div class="case-holy__header demo-block">Header 页眉</div>
+                            <div class="case-holy__left demo-block">左侧栏</div>
+                            <div class="case-holy__main demo-block">主内容</div>
+                            <div class="case-holy__right demo-block">右侧栏</div>
+                            <div class="case-holy__footer demo-block">Footer 页脚</div>
+                        </div>
+
+                        <div id="case-cards" class="case-cards" style="display:none;">
+                            <div class="case-card">卡片 1</div>
+                            <div class="case-card">卡片 2</div>
+                            <div class="case-card">卡片 3</div>
+                            <div class="case-card">卡片 4</div>
+                            <div class="case-card">卡片 5</div>
+                            <div class="case-card">卡片 6</div>
+                        </div>
+
+                        <div id="case-fixedside" class="case-fixedside" style="display:none;">
+                            <div class="case-fixedside__nav demo-block">固定导航</div>
+                            <div class="case-fixedside__content">
+                                滚动内容区<br>
+                                侧边栏保持不动<br>
+                                使用 position: sticky 实现<br>
+                                内容可以很长很长...
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -480,30 +722,54 @@ https://alex.github.io/my-web/
     </div>
 
     <script>
-        // Tab 切换功能
+        // 双语切换
+        const langBtns = document.querySelectorAll('.lang-btn');
+        let currentLang = 'zh';
+        function switchLang(lang) {
+            currentLang = lang;
+            langBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+            document.querySelectorAll('[data-zh]').forEach(el => el.textContent = el.getAttribute('data-' + lang));
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        }
+        langBtns.forEach(btn => btn.addEventListener('click', () => switchLang(btn.dataset.lang)));
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchLang('zh');
+        });
+
+        // Tab切换
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
-
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                const tabName = btn.getAttribute('data-tab');
-
-                // 切换按钮选中状态
+                const tabName = btn.dataset.tab;
                 tabBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-
-                // 切换内容显示
-                tabContents.forEach(content => content.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
                 document.getElementById('tab-' + tabName).classList.add('active');
             });
         });
 
-        // 侧边栏点击高亮
-        const menuLinks = document.querySelectorAll('.menu-list a');
-        menuLinks.forEach(link => {
+        // 侧边栏高亮
+        document.querySelectorAll('.menu-list a').forEach(link => {
             link.addEventListener('click', () => {
-                menuLinks.forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.menu-list a').forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
+            });
+        });
+
+        // 布局案例切换
+        const caseBtns = document.querySelectorAll('.case-btn');
+        const cases = ['navbar', 'twocol', 'holy', 'cards', 'fixedside'];
+
+        caseBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.case;
+                caseBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                cases.forEach(c => {
+                    document.getElementById('case-' + c).style.display = (c === target) ? '' : 'none';
+                });
             });
         });
     </script>
